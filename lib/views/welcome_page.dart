@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/button_widget.dart';
+
 class WelcomePage extends StatelessWidget {
   const WelcomePage({Key? key}) : super(key: key);
 
@@ -10,16 +12,16 @@ class WelcomePage extends StatelessWidget {
         ShaderMask(
           shaderCallback: (rect) {
             return const LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Color(0xff242A37), Colors.transparent],
-            ).createShader(rect);
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Color(0xff242A37), Colors.transparent],
+                stops: [0.1, 0.9]).createShader(rect);
           },
           blendMode: BlendMode.dstIn,
           child: Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/bg_welcome.png'),
+                image: AssetImage('assets/images/backgrounds/bg_welcome.png'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -33,12 +35,12 @@ class WelcomePage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(
+                  const Text(
                     'Find new friends nearby',
                     style: TextStyle(fontSize: 44, color: Colors.white, fontWeight: FontWeight.bold),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 14, bottom: 22),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 14, bottom: 22),
                     child: Text(
                       'With milions of users all over the world, we gives you the ability to connect with people no matter where you are.',
                       style: TextStyle(fontSize: 17, color: Colors.white, fontWeight: FontWeight.w200),
@@ -48,47 +50,67 @@ class WelcomePage extends StatelessWidget {
                     width: double.infinity,
                     height: 44,
                     child: ElevatedButton(
-                      onPressed: () {},
-                      child: Text(
-                        'Log In',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Color(0xffFF2D55),
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(100)
-                        )
-                      )
-                    ),
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 44,
-                    child: ElevatedButton(
                         onPressed: () {},
-                        child: Text(
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100))),
+                        child: const Text(
                           'Log In',
                           style: TextStyle(
                             fontSize: 15,
                             color: Color(0xffFF2D55),
                           ),
+                        )),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10, bottom: 48),
+                    child: SizedBox(
+                        width: double.infinity,
+                        height: 44,
+                        child: MyElevatedButton(
+                          width: double.infinity,
+                          onPressed: () {},
+                          borderRadius: BorderRadius.circular(100),
+                          child: const Text('Sign Up'),
+                        )),
+                  ),
+                  const Text(
+                    'Or log in with',
+                    style: TextStyle(fontSize: 13, color: Color(0xff4E586E)),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 18, bottom: 54),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          onPressed: () {},
+                          icon: Image.asset(
+                            'assets/images/icons/ic_facebook.png',
+                            color: Colors.white,
+                          ),
                         ),
-                        style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(100)
-                            )
-                        )
+                        IconButton(
+                          onPressed: () {},
+                          icon: Image.asset(
+                            'assets/images/icons/ic_twitter.png',
+                            color: Colors.white,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {},
+                          icon: Image.asset(
+                            'assets/images/icons/ic_google_plus.png',
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
           ),
-        )
+        ),
       ],
     );
   }
