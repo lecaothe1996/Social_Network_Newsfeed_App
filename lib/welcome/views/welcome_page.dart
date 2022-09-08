@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
-import '../widgets/button_widget.dart';
+import '../../widgets/button_widget.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({Key? key}) : super(key: key);
@@ -52,7 +54,12 @@ class WelcomePage extends StatelessWidget {
                     child: ElevatedButton(
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
-                            primary: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100))),
+                          primary: Colors.white,
+                          onPrimary: Colors.black,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                        ),
                         child: const Text(
                           'Log In',
                           style: TextStyle(
@@ -97,7 +104,9 @@ class WelcomePage extends StatelessWidget {
                           ),
                         ),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            _signInWithGoogle();
+                          },
                           icon: Image.asset(
                             'assets/images/icons/ic_google_plus.png',
                             color: Colors.white,
@@ -114,4 +123,27 @@ class WelcomePage extends StatelessWidget {
       ],
     );
   }
+
+  Future<UserCredential> _signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+    print('accessToken= ${googleAuth?.accessToken}');
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    final AuthenAccount = await FirebaseAuth.instance.signInWithCredential(credential);
+
+    print('AuthenAccount= ${AuthenAccount}');
+
+    return AuthenAccount;
+  }
+
 }
