@@ -40,6 +40,8 @@ dependencies:
   firebase_auth: ^3.7.0
   # Sign in Google
   google_sign_in: ^5.4.1
+  #
+  dio: ^4.0.6
 
 dev_dependencies:
   flutter_test:

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -63,21 +64,14 @@ class WelcomePage extends StatelessWidget {
                         style: TextStyle(fontSize: 15, color: AppColors.textLogin, fontWeight: FontWeight.bold),
                       ),
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const LoginPage(),
-                            ));
+                        Navigator.push(context,MaterialPageRoute(builder: (context) => const LoginPage()));
                       },
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 10, bottom: 48),
                     child: SizedBox(
-                      width: double.infinity,
-                      height: 44,
-                      child: MyElevatedButton(onPressed: () {}, text: 'Sign Up')
-                    ),
+                        width: double.infinity, height: 44, child: MyElevatedButton(onPressed: () {}, text: 'Sign Up')),
                   ),
                   const Text(
                     'Or log in with',
@@ -123,25 +117,31 @@ class WelcomePage extends StatelessWidget {
     );
   }
 
-  Future<UserCredential> _signInWithGoogle() async {
+  Future<void> _signInWithGoogle() async {
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
     // Obtain the auth details from the request
     final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
-    print('accessToken= ${googleAuth?.accessToken}');
+    print('gmail_token=${googleAuth?.accessToken}');
 
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
+    // Post gmail_token to server
+    try {
+      if (googleAuth?.accessToken != null) {
+        final dio = Dio(BaseOptions(baseUrl: 'https://api.dofhunt.200lab.io'));
+        final authResponce = await dio.post('/v1/auth/gmail', data: {'gmail_token': googleAuth?.accessToken});
+        print('authResponce=$authResponce');
 
-    // Once signed in, return the UserCredential
-    final AuthenAccount = await FirebaseAuth.instance.signInWithCredential(credential);
-
-    print('AuthenAccount= ${AuthenAccount}');
-
-    return AuthenAccount;
+        // Get access_token form
+        if (authResponce.statusCode == 200) {
+          final accessToken = authResponce.data['data']['access_token'];
+          print('accessToken=$accessToken');
+        } else {
+          print('Error Signin with google');
+        }
+      }
+    } catch (error) {
+      print('error=$error');
+    }
   }
 }

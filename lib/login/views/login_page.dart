@@ -32,6 +32,7 @@ class LoginPage extends StatelessWidget {
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
             child: CustomScrollView(
+              physics: const BouncingScrollPhysics(),
               slivers: [
                 SliverFillRemaining(
                   hasScrollBody: false,
@@ -61,7 +62,7 @@ class LoginPage extends StatelessWidget {
                         child: MyElevatedButton(onPressed: () {}, text: 'LOGIN'),
                       ),
                       Container(
-                        padding: const EdgeInsets.only(top: 53, bottom: 27),
+                        padding: const EdgeInsets.only(top: 53, bottom: 54),
                         alignment: Alignment.center,
                         child: const Text('Forgot your password?', style: TextStyle(fontSize: 17, color: AppColors.white)),
                       ),
