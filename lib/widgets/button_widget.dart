@@ -1,45 +1,45 @@
 import 'package:flutter/material.dart';
 
+import '../themes/app_color.dart';
+
 class MyElevatedButton extends StatelessWidget {
-  final BorderRadiusGeometry? borderRadius;
   final double? width;
   final double height;
   final Gradient gradient;
   final VoidCallback? onPressed;
-  final Widget child;
+  final String text;
 
   const MyElevatedButton({
     Key? key,
     required this.onPressed,
-    required this.child,
-    this.borderRadius,
+    required this.text,
     this.width,
     this.height = 44.0,
-    this.gradient = const LinearGradient(
-      colors: [Color(0xffF54B64), Color(0xffF78361)],
-      begin: Alignment.bottomLeft,
-      end: Alignment.topRight,
-    ),
+    this.gradient = Gradients.defaultGradientButton,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final borderRadius = this.borderRadius ?? BorderRadius.circular(0);
     return Container(
       width: width,
       height: height,
       decoration: BoxDecoration(
         gradient: gradient,
-        borderRadius: borderRadius,
+        borderRadius: BorderRadius.circular(100),
       ),
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           primary: Colors.transparent,
           shadowColor: Colors.transparent,
-          shape: RoundedRectangleBorder(borderRadius: borderRadius),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(100),
+          ),
         ),
-        child: child,
+        child: Text(
+          text,
+          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+        ),
       ),
     );
   }

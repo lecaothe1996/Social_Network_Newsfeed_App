@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:social_app/login/views/login_page.dart';
+import 'package:social_app/themes/app_color.dart';
 
+import '../../themes/app_color.dart';
 import '../../widgets/button_widget.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -11,22 +14,17 @@ class WelcomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        ShaderMask(
-          shaderCallback: (rect) {
-            return const LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Color(0xff242A37), Colors.transparent],
-                stops: [0.1, 0.9]).createShader(rect);
-          },
-          blendMode: BlendMode.dstIn,
-          child: Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/backgrounds/bg_welcome.png'),
-                fit: BoxFit.cover,
-              ),
+        Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/backgrounds/bg_welcome.png'),
+              fit: BoxFit.cover,
             ),
+          ),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            gradient: Gradients.defaultGradientBackground,
           ),
         ),
         Scaffold(
@@ -39,50 +37,51 @@ class WelcomePage extends StatelessWidget {
                 children: [
                   const Text(
                     'Find new friends nearby',
-                    style: TextStyle(fontSize: 44, color: Colors.white, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 44, color: AppColors.white, fontWeight: FontWeight.bold),
                   ),
                   const Padding(
                     padding: EdgeInsets.only(top: 14, bottom: 22),
                     child: Text(
                       'With milions of users all over the world, we gives you the ability to connect with people no matter where you are.',
-                      style: TextStyle(fontSize: 17, color: Colors.white, fontWeight: FontWeight.w200),
+                      style: TextStyle(fontSize: 17, color: AppColors.white),
                     ),
                   ),
                   SizedBox(
                     width: double.infinity,
                     height: 44,
                     child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.white,
-                          onPrimary: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(100),
-                          ),
+                      style: ElevatedButton.styleFrom(
+                        primary: AppColors.white,
+                        onPrimary: AppColors.slate,
+                        shadowColor: Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100),
                         ),
-                        child: const Text(
-                          'Log In',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Color(0xffFF2D55),
-                          ),
-                        )),
+                      ),
+                      child: const Text(
+                        'Log In',
+                        style: TextStyle(fontSize: 15, color: AppColors.textLogin, fontWeight: FontWeight.bold),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginPage(),
+                            ));
+                      },
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 10, bottom: 48),
                     child: SizedBox(
-                        width: double.infinity,
-                        height: 44,
-                        child: MyElevatedButton(
-                          width: double.infinity,
-                          onPressed: () {},
-                          borderRadius: BorderRadius.circular(100),
-                          child: const Text('Sign Up'),
-                        )),
+                      width: double.infinity,
+                      height: 44,
+                      child: MyElevatedButton(onPressed: () {}, text: 'Sign Up')
+                    ),
                   ),
                   const Text(
                     'Or log in with',
-                    style: TextStyle(fontSize: 13, color: Color(0xff4E586E)),
+                    style: TextStyle(fontSize: 13, color: AppColors.slate),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 18, bottom: 54),
@@ -93,14 +92,14 @@ class WelcomePage extends StatelessWidget {
                           onPressed: () {},
                           icon: Image.asset(
                             'assets/images/icons/ic_facebook.png',
-                            color: Colors.white,
+                            color: AppColors.white,
                           ),
                         ),
                         IconButton(
                           onPressed: () {},
                           icon: Image.asset(
                             'assets/images/icons/ic_twitter.png',
-                            color: Colors.white,
+                            color: AppColors.white,
                           ),
                         ),
                         IconButton(
@@ -109,7 +108,7 @@ class WelcomePage extends StatelessWidget {
                           },
                           icon: Image.asset(
                             'assets/images/icons/ic_google_plus.png',
-                            color: Colors.white,
+                            color: AppColors.white,
                           ),
                         ),
                       ],
@@ -145,5 +144,4 @@ class WelcomePage extends StatelessWidget {
 
     return AuthenAccount;
   }
-
 }
