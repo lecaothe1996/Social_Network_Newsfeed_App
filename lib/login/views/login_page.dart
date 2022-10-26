@@ -56,10 +56,10 @@ class LoginPage extends StatelessWidget {
                         padding: EdgeInsets.only(top: 10, bottom: 40),
                         child: MyTextField(hintText: 'Password'),
                       ),
-                      SizedBox(
+                      MyElevatedButton(
                         width: double.infinity,
-                        height: 44,
-                        child: MyElevatedButton(onPressed: () {}, text: 'LOGIN'),
+                        text: 'LOGIN',
+                        onPressed: () {},
                       ),
                       Container(
                         padding: const EdgeInsets.only(top: 53, bottom: 54),

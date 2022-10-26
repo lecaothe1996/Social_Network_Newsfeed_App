@@ -3,19 +3,23 @@ import 'package:flutter/material.dart';
 import '../themes/app_color.dart';
 
 class MyElevatedButton extends StatelessWidget {
-  final double? width;
+  final VoidCallback onPressed;
+  final String text;
+  final Color textColor;
+  final double width;
   final double height;
   final Gradient gradient;
-  final VoidCallback? onPressed;
-  final String text;
+  final Color primary;
 
   const MyElevatedButton({
     Key? key,
     required this.onPressed,
     required this.text,
-    this.width,
+    this.textColor = AppColors.white,
+    this.width = double.infinity,
     this.height = 44.0,
     this.gradient = Gradients.defaultGradientButton,
+    this.primary = Colors.transparent,
   }) : super(key: key);
 
   @override
@@ -27,18 +31,18 @@ class MyElevatedButton extends StatelessWidget {
         gradient: gradient,
         borderRadius: BorderRadius.circular(100),
       ),
-      child: ElevatedButton(
+      child: TextButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          primary: Colors.transparent,
-          shadowColor: Colors.transparent,
+          primary: primary,
+          onPrimary: AppColors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(100),
           ),
         ),
         child: Text(
           text,
-          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+          style: TextStyle(color: textColor, fontSize: 15, fontWeight: FontWeight.bold,),
         ),
       ),
     );

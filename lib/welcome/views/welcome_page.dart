@@ -33,76 +33,79 @@ class WelcomePage extends StatelessWidget {
           body: SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  const Text(
-                    'Find new friends nearby',
-                    style: TextStyle(fontSize: 44, color: AppColors.white, fontWeight: FontWeight.bold),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 14, bottom: 22),
-                    child: Text(
-                      'With milions of users all over the world, we gives you the ability to connect with people no matter where you are.',
-                      style: TextStyle(fontSize: 17, color: AppColors.white),
-                    ),
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 44,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: AppColors.white,
-                        onPrimary: AppColors.slate,
-                        shadowColor: Colors.transparent,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                      ),
-                      child: const Text(
-                        'Log In',
-                        style: TextStyle(fontSize: 15, color: AppColors.textLogin, fontWeight: FontWeight.bold),
-                      ),
-                      onPressed: () {
-                        Navigator.push(context,MaterialPageRoute(builder: (context) => const LoginPage()));
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 48),
-                    child: SizedBox(
-                        width: double.infinity, height: 44, child: MyElevatedButton(onPressed: () {}, text: 'Sign Up')),
-                  ),
-                  const Text(
-                    'Or log in with',
-                    style: TextStyle(fontSize: 13, color: AppColors.slate),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 18, bottom: 54),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+              child: CustomScrollView(
+                physics: const BouncingScrollPhysics(),
+                slivers: [
+                  SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: Image.asset(
-                            'assets/images/icons/ic_facebook.png',
-                            color: AppColors.white,
+                        const Text(
+                          'Find new friends nearby',
+                          style: TextStyle(
+                              fontSize: 44,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 14, bottom: 22),
+                          child: Text(
+                            'With millions of users all over the world, we gives you the ability to connect with people no matter where you are.',
+                            style: TextStyle(
+                                fontSize: 17,
+                            ),
                           ),
                         ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: Image.asset(
-                            'assets/images/icons/ic_twitter.png',
-                            color: AppColors.white,
-                          ),
-                        ),
-                        IconButton(
+                        MyElevatedButton(
+                          primary: AppColors.white,
+                          text: 'Log In',
+                          textColor: AppColors.textLogin,
                           onPressed: () {
-                            _signInWithGoogle();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const LoginPage(),
+                              ),
+                            );
                           },
-                          icon: Image.asset(
-                            'assets/images/icons/ic_google_plus.png',
-                            color: AppColors.white,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10, bottom: 48),
+                          child: MyElevatedButton(
+                            text: 'Sign Up',
+                            onPressed: () {},
+                          ),
+                        ),
+                        const Text(
+                          'Or log in with',
+                          style: TextStyle(fontSize: 13, color: AppColors.slate),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 18, bottom: 54),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              InkWell(
+                                splashColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                child: Text('data'),
+                                onTap: () {},
+                              ),
+                              IconButton(
+                                onPressed: () {},
+                                icon: Image.asset(
+                                  'assets/images/icons/ic_twitter.png',
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  _signInWithGoogle();
+                                },
+                                icon: Image.asset(
+                                  'assets/images/icons/ic_google_plus.png',
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],

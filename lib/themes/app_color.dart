@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-/**
- * define color
- * */
+/// define color
 
 class AppColors {
   static const Color blue = Color(0xff007AFF);
@@ -26,7 +24,7 @@ class Gradients {
   static Gradient defaultGradientBackground = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [Color(0xFF242A37).withOpacity(0.28), Color(0xFF242A37)],
-    stops: [0.2, 0.8],
+    colors: [const Color(0xFF242A37).withOpacity(0.28), const Color(0xFF242A37)],
+    stops: const [0.2, 0.8],
   );
 }
