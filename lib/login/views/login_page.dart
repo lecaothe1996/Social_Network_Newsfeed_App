@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:social_app/widgets/textfield_widget.dart';
+import 'package:social_app/themes/app_text_styles.dart';
+import 'package:social_app/widgets/icon_button_widget.dart';
+import 'package:social_app/widgets/text_field_widget.dart';
 
+import '../../themes/app_assets.dart';
 import '../../themes/app_color.dart';
 import '../../widgets/button_widget.dart';
 
@@ -14,7 +17,7 @@ class LoginPage extends StatelessWidget {
         Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/images/backgrounds/bg_login.png'),
+              image: AssetImage(AppAssetBackgrounds.login),
               fit: BoxFit.cover,
             ),
           ),
@@ -28,6 +31,12 @@ class LoginPage extends StatelessWidget {
           backgroundColor: Colors.transparent,
           appBar: AppBar(
             backgroundColor: Colors.transparent,
+            leading: MyIconButton(
+              nameImage: AppAssetIcons.arrowLeft,
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
           ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -42,13 +51,13 @@ class LoginPage extends StatelessWidget {
                     children: [
                       const Text(
                         'Welcome back',
-                        style: TextStyle(fontSize: 34, color: AppColors.white, fontWeight: FontWeight.bold),
+                        style: AppTextStyles.h2,
                       ),
                       const Padding(
                         padding: EdgeInsets.only(top: 12, bottom: 58),
                         child: Text(
                           'Login to your account',
-                          style: TextStyle(fontSize: 17, color: AppColors.white),
+                          style: AppTextStyles.h5,
                         ),
                       ),
                       const MyTextField(hintText: 'Email'),
@@ -58,13 +67,13 @@ class LoginPage extends StatelessWidget {
                       ),
                       MyElevatedButton(
                         width: double.infinity,
-                        text: 'LOGIN',
+                        text: 'Log In',
                         onPressed: () {},
                       ),
                       Container(
                         padding: const EdgeInsets.only(top: 53, bottom: 54),
                         alignment: Alignment.center,
-                        child: const Text('Forgot your password?', style: TextStyle(fontSize: 17, color: AppColors.white)),
+                        child: const Text('Forgot your password?', style: AppTextStyles.h5),
                       ),
                     ],
                   ),

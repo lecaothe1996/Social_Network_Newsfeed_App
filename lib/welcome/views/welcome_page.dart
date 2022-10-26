@@ -1,12 +1,14 @@
 import 'package:dio/dio.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:social_app/login/views/login_page.dart';
+import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
+import 'package:social_app/themes/app_text_styles.dart';
 
 import '../../themes/app_color.dart';
 import '../../widgets/button_widget.dart';
+import '../../widgets/icon_button_widget.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({Key? key}) : super(key: key);
@@ -18,7 +20,7 @@ class WelcomePage extends StatelessWidget {
         Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/images/backgrounds/bg_welcome.png'),
+              image: AssetImage(AppAssetBackgrounds.welcome),
               fit: BoxFit.cover,
             ),
           ),
@@ -43,17 +45,13 @@ class WelcomePage extends StatelessWidget {
                       children: [
                         const Text(
                           'Find new friends nearby',
-                          style: TextStyle(
-                              fontSize: 44,
-                              fontWeight: FontWeight.bold),
+                          style: AppTextStyles.h1,
                         ),
                         const Padding(
                           padding: EdgeInsets.only(top: 14, bottom: 22),
                           child: Text(
                             'With millions of users all over the world, we gives you the ability to connect with people no matter where you are.',
-                            style: TextStyle(
-                                fontSize: 17,
-                            ),
+                            style: AppTextStyles.h5,
                           ),
                         ),
                         MyElevatedButton(
@@ -76,34 +74,35 @@ class WelcomePage extends StatelessWidget {
                             onPressed: () {},
                           ),
                         ),
-                        const Text(
+                        Text(
                           'Or log in with',
-                          style: TextStyle(fontSize: 13, color: AppColors.slate),
+                          style: AppTextStyles.h6.copyWith(color: AppColors.slate),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 18, bottom: 54),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              InkWell(
-                                splashColor: Colors.transparent,
-                                highlightColor: Colors.transparent,
-                                child: Text('data'),
-                                onTap: () {},
-                              ),
-                              IconButton(
-                                onPressed: () {},
-                                icon: Image.asset(
-                                  'assets/images/icons/ic_twitter.png',
-                                ),
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  _signInWithGoogle();
+                              MyIconButton(
+                                nameImage: AppAssetIcons.facebook,
+                                onTap: () {
+                                  print('Click facebook');
                                 },
-                                icon: Image.asset(
-                                  'assets/images/icons/ic_google_plus.png',
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 13),
+                                child: MyIconButton(
+                                  nameImage: AppAssetIcons.twitter,
+                                  onTap: () {
+                                    print('Click twitter');
+                                  },
                                 ),
+                              ),
+                              MyIconButton(
+                                nameImage: AppAssetIcons.google,
+                                onTap: () {
+                                  print('Click google');
+                                },
                               ),
                             ],
                           ),

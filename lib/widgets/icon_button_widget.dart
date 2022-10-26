@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:social_app/themes/app_color.dart';
 
-class MyInkWell extends StatelessWidget {
+class MyIconButton extends StatelessWidget {
   final VoidCallback? onTap;
-  final Widget child;
+  final String nameImage;
+  final Color colorImage;
 
-  const MyInkWell({
+  const MyIconButton({
     Key? key,
     required this.onTap,
-    required this.child,
+    required this.nameImage,
+    this.colorImage = AppColors.white,
   }) : super(key: key);
 
   @override
@@ -15,11 +18,11 @@ class MyInkWell extends StatelessWidget {
     return InkWell(
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
-      child: Image.asset(
-        'assets/images/icons/ic_facebook.png',
-        color: Colors.white,
-      ),
       onTap: onTap,
+      child: Image.asset(
+        nameImage,
+        color: colorImage,
+      ),
     );
   }
 }

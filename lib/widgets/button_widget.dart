@@ -42,7 +42,7 @@ class MyElevatedButton extends StatelessWidget {
         ),
         child: Text(
           text,
-          style: TextStyle(color: textColor, fontSize: 15, fontWeight: FontWeight.bold,),
+          style: TextStyle(color: textColor, fontSize: 17, fontWeight: FontWeight.bold,),
         ),
       ),
     );
