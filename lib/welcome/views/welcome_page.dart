@@ -18,6 +18,7 @@ class WelcomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('Build WelcomePage===================');
     return Stack(
       children: [
         Container(

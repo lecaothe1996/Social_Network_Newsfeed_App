@@ -13,8 +13,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   FutureOr<void> _onLogInGmail(LogInGmail event, Emitter<AuthState> emit) async {
     try {
-      final resGmail = await AuthGmail().logIn();
-      print('resGmail=${resGmail.accessToken}');
+      final data = await AuthGmail().logIn();
+      print('accessToken====${data.accessToken}');
       // emit(AuthSuccess());
     } catch (e) {
       print('eeeee=$e');

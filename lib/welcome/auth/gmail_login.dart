@@ -27,10 +27,10 @@ class AuthGmail {
       if (res.statusCode != 200) {
         throw HttpException('Log In with google fail!!!');
       }
-      final data = res.;
-      print('loginDataFromJson====${loginDataFromJson(res.body)}');
+      final data = jsonDecode(res.body)['data'];
+      print('loginDataFromJson====${data}');
 
-      return loginDataFromJson(res.body);
+      return LoginData.fromJson(data);
     }
   }
 
