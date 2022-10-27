@@ -1,10 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:social_app/home/views/home_page.dart';
 import 'package:social_app/login/views/login_page.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
+import 'package:social_app/welcome/blocs/auth_bloc.dart';
 
 import '../../themes/app_color.dart';
 import '../../widgets/button_widget.dart';
@@ -98,11 +101,24 @@ class WelcomePage extends StatelessWidget {
                                   },
                                 ),
                               ),
-                              MyIconButton(
-                                nameImage: AppAssetIcons.google,
-                                onTap: () {
-                                  print('Click google');
+                              BlocListener<AuthBloc, AuthState>(
+                                listener: (context, state) {
+                                  if (state is AuthSuccess) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const HomePage(),
+                                      ),
+                                    );
+                                  }
                                 },
+                                child: MyIconButton(
+                                  nameImage: AppAssetIcons.google,
+                                  onTap: () {
+                                    print('Click google');
+                                    context.read<AuthBloc>().add(LogInGmail());
+                                  },
+                                ),
                               ),
                             ],
                           ),
@@ -117,33 +133,5 @@ class WelcomePage extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  Future<void> _signInWithGoogle() async {
-    // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
-    print('gmail_token=${googleAuth?.accessToken}');
-
-    // Post gmail_token to server
-    try {
-      if (googleAuth?.accessToken != null) {
-        final dio = Dio(BaseOptions(baseUrl: 'https://api.dofhunt.200lab.io'));
-        final authResponce = await dio.post('/v1/auth/gmail', data: {'gmail_token': googleAuth?.accessToken});
-        print('authResponce=$authResponce');
-
-        // Get access_token form
-        if (authResponce.statusCode == 200) {
-          final accessToken = authResponce.data['data']['access_token'];
-          print('accessToken=$accessToken');
-        } else {
-          print('Error Signin with google');
-        }
-      }
-    } catch (error) {
-      print('error=$error');
-    }
   }
 }

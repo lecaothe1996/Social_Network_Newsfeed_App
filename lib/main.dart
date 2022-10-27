@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_fonts.dart';
 
+import 'firebase/firebase_initializer.dart';
+import 'welcome/blocs/auth_bloc.dart';
 import 'welcome/views/welcome_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  // statusBar
+  // statusBar transparent
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-  runApp(const MyApp());
+  runApp(
+    const FirebaseInitializer(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -20,22 +27,29 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        appBarTheme: const AppBarTheme(
-          color: AppColors.dark,
-          elevation: 0,
-          centerTitle: true,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => AuthBloc()
         ),
-        textTheme: const TextTheme(
-          bodyText1: TextStyle(),
-          bodyText2: TextStyle(),
-        ).apply(bodyColor: AppColors.white),
-        fontFamily: FontFamily.avenir,
-        scaffoldBackgroundColor: AppColors.dark,
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          appBarTheme: const AppBarTheme(
+            color: AppColors.dark,
+            elevation: 0,
+            centerTitle: true,
+          ),
+          textTheme: const TextTheme(
+            bodyText1: TextStyle(),
+            bodyText2: TextStyle(),
+          ).apply(bodyColor: AppColors.white),
+          fontFamily: FontFamily.avenir,
+          scaffoldBackgroundColor: AppColors.dark,
+        ),
+        home: const WelcomePage(),
       ),
-      home: const WelcomePage(),
     );
   }
 }
