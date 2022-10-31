@@ -3,35 +3,41 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:social_app/services/my_client.dart';
 
 import '../models/login_data.dart';
 
 class AuthGmail {
   final _googleSignIn = GoogleSignIn();
+  final _myClient = MyClient();
 
   Future<LoginData> logIn() async {
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
     // Obtain the auth details from the request
     final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
-    // print('gmail_token=${googleAuth?.accessToken}');
+    print('gmail_token=${googleAuth?.accessToken}');
+    final String accessTokenFake = '${googleAuth?.accessToken}';
     if (googleAuth?.accessToken == null) {
-      throw HttpException('Log In with google fail!!!');
+      throw HttpException('Do not have access token!!!');
     } else {
-      // Post gmail_token to server
-      final res = await http.post(
-        Uri.parse('https://api.dofhunt.200lab.io/v1/auth/gmail'),
-        body: {'gmail_token': googleAuth?.accessToken ?? ''},
+      final res = await _myClient.post(
+        '/auth/gmail',
+        data: {'gmail_token': accessTokenFake},
       );
-      // print('auth Response=${res.body}');
+      // print('statusCode====${res.statusCode}');
       if (res.statusCode != 200) {
         throw HttpException('Log In with google fail!!!');
       }
-      final data = jsonDecode(res.body)['data'];
-      print('loginDataFromJson====${data}');
-
+      final data = res.data['data'];
       return LoginData.fromJson(data);
     }
+  }
+
+  Future<void> getPhotos () async {
+    final res = await _myClient.get('/photos');
+
+    print('res====${res.data}');
   }
 
   Future<void> logout() {
