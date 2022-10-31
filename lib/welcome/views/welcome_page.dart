@@ -7,6 +7,7 @@ import 'package:social_app/login/views/login_page.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
+import 'package:social_app/welcome/auth/gmail_login.dart';
 import 'package:social_app/welcome/blocs/auth_bloc.dart';
 
 import '../../themes/app_color.dart';
@@ -75,7 +76,9 @@ class WelcomePage extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 10, bottom: 48),
                           child: MyElevatedButton(
                             text: 'Sign Up',
-                            onPressed: () {},
+                            onPressed: () {
+                              AuthGmail().getPhotos();
+                            },
                           ),
                         ),
                         Text(
