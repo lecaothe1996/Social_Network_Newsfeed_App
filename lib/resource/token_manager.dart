@@ -12,7 +12,7 @@ class TokenManager {
   Future<void> save() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('access_token', accessToken!);
-    print('accessToken====${accessToken}');
+    // print('Token Manager====${accessToken}');
   }
 
   load(SharedPreferences pref) async {

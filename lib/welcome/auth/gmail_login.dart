@@ -16,7 +16,7 @@ class AuthGmail {
     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
     // Obtain the auth details from the request
     final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
-    print('gmail_token=${googleAuth?.accessToken}');
+    // print('gmail_token=${googleAuth?.accessToken}');
     final String accessTokenFake = '${googleAuth?.accessToken}';
     if (googleAuth?.accessToken == null) {
       throw HttpException('Do not have access token!!!');

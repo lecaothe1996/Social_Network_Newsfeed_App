@@ -6,6 +6,7 @@ import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_fonts.dart';
 
 import 'firebase/firebase_initializer.dart';
+import 'splash_page.dart';
 import 'welcome/blocs/auth_bloc.dart';
 import 'welcome/views/welcome_page.dart';
 
@@ -27,29 +28,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => AuthBloc()
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          color: AppColors.dark,
+          elevation: 0,
+          centerTitle: true,
         ),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          appBarTheme: const AppBarTheme(
-            color: AppColors.dark,
-            elevation: 0,
-            centerTitle: true,
-          ),
-          textTheme: const TextTheme(
-            bodyText1: TextStyle(),
-            bodyText2: TextStyle(),
-          ).apply(bodyColor: AppColors.white),
-          fontFamily: FontFamily.avenir,
-          scaffoldBackgroundColor: AppColors.dark,
-        ),
-        home: const WelcomePage(),
+        textTheme: const TextTheme(
+          bodyText1: TextStyle(),
+          bodyText2: TextStyle(),
+        ).apply(bodyColor: AppColors.white),
+        fontFamily: FontFamily.avenir,
+        scaffoldBackgroundColor: AppColors.dark,
       ),
+      home: const SplashPage(),
     );
   }
 }

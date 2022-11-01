@@ -11,7 +11,6 @@ class MyClient {
 
   String? get _accessToken {
     return TokenManager().accessToken;
-    // return userToken;
   }
 
   // Singleton
@@ -28,19 +27,19 @@ class MyClient {
     (_dio.transformer as DefaultTransformer).jsonDecodeCallback = _parseAndDecode;
   }
 
-  // Cài đặt trước khi gửi lên server
+  // Thiết lập trước khi gửi lên server
   void setupInterceptors() {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (RequestOptions options, RequestInterceptorHandler handler) async {
-          print('REQUEST[${options.method}] => PATH: ${options.path}');
+          print('⚡️ MyClient [${options.method}] - ${options.uri}');
           if (_accessToken!.isEmpty) {
             _dio.lock();
             return SharedPreferences.getInstance().then((sharedPreferences) {
               TokenManager().load(sharedPreferences);
               options.headers['Authorization'] = 'Bearer $_accessToken';
               _dio.unlock();
-              return handler.next(options); //continue
+              return handler.next(options);
             });
           }
           options.headers['Authorization'] = 'Bearer $_accessToken';
