@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 import 'package:social_app/home/views/home_page.dart';
 import 'package:social_app/login/views/login_page.dart';
 import 'package:social_app/themes/app_assets.dart';
@@ -10,16 +11,24 @@ import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/welcome/auth/gmail_login.dart';
 import 'package:social_app/welcome/blocs/auth_bloc.dart';
 
+import '../../blocs/app_state_bloc.dart';
 import '../../themes/app_color.dart';
 import '../../widgets/button_widget.dart';
 import '../../widgets/icon_button_widget.dart';
 
-class WelcomePage extends StatelessWidget {
+class WelcomePage extends StatefulWidget {
   const WelcomePage({Key? key}) : super(key: key);
 
   @override
+  State<WelcomePage> createState() => _WelcomePageState();
+}
+
+class _WelcomePageState extends State<WelcomePage> {
+  AppStateBloc get appStateBloc => Provider.of<AppStateBloc>(context, listen: false);
+
+  @override
   Widget build(BuildContext context) {
-    print('Build WelcomePage===================');
+    // print('Build WelcomePage===================');
     return Stack(
       children: [
         Container(
@@ -108,12 +117,7 @@ class WelcomePage extends StatelessWidget {
                               BlocListener<AuthBloc, AuthState>(
                                 listener: (context, state) {
                                   if (state is AuthSuccess) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const HomePage(),
-                                      ),
-                                    );
+                                    appStateBloc.changeAppState(AppState.authorized);
                                   }
                                 },
                                 child: MyIconButton(

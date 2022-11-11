@@ -13,7 +13,6 @@ class LoginData {
     this.isNew,
     this.hasUsernamePassword,
   });
-
   String? accessToken;
   String? refreshToken;
   String? oauthId;

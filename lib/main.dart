@@ -7,13 +7,16 @@ import 'package:social_app/themes/app_fonts.dart';
 
 import 'firebase/firebase_initializer.dart';
 import 'splash_page.dart';
+import 'utils/preference_utils.dart';
 import 'welcome/blocs/auth_bloc.dart';
 import 'welcome/views/welcome_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
+// await Future.delayed(Duration(seconds: 10));
+  // initialize SharedPreferences
+  await PreferenceUtils.init();
   // statusBar transparent
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   runApp(

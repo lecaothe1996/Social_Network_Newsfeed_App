@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:social_app/utils/preference_utils.dart';
 
 import '../resource/token_manager.dart';
 import '../welcome/auth/gmail_login.dart';
@@ -9,8 +10,8 @@ import '../welcome/auth/gmail_login.dart';
 class MyClient {
   late Dio _dio;
 
-  String? get _accessToken {
-    return TokenManager().accessToken;
+  String get _accessToken {
+    return PreferenceUtils.getString('access_token');
   }
 
   // Singleton
@@ -33,15 +34,16 @@ class MyClient {
       InterceptorsWrapper(
         onRequest: (RequestOptions options, RequestInterceptorHandler handler) async {
           print('⚡️ MyClient [${options.method}] - ${options.uri}');
-          if (_accessToken!.isEmpty) {
-            _dio.lock();
-            return SharedPreferences.getInstance().then((sharedPreferences) {
-              TokenManager().load(sharedPreferences);
-              options.headers['Authorization'] = 'Bearer $_accessToken';
-              _dio.unlock();
-              return handler.next(options);
-            });
-          }
+          print('⚡️ _accessToken: ${_accessToken}');
+          // if (_accessToken.isEmpty) {
+          //   _dio.lock();
+          //   return SharedPreferences.getInstance().then((sharedPreferences) {
+          //     TokenManager().load();
+          //     options.headers['Authorization'] = 'Bearer $_accessToken';
+          //     _dio.unlock();
+          //     return handler.next(options);
+          //   });
+          // }
           options.headers['Authorization'] = 'Bearer $_accessToken';
           return handler.next(options);
         },
@@ -51,6 +53,7 @@ class MyClient {
         },
         onError: (DioError e, ErrorInterceptorHandler handler) async {
           print('ERROR[${e.response?.statusCode}] => PATH: ${e.requestOptions.path}');
+          print('⚡️ _accessToken ${_accessToken}');
           // TODO: refresh token && handle error
           return handler.next(e);
         },
