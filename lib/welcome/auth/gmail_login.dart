@@ -17,13 +17,12 @@ class AuthGmail {
     // Obtain the auth details from the request
     final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
     // print('gmail_token=${googleAuth?.accessToken}');
-    final String accessTokenFake = '${googleAuth?.accessToken}';
     if (googleAuth?.accessToken == null) {
       throw HttpException('Do not have access token!!!');
     } else {
       final res = await _myClient.post(
         '/auth/gmail',
-        data: {'gmail_token': accessTokenFake},
+        data: {'gmail_token': googleAuth?.accessToken},
       );
       // print('statusCode====${res.statusCode}');
       if (res.statusCode != 200) {

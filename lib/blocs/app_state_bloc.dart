@@ -38,4 +38,8 @@ class AppStateBloc {
 
     await changeAppState(AppState.unAuthorized);
   }
+
+  void dispose() {
+    _appState.close();
+  }
 }

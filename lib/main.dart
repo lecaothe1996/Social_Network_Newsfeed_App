@@ -13,14 +13,14 @@ import 'welcome/views/welcome_page.dart';
 
 void main() async {
   // statusBar transparent
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: AppColors.transparent));
   // initialize Firebase
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   // initialize SharedPreferences
   await PreferenceUtils.init();
 
-  await Future.delayed(Duration(seconds: 10));
+  // await Future.delayed(Duration(seconds: 10));
   runApp(
     const MyApp(),
   );
