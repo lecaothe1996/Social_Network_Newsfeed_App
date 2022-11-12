@@ -6,47 +6,22 @@ import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_fonts.dart';
 
 import 'firebase/firebase_initializer.dart';
-import 'splash_page.dart';
+import 'my_app.dart';
 import 'utils/preference_utils.dart';
 import 'welcome/blocs/auth_bloc.dart';
 import 'welcome/views/welcome_page.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-// await Future.delayed(Duration(seconds: 10));
-  // initialize SharedPreferences
-  await PreferenceUtils.init();
   // statusBar transparent
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+  // initialize Firebase
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  // initialize SharedPreferences
+  await PreferenceUtils.init();
+
+  await Future.delayed(Duration(seconds: 10));
   runApp(
-    const FirebaseInitializer(
-      child: MyApp(),
-    ),
+    const MyApp(),
   );
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        appBarTheme: const AppBarTheme(
-          color: AppColors.dark,
-          elevation: 0,
-          centerTitle: true,
-        ),
-        textTheme: const TextTheme(
-          bodyText1: TextStyle(),
-          bodyText2: TextStyle(),
-        ).apply(bodyColor: AppColors.white),
-        fontFamily: FontFamily.avenir,
-        scaffoldBackgroundColor: AppColors.dark,
-      ),
-      home: const SplashPage(),
-    );
-  }
 }

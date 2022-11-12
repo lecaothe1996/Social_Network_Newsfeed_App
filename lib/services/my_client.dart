@@ -1,11 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_app/utils/preference_utils.dart';
-
-import '../resource/token_manager.dart';
-import '../welcome/auth/gmail_login.dart';
 
 class MyClient {
   late Dio _dio;

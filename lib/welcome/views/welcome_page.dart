@@ -96,39 +96,39 @@ class _WelcomePageState extends State<WelcomePage> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 18, bottom: 54),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              MyIconButton(
-                                nameImage: AppAssetIcons.facebook,
-                                onTap: () {
-                                  print('Click facebook');
-                                },
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 13),
-                                child: MyIconButton(
-                                  nameImage: AppAssetIcons.twitter,
+                          child: BlocListener<AuthBloc, AuthState>(
+                            listener: (context, state) {
+                              if (state is AuthSuccess) {
+                                appStateBloc.changeAppState(AppState.authorized);
+                              }
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                MyIconButton(
+                                  nameImage: AppAssetIcons.facebook,
                                   onTap: () {
-                                    print('Click twitter');
+                                    print('Click facebook');
                                   },
                                 ),
-                              ),
-                              BlocListener<AuthBloc, AuthState>(
-                                listener: (context, state) {
-                                  if (state is AuthSuccess) {
-                                    appStateBloc.changeAppState(AppState.authorized);
-                                  }
-                                },
-                                child: MyIconButton(
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 13),
+                                  child: MyIconButton(
+                                    nameImage: AppAssetIcons.twitter,
+                                    onTap: () {
+                                      print('Click twitter');
+                                    },
+                                  ),
+                                ),
+                                MyIconButton(
                                   nameImage: AppAssetIcons.google,
                                   onTap: () {
                                     print('Click google');
                                     context.read<AuthBloc>().add(LogInGmail());
                                   },
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ],

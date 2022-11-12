@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_app/resource/token_manager.dart';
 
 import '../../blocs/app_state_bloc.dart';
 import '../../utils/preference_utils.dart';
