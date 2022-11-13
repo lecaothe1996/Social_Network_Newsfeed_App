@@ -70,7 +70,7 @@ class _WelcomePageState extends State<WelcomePage> {
                         MyElevatedButton(
                           primary: AppColors.white,
                           text: 'Log In',
-                          textColor: AppColors.textLogin,
+                          textColor: AppColors.redMedium,
                           onPressed: () {
                             Navigator.push(
                               context,

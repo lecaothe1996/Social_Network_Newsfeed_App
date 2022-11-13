@@ -5,12 +5,16 @@ class MyIconButton extends StatelessWidget {
   final VoidCallback? onTap;
   final String nameImage;
   final Color colorImage;
+  final double? width;
+  final double? height;
 
   const MyIconButton({
     Key? key,
     required this.onTap,
     required this.nameImage,
     this.colorImage = AppColors.white,
+    this.width,
+    this.height,
   }) : super(key: key);
 
   @override
@@ -22,6 +26,8 @@ class MyIconButton extends StatelessWidget {
       child: Image.asset(
         nameImage,
         color: colorImage,
+        width: width,
+        height: height,
       ),
     );
   }

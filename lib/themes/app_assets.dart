@@ -19,4 +19,9 @@ class AppAssetIcons {
   static const String notification = '${imagePath}ic_notification.png';
   static const String profile = '${imagePath}ic_profile.png';
   static const String search = '${imagePath}ic_search.png';
+  static const String plus = '${imagePath}ic_plus.png';
+  static const String close = '${imagePath}ic_close.png';
+  static const String like = '${imagePath}ic_like.png';
+  static const String comment = '${imagePath}ic_comment.png';
+  static const String share = '${imagePath}ic_share.png';
 }
