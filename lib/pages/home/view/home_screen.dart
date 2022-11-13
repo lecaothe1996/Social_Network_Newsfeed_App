@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:social_app/pages/home/blocs/home_feed_bloc.dart';
+import 'package:social_app/pages/home/repositorys/list_home_feeds_repo.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/widgets/icon_button_widget.dart';
 
 import '../../../blocs/app_state_bloc.dart';
 import '../../../themes/app_color.dart';
 import '../../../themes/app_text_styles.dart';
+import '../../../welcome/auth/gmail_login.dart';
 import '../../../widgets/text_field_widget.dart';
 import 'list_view_posts.dart';
 import 'list_view_stories.dart';
@@ -26,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: AppColors.slate,
       appBar: AppBar(
         centerTitle: false,
-        elevation: 1,
+        // elevation: 1,
         title: GestureDetector(
           onTap: () {
             print('Click Search');
@@ -58,6 +62,8 @@ class _HomeScreenState extends State<HomeScreen> {
           GestureDetector(
             onTap: () {
               print('Click Add Photo');
+              // ListHomeFeedsRepo().getHomeFeeds();
+              // context.read<HomeFeedBloc>().add(LoadHomeFeeds());
             },
             child: Container(
               margin: const EdgeInsets.only(right: 15, top: 10, bottom: 10),
@@ -70,10 +76,18 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: const CustomScrollView(
+      body: CustomScrollView(
         slivers: [
-          ListViewStories(),
-          ListViewPosts(),
+          const ListViewStories(),
+          BlocBuilder<HomeFeedBloc, HomeFeedState>(
+            builder: (context, state) {
+              if (state is HomeFeedsLoaded) {
+                return ListViewPosts(state.data);
+              }
+              return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
+            },
+          ),
+
         ],
       ),
     );

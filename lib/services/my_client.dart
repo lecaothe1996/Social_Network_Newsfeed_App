@@ -30,7 +30,7 @@ class MyClient {
       InterceptorsWrapper(
         onRequest: (RequestOptions options, RequestInterceptorHandler handler) async {
           print('⚡️ MyClient [${options.method}] - ${options.uri}');
-          print('⚡️ _accessToken: ${_accessToken}');
+          // print('⚡️ _accessToken: ${_accessToken}');
           // if (_accessToken.isEmpty) {
           //   _dio.lock();
           //   return SharedPreferences.getInstance().then((sharedPreferences) {

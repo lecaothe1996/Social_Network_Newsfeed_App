@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:social_app/pages/home/models/home_feed.dart';
 import 'package:social_app/themes/app_text_styles.dart';
 
 import '../../../themes/app_assets.dart';
 import '../../../themes/app_color.dart';
 import '../../../widgets/icon_button_widget.dart';
 
+// import 'package:flutter/lib/image/image.dart' as imageLibrary;
+
 class ListViewPosts extends StatelessWidget {
-  const ListViewPosts({Key? key}) : super(key: key);
+  final List<HomeFeed> listHomeFeeds;
+
+  const ListViewPosts(this.listHomeFeeds, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
-        childCount: 10,
+        childCount: listHomeFeeds.length,
         (context, index) {
           return Container(
             margin: const EdgeInsets.only(top: 15),
@@ -28,8 +33,8 @@ class ListViewPosts extends StatelessWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const CircleAvatar(
-                            backgroundImage: NetworkImage('https://s.ws.pho.to/76eeee/img/index/ai/source.jpg'),
+                          CircleAvatar(
+                            backgroundImage: NetworkImage(listHomeFeeds[index].user.avatar.url),
                           ),
                           Expanded(
                             child: Padding(
@@ -42,7 +47,7 @@ class ListViewPosts extends StatelessWidget {
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          'Lê Ngọc Bảo Trân ',
+                                          '${listHomeFeeds[index].user.firstName} ${listHomeFeeds[index].user.lastName} ',
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                           style: AppTextStyles.body.copyWith(fontWeight: FontWeight.bold),
@@ -64,7 +69,7 @@ class ListViewPosts extends StatelessWidget {
                                     '2 hours ago',
                                     // maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
-                                    style: AppTextStyles.h6.copyWith(color: AppColors.slate),
+                                    style: AppTextStyles.h6.copyWith(color: AppColors.blueGrey),
                                   ),
                                 ],
                               ),
@@ -72,17 +77,16 @@ class ListViewPosts extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 18),
-                        child: Text(
-                          '#relax, #travel',
-                          style: TextStyle(color: AppColors.redMedium),
-                        ),
+                      const SizedBox(height: 18),
+                      const Text(
+                        '#relax, #travel',
+                        style: TextStyle(color: AppColors.redMedium),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 3, bottom: 5),
-                        child: Text(
-                          'Đi du lịch là một trong những hoạt động giúp bạn khám phá vẻ đẹp của cuộc sống, lấy lại năng lượng, tinh thần cho bản thân sau những ngày',
+                      Padding(
+                        padding: const EdgeInsets.only(top: 3, bottom: 5),
+                        child: listHomeFeeds[index].description.isEmpty
+                        ? const SizedBox()
+                        : Text(listHomeFeeds[index].description,
                           style: AppTextStyles.body,
                         ),
                       ),
@@ -90,7 +94,7 @@ class ListViewPosts extends StatelessWidget {
                   ),
                 ),
                 Image.network('https://iso.500px.com/wp-content/uploads/2016/11/stock-photo-159533631-1500x1000.jpg'),
-                Container(
+                Container( 
                   margin: const EdgeInsets.all(10),
                   // padding: const EdgeInsets.all(15),
                   height: 28,
@@ -98,22 +102,22 @@ class ListViewPosts extends StatelessWidget {
                     // crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Image.asset(AppAssetIcons.like),
-                      const Expanded(
+                      Expanded(
                         child: Text(
-                          '1125',
+                          listHomeFeeds[index].likeCounts.toString(),
                           overflow: TextOverflow.ellipsis,
                           style: AppTextStyles.h6,
                         ),
                       ),
                       Image.asset(AppAssetIcons.comment),
-                      const Text(
-                        '348',
+                      Text(
+                        listHomeFeeds[index].commentCounts.toString(),
                         overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(width: 15),
                       Image.asset(AppAssetIcons.share),
-                      const Text(
-                        '112',
+                      Text(
+                        listHomeFeeds[index].viewCounts.toString(),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ],

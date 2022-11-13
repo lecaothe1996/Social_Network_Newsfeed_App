@@ -85,7 +85,7 @@ class _WelcomePageState extends State<WelcomePage> {
                           child: MyElevatedButton(
                             text: 'Sign Up',
                             onPressed: () {
-                              AuthGmail().getPhotos();
+                              print('Click Sign Up');
                             },
                           ),
                         ),

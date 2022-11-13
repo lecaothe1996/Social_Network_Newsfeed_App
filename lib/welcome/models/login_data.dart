@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-LoginData loginDataFromJson(String str) => LoginData.fromJson(json.decode(str));
-
-String loginDataToJson(LoginData data) => json.encode(data.toJson());
+// LoginData loginDataFromJson(String str) => LoginData.fromJson(json.decode(str));
+//
+// String loginDataToJson(LoginData data) => json.encode(data.toJson());
 
 class LoginData {
   LoginData({
@@ -13,12 +13,12 @@ class LoginData {
     this.isNew,
     this.hasUsernamePassword,
   });
-  String? accessToken;
-  String? refreshToken;
-  String? oauthId;
-  int? expiresIn;
-  bool? isNew;
-  bool? hasUsernamePassword;
+  final String? accessToken;
+  final String? refreshToken;
+  final String? oauthId;
+  final int? expiresIn;
+  final bool? isNew;
+  final bool? hasUsernamePassword;
 
   factory LoginData.fromJson(Map<String, dynamic> json) => LoginData(
     accessToken: json["access_token"],
@@ -29,12 +29,12 @@ class LoginData {
     hasUsernamePassword: json["has_username_password"],
   );
 
-  Map<String, dynamic> toJson() => {
-    "access_token": accessToken,
-    "refresh_token": refreshToken,
-    "oauth_id": oauthId,
-    "expires_in": expiresIn,
-    "is_new": isNew,
-    "has_username_password": hasUsernamePassword,
-  };
+  // Map<String, dynamic> toJson() => {
+  //   "access_token": accessToken,
+  //   "refresh_token": refreshToken,
+  //   "oauth_id": oauthId,
+  //   "expires_in": expiresIn,
+  //   "is_new": isNew,
+  //   "has_username_password": hasUsernamePassword,
+  // };
 }

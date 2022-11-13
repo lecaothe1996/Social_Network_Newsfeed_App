@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+import 'package:social_app/pages/home/blocs/home_feed_bloc.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/utils/preference_utils.dart';
 
@@ -31,12 +33,9 @@ class _PagesState extends State<Pages> {
           Container(color: Colors.tealAccent),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: AppColors.black,
-        unselectedItemColor: AppColors.slate,
+      bottomNavigationBar: SalomonBottomBar(
         selectedItemColor: AppColors.redMedium,
-        selectedLabelStyle: AppTextStyles.h6,
-        type: BottomNavigationBarType.fixed,
+        unselectedItemColor: AppColors.slate,
         currentIndex: _currentIndex,
         onTap: (index) {
           setState(() {
@@ -44,22 +43,26 @@ class _PagesState extends State<Pages> {
           });
         },
         items: [
-          BottomNavigationBarItem(
-              icon: Image.asset(AppAssetIcons.home, color: AppColors.slate),
-              activeIcon: Image.asset(AppAssetIcons.home, color: AppColors.redMedium),
-              label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Image.asset(AppAssetIcons.message, color: AppColors.slate),
-              activeIcon: Image.asset(AppAssetIcons.message, color: AppColors.redMedium),
-              label: 'Messages'),
-          BottomNavigationBarItem(
-              icon: Image.asset(AppAssetIcons.notification, color: AppColors.slate),
-              activeIcon: Image.asset(AppAssetIcons.notification, color: AppColors.redMedium),
-              label: 'Notifications'),
-          BottomNavigationBarItem(
-              icon: Image.asset(AppAssetIcons.profile, color: AppColors.slate),
-              activeIcon: Image.asset(AppAssetIcons.profile, color: AppColors.redMedium),
-              label: 'Profiles'),
+          SalomonBottomBarItem(
+            icon: Image.asset(AppAssetIcons.home, color: AppColors.slate),
+            activeIcon: Image.asset(AppAssetIcons.home, color: AppColors.redMedium),
+            title: const Text('Home'),
+          ),
+          SalomonBottomBarItem(
+            icon: Image.asset(AppAssetIcons.message, color: AppColors.slate),
+            activeIcon: Image.asset(AppAssetIcons.message, color: AppColors.redMedium),
+            title: const Text('Messages'),
+          ),
+          SalomonBottomBarItem(
+            icon: Image.asset(AppAssetIcons.notification, color: AppColors.slate),
+            activeIcon: Image.asset(AppAssetIcons.notification, color: AppColors.redMedium),
+            title: const Text('Notifications'),
+          ),
+          SalomonBottomBarItem(
+            icon: Image.asset(AppAssetIcons.profile, color: AppColors.slate),
+            activeIcon: Image.asset(AppAssetIcons.profile, color: AppColors.redMedium),
+            title: const Text('Profiles'),
+          ),
         ],
       ),
     );
