@@ -19,8 +19,8 @@ class HomeFeed {
 
   final String? id;
   final int? status;
-  final String? createdAt;
-  final String? updatedAt;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
   final String? title;
   final String? description;
   final int? commentCounts;
@@ -35,8 +35,8 @@ class HomeFeed {
   factory HomeFeed.fromJson(Map<String, dynamic> json) => HomeFeed(
     id: json["id"],
     status: json["status"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
+    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
     title: json["title"],
     description: json["description"],
     commentCounts: json["comment_counts"],
@@ -102,7 +102,7 @@ class User {
   final Images? avatar;
   final String? systemRole;
   final bool? isVerified;
-  final String? createdAt;
+  final DateTime? createdAt;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
     id: json["id"],
@@ -112,6 +112,6 @@ class User {
     avatar: json["avatar"] == null ? null : Images.fromJson(json["avatar"]),
     systemRole: json["system_role"],
     isVerified: json["is_verified"],
-    createdAt: json["created_at"],
+    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
   );
 }

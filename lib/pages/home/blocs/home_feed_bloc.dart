@@ -18,7 +18,7 @@ class HomeFeedBloc extends Bloc<HomeFeedEvent, HomeFeedState> {
   FutureOr<void> _onLoadHomeFeeds(LoadHomeFeeds event, Emitter<HomeFeedState> emit) async {
     try {
       final homeFeeds = await _listHomeFeedsRepo.getHomeFeeds();
-      print('⚡️ HomeFeeds: $homeFeeds');
+      // print('⚡️ HomeFeeds: $homeFeeds');
       emit(HomeFeedsLoaded(data: homeFeeds));
     } catch (e) {
       print('⚡️ Error HomeFeed: $e');

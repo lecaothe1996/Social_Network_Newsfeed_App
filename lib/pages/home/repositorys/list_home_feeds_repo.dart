@@ -8,14 +8,17 @@ class ListHomeFeedsRepo {
   Future<List<HomeFeed>> getHomeFeeds() async {
     final res = await _myClient.get(
       '/homefeeds',
-      queryParameters: {'page': '4'},
+      queryParameters: {'page': '30'},
     );
     // print('res====${res.data}');
     if (res.statusCode != 200) {
       throw MyException('Server Error!!!');
     }
-    List data = res.data['data'];
+    final data = res.data['data'];
     // print('data====${data}');
+    if (data == null) {
+      throw MyException('End Home Feed!!!');
+    }
     final homeFeeds = List<HomeFeed>.from(data.map((x) => HomeFeed.fromJson(x)));
     // print('homeFeeds==$homeFeeds');
     return homeFeeds;

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:social_app/pages/home/models/home_feed.dart';
 import 'package:social_app/themes/app_text_styles.dart';
+import 'package:social_app/utils/convert_to_time_ago.dart';
 
 import '../../../themes/app_assets.dart';
 import '../../../themes/app_color.dart';
@@ -66,7 +68,8 @@ class ListViewHomeFeeds extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 2),
                                   Text(
-                                    '2 hours ago',
+                                    ConvertToTimeAgo().timeAgo(listHomeFeeds[index].createdAt ?? DateTime.now()),
+                                    // DateFormat('dd-MM-yyyy').format(listHomeFeeds[index].createdAt ?? DateTime.now()),
                                     // maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                     style: AppTextStyles.h6.copyWith(color: AppColors.blueGrey),

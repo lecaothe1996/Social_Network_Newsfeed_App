@@ -46,10 +46,12 @@ dependencies:
   # Client
   dio: ^4.0.6
   http: ^0.13.5
-  # Save key
+  # Save key local
   shared_preferences: ^2.0.15
-  # custom BottomNavigationBar
+  # Custom BottomNavigationBar
   salomon_bottom_bar: ^3.3.1
+  # Format datetime
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:
