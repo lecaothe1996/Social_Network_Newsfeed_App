@@ -6,12 +6,10 @@ import '../../../themes/app_assets.dart';
 import '../../../themes/app_color.dart';
 import '../../../widgets/icon_button_widget.dart';
 
-// import 'package:flutter/lib/image/image.dart' as imageLibrary;
-
-class ListViewPosts extends StatelessWidget {
+class ListViewHomeFeeds extends StatelessWidget {
   final List<HomeFeed> listHomeFeeds;
 
-  const ListViewPosts(this.listHomeFeeds, {Key? key}) : super(key: key);
+  const ListViewHomeFeeds(this.listHomeFeeds, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +32,9 @@ class ListViewPosts extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CircleAvatar(
-                            backgroundImage: NetworkImage(listHomeFeeds[index].user.avatar.url),
+                            backgroundImage: listHomeFeeds[index].user?.avatar?.url == null
+                                ? const NetworkImage('https://cdn-icons-png.flaticon.com/512/149/149071.png')
+                                : NetworkImage(listHomeFeeds[index].user?.avatar?.url ?? ''),
                           ),
                           Expanded(
                             child: Padding(
@@ -47,7 +47,7 @@ class ListViewPosts extends StatelessWidget {
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          '${listHomeFeeds[index].user.firstName} ${listHomeFeeds[index].user.lastName} ',
+                                          '${listHomeFeeds[index].user?.firstName ?? ''} ${listHomeFeeds[index].user?.lastName ?? 'User'}',
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                           style: AppTextStyles.body.copyWith(fontWeight: FontWeight.bold),
@@ -78,23 +78,29 @@ class ListViewPosts extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 18),
-                      const Text(
-                        '#relax, #travel',
-                        style: TextStyle(color: AppColors.redMedium),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 3, bottom: 5),
-                        child: listHomeFeeds[index].description.isEmpty
-                        ? const SizedBox()
-                        : Text(listHomeFeeds[index].description,
-                          style: AppTextStyles.body,
-                        ),
-                      ),
+                      listHomeFeeds[index].tags == null || listHomeFeeds[index].tags!.isEmpty
+                          ? const SizedBox()
+                          : Text(
+                              listHomeFeeds[index].tags!.join(', #'),
+                              style: const TextStyle(color: AppColors.redMedium),
+                            ),
+                      listHomeFeeds[index].description!.isEmpty || listHomeFeeds[index].description == null
+                          ? const SizedBox()
+                          : Padding(
+                              padding: const EdgeInsets.only(top: 3, bottom: 5),
+                              child: Text(
+                                listHomeFeeds[index].description ?? '',
+                                style: AppTextStyles.body,
+                              ),
+                            ),
                     ],
                   ),
                 ),
-                Image.network('https://iso.500px.com/wp-content/uploads/2016/11/stock-photo-159533631-1500x1000.jpg'),
-                Container( 
+                listHomeFeeds[index].images?[0].url == null
+                    ? const SizedBox()
+                    : Image.network(listHomeFeeds[index].images?[0].url ??
+                        'https://johannesippen.com/img/blog/humans-not-users/header.jpg'),
+                Container(
                   margin: const EdgeInsets.all(10),
                   // padding: const EdgeInsets.all(15),
                   height: 28,

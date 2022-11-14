@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:social_app/pages/home/models/home_feed.dart';
 
 import '../../../themes/app_color.dart';
 import '../../../themes/app_text_styles.dart';
 
-class ListViewStories extends StatefulWidget {
-  const ListViewStories({Key? key}) : super(key: key);
+class ListViewStories extends StatelessWidget {
+  final List<HomeFeed> listHomeFeeds;
 
-  @override
-  State<ListViewStories> createState() => _ListViewStoriesState();
-}
+  const ListViewStories(this.listHomeFeeds, {Key? key}) : super(key: key);
 
-class _ListViewStoriesState extends State<ListViewStories> {
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: Container(
+        margin: const EdgeInsets.only(top: 15),
         color: AppColors.dark,
         child: Container(
           // color: Colors.blueGrey,
@@ -22,7 +21,7 @@ class _ListViewStoriesState extends State<ListViewStories> {
           height: 179,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: 10,
+            itemCount: listHomeFeeds.length,
             itemBuilder: (context, index) {
               return Container(
                 margin: const EdgeInsets.only(left: 15),
@@ -30,9 +29,10 @@ class _ListViewStoriesState extends State<ListViewStories> {
                 decoration: BoxDecoration(
                   color: AppColors.slate,
                   borderRadius: BorderRadius.circular(8),
-                  image: const DecorationImage(
-                    image: NetworkImage(
-                        'https://images.unsplash.com/photo-1517960413843-0aee8e2b3285?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8&w=1000&q=80'),
+                  image: DecorationImage(
+                    image: listHomeFeeds[index].images?[0].url == null
+                        ? const NetworkImage('https://i.scdn.co/image/ab6761610000e5eb2c591408e2fd98646ac796b5')
+                        : NetworkImage(listHomeFeeds[index].images?[0].url ?? ''),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -57,10 +57,12 @@ class _ListViewStoriesState extends State<ListViewStories> {
                                 color: AppColors.redMedium,
                               ),
                             ),
-                            child: const Padding(
-                              padding: EdgeInsets.all(3),
+                            child: Padding(
+                              padding: const EdgeInsets.all(3),
                               child: CircleAvatar(
-                                backgroundImage: NetworkImage('https://s.ws.pho.to/76eeee/img/index/ai/source.jpg'),
+                                backgroundImage: listHomeFeeds[index].user?.avatar?.url == null
+                                    ? const NetworkImage('https://cdn-icons-png.flaticon.com/512/149/149071.png')
+                                    : NetworkImage(listHomeFeeds[index].user?.avatar?.url ?? ''),
                               ),
                             ),
                           ),
@@ -68,7 +70,7 @@ class _ListViewStoriesState extends State<ListViewStories> {
                             child: Padding(
                               padding: const EdgeInsets.only(left: 5),
                               child: Text(
-                                'Ninh Dương Lan Ngọc',
+                                '${listHomeFeeds[index].user?.firstName ?? ''} ${listHomeFeeds[index].user?.lastName ?? 'User'}',
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: AppTextStyles.h7.copyWith(fontWeight: FontWeight.bold),

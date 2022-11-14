@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/pages/home/blocs/home_feed_bloc.dart';
+import 'package:social_app/pages/home/models/home_feed.dart';
+import 'package:social_app/pages/home/models/home_feed.dart';
 import 'package:social_app/pages/home/repositorys/list_home_feeds_repo.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/widgets/icon_button_widget.dart';
@@ -11,7 +13,7 @@ import '../../../themes/app_color.dart';
 import '../../../themes/app_text_styles.dart';
 import '../../../welcome/auth/gmail_login.dart';
 import '../../../widgets/text_field_widget.dart';
-import 'list_view_posts.dart';
+import 'list_view_home_feeds.dart';
 import 'list_view_stories.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -78,11 +80,18 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: CustomScrollView(
         slivers: [
-          const ListViewStories(),
           BlocBuilder<HomeFeedBloc, HomeFeedState>(
             builder: (context, state) {
               if (state is HomeFeedsLoaded) {
-                return ListViewPosts(state.data);
+                return ListViewStories(state.data);
+              }
+              return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
+            },
+          ),
+          BlocBuilder<HomeFeedBloc, HomeFeedState>(
+            builder: (context, state) {
+              if (state is HomeFeedsLoaded) {
+                return ListViewHomeFeeds(state.data);
               }
               return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
             },

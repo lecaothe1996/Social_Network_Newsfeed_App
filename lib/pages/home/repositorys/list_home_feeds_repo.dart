@@ -6,7 +6,10 @@ class ListHomeFeedsRepo {
   final _myClient = MyClient();
 
   Future<List<HomeFeed>> getHomeFeeds() async {
-    final res = await _myClient.get('/homefeeds');
+    final res = await _myClient.get(
+      '/homefeeds',
+      queryParameters: {'page': '4'},
+    );
     // print('res====${res.data}');
     if (res.statusCode != 200) {
       throw MyException('Server Error!!!');
