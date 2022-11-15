@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:social_app/pages/home/models/home_feed.dart';
+import 'package:social_app/pages/home/widgets/grid_image.dart';
 import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/utils/convert_to_time_ago.dart';
 
@@ -9,15 +11,19 @@ import '../../../themes/app_color.dart';
 import '../../../widgets/icon_button_widget.dart';
 
 class ListViewHomeFeeds extends StatelessWidget {
-  final List<HomeFeed> listHomeFeeds;
+  final List<HomeFeed> homeFeeds;
 
-  const ListViewHomeFeeds(this.listHomeFeeds, {Key? key}) : super(key: key);
+  const ListViewHomeFeeds({
+    Key? key,
+    required this.homeFeeds,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // print('width device==${MediaQuery.of(context).size.width}');
     return SliverList(
       delegate: SliverChildBuilderDelegate(
-        childCount: listHomeFeeds.length,
+        childCount: homeFeeds.length,
         (context, index) {
           return Container(
             margin: const EdgeInsets.only(top: 15),
@@ -34,9 +40,9 @@ class ListViewHomeFeeds extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CircleAvatar(
-                            backgroundImage: listHomeFeeds[index].user?.avatar?.url == null
+                            backgroundImage: homeFeeds[index].user?.avatar?.url == null
                                 ? const NetworkImage('https://cdn-icons-png.flaticon.com/512/149/149071.png')
-                                : NetworkImage(listHomeFeeds[index].user?.avatar?.url ?? ''),
+                                : NetworkImage(homeFeeds[index].user?.avatar?.url ?? ''),
                           ),
                           Expanded(
                             child: Padding(
@@ -49,7 +55,7 @@ class ListViewHomeFeeds extends StatelessWidget {
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          '${listHomeFeeds[index].user?.firstName ?? ''} ${listHomeFeeds[index].user?.lastName ?? 'User'}',
+                                          '${homeFeeds[index].user?.firstName ?? ''} ${homeFeeds[index].user?.lastName ?? 'User'}',
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                           style: AppTextStyles.body.copyWith(fontWeight: FontWeight.bold),
@@ -68,9 +74,7 @@ class ListViewHomeFeeds extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 2),
                                   Text(
-                                    ConvertToTimeAgo().timeAgo(listHomeFeeds[index].createdAt ?? DateTime.now()),
-                                    // DateFormat('dd-MM-yyyy').format(listHomeFeeds[index].createdAt ?? DateTime.now()),
-                                    // maxLines: 2,
+                                    ConvertToTimeAgo().timeAgo(homeFeeds[index].createdAt ?? DateTime.now()),
                                     overflow: TextOverflow.ellipsis,
                                     style: AppTextStyles.h6.copyWith(color: AppColors.blueGrey),
                                   ),
@@ -80,29 +84,29 @@ class ListViewHomeFeeds extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 18),
-                      listHomeFeeds[index].tags == null || listHomeFeeds[index].tags!.isEmpty
-                          ? const SizedBox()
-                          : Text(
-                              listHomeFeeds[index].tags!.join(', #'),
-                              style: const TextStyle(color: AppColors.redMedium),
-                            ),
-                      listHomeFeeds[index].description!.isEmpty || listHomeFeeds[index].description == null
+                      const SizedBox(height: 15),
+                      homeFeeds[index].tags == null || homeFeeds[index].tags!.isEmpty
                           ? const SizedBox()
                           : Padding(
-                              padding: const EdgeInsets.only(top: 3, bottom: 5),
+                              padding: const EdgeInsets.only(bottom: 3),
                               child: Text(
-                                listHomeFeeds[index].description ?? '',
-                                style: AppTextStyles.body,
+                                homeFeeds[index].tags!.join(', #'),
+                                style: const TextStyle(color: AppColors.redMedium),
                               ),
+                            ),
+                      homeFeeds[index].description!.isEmpty || homeFeeds[index].description == null
+                          ? const SizedBox()
+                          : Text(
+                              homeFeeds[index].description ?? '',
+                              style: AppTextStyles.body,
                             ),
                     ],
                   ),
                 ),
-                listHomeFeeds[index].images?[0].url == null
+                // GridImage
+                homeFeeds[index].images?[0].url == null
                     ? const SizedBox()
-                    : Image.network(listHomeFeeds[index].images?[0].url ??
-                        'https://johannesippen.com/img/blog/humans-not-users/header.jpg'),
+                    : GridImage(images: homeFeeds[index].images ?? []),
                 Container(
                   margin: const EdgeInsets.all(10),
                   // padding: const EdgeInsets.all(15),
@@ -113,20 +117,20 @@ class ListViewHomeFeeds extends StatelessWidget {
                       Image.asset(AppAssetIcons.like),
                       Expanded(
                         child: Text(
-                          listHomeFeeds[index].likeCounts.toString(),
+                          homeFeeds[index].likeCounts.toString(),
                           overflow: TextOverflow.ellipsis,
                           style: AppTextStyles.h6,
                         ),
                       ),
                       Image.asset(AppAssetIcons.comment),
                       Text(
-                        listHomeFeeds[index].commentCounts.toString(),
+                        homeFeeds[index].commentCounts.toString(),
                         overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(width: 15),
                       Image.asset(AppAssetIcons.share),
                       Text(
-                        listHomeFeeds[index].viewCounts.toString(),
+                        homeFeeds[index].viewCounts.toString(),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ],

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:social_app/pages/home/models/home_feed.dart';
 
@@ -5,9 +6,12 @@ import '../../../themes/app_color.dart';
 import '../../../themes/app_text_styles.dart';
 
 class ListViewStories extends StatelessWidget {
-  final List<HomeFeed> listHomeFeeds;
+  final List<HomeFeed> homeFeeds;
 
-  const ListViewStories(this.listHomeFeeds, {Key? key}) : super(key: key);
+  const ListViewStories({
+    Key? key,
+    required this.homeFeeds,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +25,7 @@ class ListViewStories extends StatelessWidget {
           height: 179,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: listHomeFeeds.length,
+            itemCount: homeFeeds.length,
             itemBuilder: (context, index) {
               return Container(
                 margin: const EdgeInsets.only(left: 15),
@@ -30,9 +34,7 @@ class ListViewStories extends StatelessWidget {
                   color: AppColors.slate,
                   borderRadius: BorderRadius.circular(8),
                   image: DecorationImage(
-                    image: listHomeFeeds[index].images?[0].url == null
-                        ? const NetworkImage('https://i.scdn.co/image/ab6761610000e5eb2c591408e2fd98646ac796b5')
-                        : NetworkImage(listHomeFeeds[index].images?[0].url ?? ''),
+                    image: CachedNetworkImageProvider(homeFeeds[index].images?[0].url ?? ''),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -60,9 +62,8 @@ class ListViewStories extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.all(3),
                               child: CircleAvatar(
-                                backgroundImage: listHomeFeeds[index].user?.avatar?.url == null
-                                    ? const NetworkImage('https://cdn-icons-png.flaticon.com/512/149/149071.png')
-                                    : NetworkImage(listHomeFeeds[index].user?.avatar?.url ?? ''),
+                                // backgroundColor: AppColors.slate,
+                                backgroundImage: CachedNetworkImageProvider(homeFeeds[index].user?.avatar?.url ?? ''),
                               ),
                             ),
                           ),
@@ -70,7 +71,7 @@ class ListViewStories extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.only(left: 5),
                               child: Text(
-                                '${listHomeFeeds[index].user?.firstName ?? ''} ${listHomeFeeds[index].user?.lastName ?? 'User'}',
+                                '${homeFeeds[index].user?.firstName ?? ''} ${homeFeeds[index].user?.lastName ?? 'User'}',
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: AppTextStyles.h7.copyWith(fontWeight: FontWeight.bold),

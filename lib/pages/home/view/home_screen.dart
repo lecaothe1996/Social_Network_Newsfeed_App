@@ -83,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
           BlocBuilder<HomeFeedBloc, HomeFeedState>(
             builder: (context, state) {
               if (state is HomeFeedsLoaded) {
-                return ListViewStories(state.data);
+                return ListViewStories(homeFeeds: state.data);
               }
               return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
             },
@@ -91,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
           BlocBuilder<HomeFeedBloc, HomeFeedState>(
             builder: (context, state) {
               if (state is HomeFeedsLoaded) {
-                return ListViewHomeFeeds(state.data);
+                return ListViewHomeFeeds(homeFeeds: state.data);
               }
               return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
             },
