@@ -48,7 +48,7 @@ class GridImage extends StatelessWidget {
 
     print('url $url');
 
-    // magic logic
+    // height >= 3 width
     if (heightView >= width * 3) {
       return GestureDetector(
         onTap: () => navigateToPhotoPage([images], 0, context),
@@ -57,6 +57,9 @@ class GridImage extends StatelessWidget {
           child: CachedNetworkImage(
             imageUrl: url,
             fit: BoxFit.fitHeight,
+            placeholder: (context, url) {
+              return Center(child: CircularProgressIndicator());
+            },
           ),
         ),
       );
@@ -70,10 +73,15 @@ class GridImage extends StatelessWidget {
         child: CachedNetworkImage(
           imageUrl: url,
           fit: BoxFit.cover,
+          placeholder: (context, url) {
+            return Center(child: const CircularProgressIndicator());
+          },
         ),
       ),
     );
   }
 
-  void navigateToPhotoPage(List<Images> images, int index, BuildContext context) {}
+  void navigateToPhotoPage(List<Images> images, int index, BuildContext context) {
+    print('⚡️ Chose image number ${index}');
+  }
 }

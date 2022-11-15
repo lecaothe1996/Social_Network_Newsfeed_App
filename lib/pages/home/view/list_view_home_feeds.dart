@@ -20,7 +20,7 @@ class ListViewHomeFeeds extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // print('width device==${MediaQuery.of(context).size.width}');
+    print('width device==${MediaQuery.of(context).devicePixelRatio}');
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         childCount: homeFeeds.length,
@@ -40,9 +40,7 @@ class ListViewHomeFeeds extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CircleAvatar(
-                            backgroundImage: homeFeeds[index].user?.avatar?.url == null
-                                ? const NetworkImage('https://cdn-icons-png.flaticon.com/512/149/149071.png')
-                                : NetworkImage(homeFeeds[index].user?.avatar?.url ?? ''),
+                            backgroundImage: CachedNetworkImageProvider(homeFeeds[index].user?.avatar?.url ?? ''),
                           ),
                           Expanded(
                             child: Padding(
