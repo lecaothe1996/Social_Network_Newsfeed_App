@@ -44,9 +44,9 @@ class GridImage extends StatelessWidget {
   Widget _buildOneImage(Images images, double width, BuildContext context) {
     // final image = images.i;
     final heightView = ImageUtils.getHeightView(width, images.orgWidth!, images.orgHeight!);
-    final url = ImageUtils.genImgIx(images.url, width.toInt(), heightView.toInt());
+    final url = ImageUtils.genImgIx(images.url, width.toInt(), 0);
 
-    print('url $url');
+    print('url home feed = $url');
 
     // height >= 3 width
     if (heightView >= width * 3) {
@@ -58,7 +58,7 @@ class GridImage extends StatelessWidget {
             imageUrl: url,
             fit: BoxFit.fitHeight,
             placeholder: (context, url) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             },
           ),
         ),
@@ -74,7 +74,7 @@ class GridImage extends StatelessWidget {
           imageUrl: url,
           fit: BoxFit.cover,
           placeholder: (context, url) {
-            return Center(child: const CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           },
         ),
       ),

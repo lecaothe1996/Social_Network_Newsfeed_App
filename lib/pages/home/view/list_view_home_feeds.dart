@@ -20,7 +20,7 @@ class ListViewHomeFeeds extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('width device==${MediaQuery.of(context).devicePixelRatio}');
+    print('devicePixelRatio==${MediaQuery.of(context).devicePixelRatio}');
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         childCount: homeFeeds.length,

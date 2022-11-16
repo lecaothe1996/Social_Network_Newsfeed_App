@@ -9,7 +9,7 @@ class ImageUtils {
     return (widthDevice * heightImg) / widthImg;
   }
 
-  static String genImgIx(String? url, int w, int h, {bool focusFace = false, double drp = 1.7}) {
+  static String genImgIx(String? url, int w, int h, {bool focusFace = false, double dpr = 1}) {
     if (url == null) {
       return '';
     }
@@ -19,13 +19,13 @@ class ImageUtils {
     }
 
     if (h == 0) {
-      return '$url?w=$w&dpr=$drp';
+      return '$url?w=$w&dpr=$dpr';
     }
 
     if (focusFace) {
-      return '$url?w=$w&h=$h&fit=facearea&facepad=10&dpr=$drp';
+      return '$url?w=$w&h=$h&fit=facearea&facepad=10&dpr=$dpr';
     }
-    return '$url?w=$w&h=$h&fit=crop&dpr=$drp';
+    return '$url?w=$w&h=$h&fit=crop&q=10&dpr=$dpr';
   }
 
   // static String genFbImg(String url, int w, int h) {
