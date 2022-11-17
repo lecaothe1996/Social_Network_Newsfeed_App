@@ -44,19 +44,20 @@ class GridImage extends StatelessWidget {
   Widget _buildOneImage(Images images, double width, BuildContext context) {
     // final image = images.i;
     final heightView = ImageUtils.getHeightView(width, images.orgWidth!, images.orgHeight!);
-    final url = ImageUtils.genImgIx(images.url, width.toInt(), 0);
+    final url = ImageUtils.genImgIx(images.url, width.toInt(), heightView.toInt());
 
     print('url home feed = $url');
 
-    // height >= 3 width
-    if (heightView >= width * 3) {
+    // view lớn hơn tỷ lệ 16/9
+    if (heightView >= width * 1.777) {
       return GestureDetector(
         onTap: () => navigateToPhotoPage([images], 0, context),
         child: SizedBox(
-          height: width * 3,
+          height: width * 1.777,
+          width: width,
           child: CachedNetworkImage(
             imageUrl: url,
-            fit: BoxFit.fitHeight,
+            fit: BoxFit.cover,
             placeholder: (context, url) {
               return const Center(child: CircularProgressIndicator());
             },

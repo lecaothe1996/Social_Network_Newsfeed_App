@@ -29,8 +29,8 @@ class ListViewStories extends StatelessWidget {
             itemCount: homeFeeds.length,
             itemBuilder: (context, index) {
               // final heightView = ImageUtils.getHeightView(135, homeFeeds[index].images?[0].orgWidth ?? 1, homeFeeds[index].images?[0].orgHeight ?? 1);
-              final url = ImageUtils.genImgIx(homeFeeds[index].images?[0].url, 135, 0);
-              print('url stories = $url');
+              final urlStories = ImageUtils.genImgIx(homeFeeds[index].images?[0].url, 135, 0);
+              print('url stories = $urlStories');
               return Container(
                 margin: const EdgeInsets.only(left: 15),
                 width: 135,
@@ -38,7 +38,7 @@ class ListViewStories extends StatelessWidget {
                   color: AppColors.slate,
                   borderRadius: BorderRadius.circular(8),
                   image: DecorationImage(
-                    image: CachedNetworkImageProvider(url ?? ''),
+                    image: CachedNetworkImageProvider(urlStories),
                     fit: BoxFit.cover,
                   ),
                 ),
