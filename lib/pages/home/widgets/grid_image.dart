@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:social_app/pages/home/models/home_feed.dart';
+import 'package:social_app/pages/home/widgets/home_feed_img_item.dart';
 import 'package:social_app/utils/image_utils.dart';
 
 class GridImage extends StatelessWidget {
@@ -27,7 +28,7 @@ class GridImage extends StatelessWidget {
       case 1:
         return _buildOneImage(images[0], width, context);
       // case 2:
-      //   return _buildTwoImage(photos, width, context);
+      //   return _buildTwoImage(images, width, context);
       // case 3:
       //   return _buildThreeImage(photos, width, context);
       // case 4:
@@ -41,46 +42,107 @@ class GridImage extends StatelessWidget {
     }
   }
 
-  Widget _buildOneImage(Images images, double width, BuildContext context) {
+  Widget _buildOneImage(Images image, double width, BuildContext context) {
     // final image = images.i;
-    final heightView = ImageUtils.getHeightView(width, images.orgWidth!, images.orgHeight!);
-    final url = ImageUtils.genImgIx(images.url, width.toInt(), heightView.toInt());
+    final heightView = ImageUtils.getHeightView(width, image.orgWidth!, image.orgHeight!);
+    final url = ImageUtils.genImgIx(image.url, width.toInt(), heightView.toInt());
 
     print('url home feed = $url');
 
     // view lớn hơn tỷ lệ 16/9
-    if (heightView >= width * 1.777) {
+    if (heightView >= width * 1.8) {
       return GestureDetector(
-        onTap: () => navigateToPhotoPage([images], 0, context),
+        onTap: () => navigateToPhotoPage([image], 0, context),
         child: SizedBox(
-          height: width * 1.777,
+          height: width * 1.8,
           width: width,
           child: CachedNetworkImage(
             imageUrl: url,
             fit: BoxFit.cover,
-            placeholder: (context, url) {
-              return const Center(child: CircularProgressIndicator());
-            },
+            // placeholder: (context, url) {
+            //   return const Center(child: CircularProgressIndicator());
+            // },
           ),
         ),
       );
     }
 
     return GestureDetector(
-      onTap: () => navigateToPhotoPage([images], 0, context),
+      onTap: () => navigateToPhotoPage([image], 0, context),
       child: SizedBox(
         height: heightView,
         width: width,
         child: CachedNetworkImage(
           imageUrl: url,
           fit: BoxFit.cover,
-          placeholder: (context, url) {
-            return const Center(child: CircularProgressIndicator());
-          },
+          // placeholder: (context, url) {
+          //   return const Center(child: CircularProgressIndicator());
+          // },
         ),
       ),
     );
   }
+
+  Widget _buildTwoImage(List<Images> images, double width, BuildContext context) {
+    final firstImg = images[0];
+
+    // 2 tam cung dung
+    // 2 tam cung ngang
+    // xet dua tren tam dau tien
+    // + 1: tam dau tien dung
+    // + 2: tam dau tien ngang
+
+    //
+
+    if (firstImg.orgWidth! > firstImg.orgHeight!) {
+      final height = width;
+      return SizedBox(
+        height: width,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            HomeFeedImgItem(
+              url: images[0].url ?? '',
+              width: width,
+              height: height / 2,
+              onTap: () => navigateToPhotoPage(images, 0, context),
+            ),
+            _buildPadding(),
+            HomeFeedImgItem(
+              url: images[1].url ?? '',
+              width: width,
+              height: height / 2,
+              onTap: () => navigateToPhotoPage(images, 0, context),
+            ),
+          ],
+        ),
+      );
+    }
+
+    final height = width;
+    width = width;
+    return Row(
+      children: <Widget>[
+        HomeFeedImgItem(
+          url: images[0].url ?? '',
+          width: width / 2,
+          height: height,
+          onTap: () => navigateToPhotoPage(images, 0, context),
+        ),
+        _buildPadding(),
+        HomeFeedImgItem(
+          url: images[1].url ?? '',
+          width: width / 2,
+          height: height,
+          onTap: () => navigateToPhotoPage(images, 0, context),
+        ),
+      ],
+    );
+  }
+
+  Padding _buildPadding() => Padding(
+    padding: EdgeInsets.only(left: 5, top: 5),
+  );
 
   void navigateToPhotoPage(List<Images> images, int index, BuildContext context) {
     print('⚡️ Chose image number ${index}');
