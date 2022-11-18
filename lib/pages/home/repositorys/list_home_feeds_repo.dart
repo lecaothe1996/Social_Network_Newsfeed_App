@@ -8,7 +8,7 @@ class ListHomeFeedsRepo {
   Future<List<HomeFeed>> getHomeFeeds() async {
     final res = await _myClient.get(
       '/homefeeds',
-      queryParameters: {'page': '1'},
+      queryParameters: {'page': '50'},
     );
     // print('res====${res.data}');
     if (res.statusCode != 200) {
