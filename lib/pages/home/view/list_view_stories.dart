@@ -30,7 +30,9 @@ class ListViewStories extends StatelessWidget {
             itemBuilder: (context, index) {
               // final heightView = ImageUtils.getHeightView(135, homeFeeds[index].images?[0].orgWidth ?? 1, homeFeeds[index].images?[0].orgHeight ?? 1);
               final urlStories = ImageUtils.genImgIx(homeFeeds[index].images?[0].url, 135, 0);
+              final urlAvatar = ImageUtils.genImgIx(homeFeeds[index].user?.avatar?.url, 36 , 36);
               print('url stories = $urlStories');
+              print('url Avatar = $urlAvatar');
               return Container(
                 margin: const EdgeInsets.only(left: 7),
                 width: 135,
@@ -67,7 +69,7 @@ class ListViewStories extends StatelessWidget {
                               padding: const EdgeInsets.all(3),
                               child: CircleAvatar(
                                 backgroundColor: AppColors.slate,
-                                backgroundImage: CachedNetworkImageProvider(homeFeeds[index].user?.avatar?.url ?? ''),
+                                backgroundImage: CachedNetworkImageProvider(urlAvatar),
                               ),
                             ),
                           ),
