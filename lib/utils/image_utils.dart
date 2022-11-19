@@ -23,7 +23,7 @@ class ImageUtils {
     }
 
     if (focusFace) {
-      return '$url?w=$w&h=$h&fit=facearea&facepad=10&dpr=$dpr';
+      return '$url?w=$w&h=$h&fit=crop&crop=faces&dpr=$dpr';
     }
     return '$url?w=$w&h=$h&fit=crop&dpr=$dpr';
   }

@@ -32,7 +32,7 @@ class ListViewStories extends StatelessWidget {
               final urlStories = ImageUtils.genImgIx(homeFeeds[index].images?[0].url, 135, 0);
               print('url stories = $urlStories');
               return Container(
-                margin: const EdgeInsets.only(left: 15),
+                margin: const EdgeInsets.only(left: 7),
                 width: 135,
                 decoration: BoxDecoration(
                   color: AppColors.slate,
@@ -66,7 +66,7 @@ class ListViewStories extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.all(3),
                               child: CircleAvatar(
-                                // backgroundColor: AppColors.slate,
+                                backgroundColor: AppColors.slate,
                                 backgroundImage: CachedNetworkImageProvider(homeFeeds[index].user?.avatar?.url ?? ''),
                               ),
                             ),

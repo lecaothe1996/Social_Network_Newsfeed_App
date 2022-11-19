@@ -40,6 +40,7 @@ class ListViewHomeFeeds extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CircleAvatar(
+                            backgroundColor: AppColors.slate,
                             backgroundImage: CachedNetworkImageProvider(homeFeeds[index].user?.avatar?.url ?? ''),
                           ),
                           Expanded(

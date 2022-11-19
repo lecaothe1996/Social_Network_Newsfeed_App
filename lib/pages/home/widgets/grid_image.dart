@@ -27,11 +27,10 @@ class GridImage extends StatelessWidget {
         return _buildOneImage(images[0], width, context);
       case 2:
         return _buildTwoImage(images, width, context);
-      // case 3:
-      //   return _buildThreeImage(photos, width, context);
-      // case 4:
-      // // TODO:
-      //   return _buildOneImage(photos[0], width, context);
+      case 3:
+        return _buildThreeImage(images, width, context);
+      case 4:
+        return _buildFourImage(images, width, context);
       case 5:
         return _buildFiveImage(images, width, context);
       default:
@@ -74,15 +73,26 @@ class GridImage extends StatelessWidget {
   }
 
   Widget _buildTwoImage(List<Images> images, double width, BuildContext context) {
-    final urlImage1 = ImageUtils.genImgIx(images[0].url, width.toInt(), 0);
-    final urlImage2 = ImageUtils.genImgIx(images[1].url, width.toInt(), 0);
-    print('url Image1 = $urlImage1');
-    print('url Image2 = $urlImage2');
-    final abc = images[0].orgHeight! / images[0].orgWidth!;
-    print('abc=== $abc');
+    final urlHorizontalImage1 = ImageUtils.genImgIx(images[0].url, width.toInt(), (width - 4) ~/ 2, focusFace: true);
+    final urlHorizontalImage2 = ImageUtils.genImgIx(images[1].url, width.toInt(), (width - 4) ~/ 2, focusFace: true);
+    // print('url Horizontal Image1 = $urlHorizontalImage1');
+    // print('url Horizontal Image2 = $urlHorizontalImage2');
 
-    if (abc < 0.8) {
-      print('Hinh Ngangggggggggggggggggggg');
+    final urlVerticalImage1 = ImageUtils.genImgIx(images[0].url, (width - 4) ~/ 2, width ~/ 1.333, focusFace: true);
+    final urlVerticalImage2 = ImageUtils.genImgIx(images[1].url, (width - 4) ~/ 2, width ~/ 1.333, focusFace: true);
+    // print('url Vertical Image1 = $urlVerticalImage1');
+    // print('url Vertical Image2 = $urlVerticalImage2');
+
+    final urlSquareImage1 = ImageUtils.genImgIx(images[0].url, (width - 4) ~/ 2, (width - 4) ~/ 2, focusFace: true);
+    final urlSquareImage2 = ImageUtils.genImgIx(images[1].url, (width - 4) ~/ 2, (width - 4) ~/ 2, focusFace: true);
+    // print('url Square Image1 = $urlSquareImage1');
+    // print('url Square Image2 = $urlSquareImage2');
+    // Tỉ lệ khung hình
+    final ratio = images[0].orgHeight! / images[0].orgWidth!;
+    // print('ratio=== $ratio');
+
+    if (ratio < 0.7) {
+      // print('Hinh Ngangggggggggggggggggggg');
       return StaggeredGrid.count(
         crossAxisCount: 2,
         mainAxisSpacing: 4,
@@ -94,7 +104,7 @@ class GridImage extends StatelessWidget {
             child: GestureDetector(
               onTap: () => navigateToPhotoPage(images, 0, context),
               child: CachedNetworkImage(
-                imageUrl: urlImage1,
+                imageUrl: urlHorizontalImage1,
                 fit: BoxFit.cover,
               ),
             ),
@@ -105,15 +115,15 @@ class GridImage extends StatelessWidget {
             child: GestureDetector(
               onTap: () => navigateToPhotoPage(images, 1, context),
               child: CachedNetworkImage(
-                imageUrl: urlImage2,
+                imageUrl: urlHorizontalImage2,
                 fit: BoxFit.cover,
               ),
             ),
           ),
         ],
       );
-    } else if (abc > 1.3) {
-      print('Hinh Docccccccccccccccccccccc');
+    } else if (ratio > 1.4) {
+      // print('Hinh Docccccccccccccccccccccc');
       return StaggeredGrid.count(
         crossAxisCount: 4,
         mainAxisSpacing: 4,
@@ -125,7 +135,7 @@ class GridImage extends StatelessWidget {
             child: GestureDetector(
               onTap: () => navigateToPhotoPage(images, 0, context),
               child: CachedNetworkImage(
-                imageUrl: urlImage1,
+                imageUrl: urlVerticalImage1,
                 fit: BoxFit.cover,
               ),
             ),
@@ -136,7 +146,7 @@ class GridImage extends StatelessWidget {
             child: GestureDetector(
               onTap: () => navigateToPhotoPage(images, 1, context),
               child: CachedNetworkImage(
-                imageUrl: urlImage2,
+                imageUrl: urlVerticalImage2,
                 fit: BoxFit.cover,
               ),
             ),
@@ -144,7 +154,7 @@ class GridImage extends StatelessWidget {
         ],
       );
     } else  {
-      print('Hinh Vuongggggggggggggggggggg');
+      // print('Hinh Vuongggggggggggggggggggg');
       return StaggeredGrid.count(
         crossAxisCount: 2,
         mainAxisSpacing: 4,
@@ -156,7 +166,7 @@ class GridImage extends StatelessWidget {
             child: GestureDetector(
               onTap: () => navigateToPhotoPage(images, 0, context),
               child: CachedNetworkImage(
-                imageUrl: urlImage1,
+                imageUrl: urlSquareImage1,
                 fit: BoxFit.cover,
               ),
             ),
@@ -167,7 +177,7 @@ class GridImage extends StatelessWidget {
             child: GestureDetector(
               onTap: () => navigateToPhotoPage(images, 1, context),
               child: CachedNetworkImage(
-                imageUrl: urlImage2,
+                imageUrl: urlSquareImage2,
                 fit: BoxFit.cover,
               ),
             ),
@@ -177,12 +187,125 @@ class GridImage extends StatelessWidget {
     }
   }
 
+  Widget _buildThreeImage(List<Images> images, double width, BuildContext context) {
+    final urlHorizontalImage1 = ImageUtils.genImgIx(images[0].url, width.toInt(), (width - 4) ~/ 2, focusFace: true);
+    final urlVerticalImage1 = ImageUtils.genImgIx(images[0].url, (width - 4) ~/ 2, width.toInt(), focusFace: true);
+    final urlImage2 = ImageUtils.genImgIx(images[1].url, (width - 4) ~/ 2, (width - 4) ~/ 2, focusFace: true);
+    final urlImage3 = ImageUtils.genImgIx(images[2].url, (width - 4) ~/ 2, (width - 4) ~/ 2, focusFace: true);
+    // print('url Horizontal Image1 = $urlHorizontalImage1');
+    // print('url Vertical Image1 = $urlVerticalImage1');
+    // print('url Image2 = $urlImage2');
+    // print('url Image3 = $urlImage3');
+    return StaggeredGrid.count(
+      crossAxisCount: 4,
+      mainAxisSpacing: 4,
+      crossAxisSpacing: 4,
+      children: [
+        StaggeredGridTile.count(
+          crossAxisCellCount: images[0].orgWidth! >= images[0].orgHeight! ? 4 : 2,
+          mainAxisCellCount: images[0].orgWidth! >= images[0].orgHeight! ? 2 : 4,
+          child: GestureDetector(
+            onTap: () => navigateToPhotoPage(images, 0, context),
+            child: CachedNetworkImage(
+              imageUrl: images[0].orgWidth! >= images[0].orgHeight! ? urlHorizontalImage1 : urlVerticalImage1,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        StaggeredGridTile.count(
+          crossAxisCellCount: 2,
+          mainAxisCellCount: 2,
+          child: GestureDetector(
+            onTap: () => navigateToPhotoPage(images, 1, context),
+            child: CachedNetworkImage(
+              imageUrl: urlImage2,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        StaggeredGridTile.count(
+          crossAxisCellCount: 2,
+          mainAxisCellCount: 2,
+          child: GestureDetector(
+            onTap: () => navigateToPhotoPage(images, 2, context),
+            child: CachedNetworkImage(
+              imageUrl: urlImage3,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFourImage(List<Images> images, double width, BuildContext context) {
+    final urlImage1 = ImageUtils.genImgIx(images[0].url, (width - 4) ~/ 2, (width - 4) ~/ 2, focusFace: true);
+    final urlImage2 = ImageUtils.genImgIx(images[1].url, (width - 4) ~/ 2, (width - 4) ~/ 2, focusFace: true);
+    final urlImage3 = ImageUtils.genImgIx(images[2].url, (width - 4) ~/ 2, (width - 4) ~/ 2, focusFace: true);
+    final urlImage4 = ImageUtils.genImgIx(images[3].url, (width - 4) ~/ 2, (width - 4) ~/ 2, focusFace: true);
+    // print('url Image1 = $urlImage1');
+    // print('url Image2 = $urlImage2');
+    // print('url Image3 = $urlImage3');
+    // print('url Image4 = $urlImage4');
+    return StaggeredGrid.count(
+      crossAxisCount: 2,
+      mainAxisSpacing: 4,
+      crossAxisSpacing: 4,
+      children: [
+        StaggeredGridTile.count(
+          crossAxisCellCount: 1,
+          mainAxisCellCount: 1,
+          child: GestureDetector(
+            onTap: () => navigateToPhotoPage(images, 0, context),
+            child: CachedNetworkImage(
+              imageUrl: urlImage1,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        StaggeredGridTile.count(
+          crossAxisCellCount: 1,
+          mainAxisCellCount: 1,
+          child: GestureDetector(
+            onTap: () => navigateToPhotoPage(images, 1, context),
+            child: CachedNetworkImage(
+              imageUrl: urlImage2,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        StaggeredGridTile.count(
+          crossAxisCellCount: 1,
+          mainAxisCellCount: 1,
+          child: GestureDetector(
+            onTap: () => navigateToPhotoPage(images, 2, context),
+            child: CachedNetworkImage(
+              imageUrl: urlImage3,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        StaggeredGridTile.count(
+          crossAxisCellCount: 1,
+          mainAxisCellCount: 1,
+          child: GestureDetector(
+            onTap: () => navigateToPhotoPage(images, 3, context),
+            child: CachedNetworkImage(
+              imageUrl: urlImage4,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildFiveImage(List<Images> images, double width, BuildContext context) {
-    final urlImage1 = ImageUtils.genImgIx(images[0].url, (width - 4) ~/ 2, (width - 4) ~/ 2);
-    final urlImage2 = ImageUtils.genImgIx(images[1].url, (width - 4) ~/ 2, (width - 4) ~/ 3);
-    final urlImage3 = ImageUtils.genImgIx(images[2].url, (width - 4) ~/ 2, (width - 4) ~/ 3);
-    final urlImage4 = ImageUtils.genImgIx(images[3].url, (width - 4) ~/ 2, (width - 4) ~/ 2);
-    final urlImage5 = ImageUtils.genImgIx(images[4].url, (width - 4) ~/ 2, (width - 4) ~/ 3);
+    final urlImage1 = ImageUtils.genImgIx(images[0].url, (width - 4) ~/ 2, (width - 4) ~/ 2, focusFace: true);
+    final urlImage2 = ImageUtils.genImgIx(images[1].url, (width - 4) ~/ 2, (width - 4) ~/ 3, focusFace: true);
+    final urlImage3 = ImageUtils.genImgIx(images[2].url, (width - 4) ~/ 2, (width - 4) ~/ 3, focusFace: true);
+    final urlImage4 = ImageUtils.genImgIx(images[3].url, (width - 4) ~/ 2, (width - 4) ~/ 2, focusFace: true);
+    final urlImage5 = ImageUtils.genImgIx(images[4].url, (width - 4) ~/ 2, (width - 4) ~/ 3, focusFace: true);
     // print('url Image1 = $urlImage1');
     // print('url Image2 = $urlImage2');
     // print('url Image3 = $urlImage3');
