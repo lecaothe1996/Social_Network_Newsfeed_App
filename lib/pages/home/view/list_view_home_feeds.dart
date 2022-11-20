@@ -5,6 +5,7 @@ import 'package:social_app/pages/home/models/home_feed.dart';
 import 'package:social_app/pages/home/widgets/grid_image.dart';
 import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/utils/convert_to_time_ago.dart';
+import 'package:social_app/utils/image_utils.dart';
 
 import '../../../themes/app_assets.dart';
 import '../../../themes/app_color.dart';
@@ -21,10 +22,13 @@ class ListViewHomeFeeds extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('devicePixelRatio==${MediaQuery.of(context).devicePixelRatio}');
+    print('device width==${MediaQuery.of(context).size.width}');
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         childCount: homeFeeds.length,
         (context, index) {
+          final urlAvatar = ImageUtils.genImgIx(homeFeeds[index].user?.avatar?.url, 40, 40);
+          // print('url Avatar = $urlAvatar');
           return Container(
             margin: const EdgeInsets.only(top: 15),
             color: Colors.black.withOpacity(0.5),
@@ -41,7 +45,17 @@ class ListViewHomeFeeds extends StatelessWidget {
                         children: [
                           CircleAvatar(
                             backgroundColor: AppColors.slate,
-                            backgroundImage: CachedNetworkImageProvider(homeFeeds[index].user?.avatar?.url ?? ''),
+                            child: ClipOval(
+                              child: CachedNetworkImage(
+                                imageUrl: urlAvatar,
+                                errorWidget: (_, __, ___) => Image.asset(
+                                  AppAssetIcons.avatar,
+                                  color: AppColors.blueGrey,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
                           ),
                           Expanded(
                             child: Padding(

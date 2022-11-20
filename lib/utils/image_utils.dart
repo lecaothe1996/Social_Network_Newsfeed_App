@@ -9,17 +9,25 @@ class ImageUtils {
     return (widthDevice * heightImg) / widthImg;
   }
 
-  static String genImgIx(String? url, int w, int h, {bool focusFace = false, double dpr = 1.7}) {
+  static String genImgIx(String? url, int w, int h, {bool focusFace = false, bool fillBlur = false, double dpr = 1.7}) {
     if (url == null) {
       return '';
     }
 
-    if (url.startsWith('https://graph.facebook.com')) {
-      return url;
-    }
-
     if (h == 0) {
       return '$url?w=$w&dpr=$dpr';
+    }
+
+    if (url.startsWith('https://graph.facebook.com')) {
+      return url.replaceAll('&width=600&height=600', '&width=${(w * dpr).toInt()}&height=${(h * dpr).toInt()}');
+    }
+
+    if (url.startsWith('https://lh3.googleusercontent.com')) {
+      return '$url=s${(w * dpr).toInt()}';
+    }
+
+    if (fillBlur) {
+      return '$url?w=$w&h=$h&fit=fill&fill=blur&dpr=$dpr';
     }
 
     if (focusFace) {
