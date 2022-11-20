@@ -24,4 +24,5 @@ class AppAssetIcons {
   static const String like = '${imagePath}ic_like.png';
   static const String comment = '${imagePath}ic_comment.png';
   static const String share = '${imagePath}ic_share.png';
+  static const String avatar = '${imagePath}ic_avatar.png';
 }

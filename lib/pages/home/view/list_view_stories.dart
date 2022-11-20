@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:social_app/pages/home/models/home_feed.dart';
+import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/utils/image_utils.dart';
 
 import '../../../themes/app_color.dart';
@@ -28,20 +29,22 @@ class ListViewStories extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemCount: homeFeeds.length,
             itemBuilder: (context, index) {
-              // final heightView = ImageUtils.getHeightView(135, homeFeeds[index].images?[0].orgWidth ?? 1, homeFeeds[index].images?[0].orgHeight ?? 1);
-              final urlStories = ImageUtils.genImgIx(homeFeeds[index].images?[0].url, 135, 0);
-              final urlAvatar = ImageUtils.genImgIx(homeFeeds[index].user?.avatar?.url, 36 , 36);
+              final urlStories = ImageUtils.genImgIx(homeFeeds[index].images?[0].url, 120, 179, fillBlur: true);
+              final urlAvatar = ImageUtils.genImgIx(homeFeeds[index].user?.avatar?.url, 36, 36);
               print('url stories = $urlStories');
-              print('url Avatar = $urlAvatar');
+              // print('url Avatar = $urlAvatar');
+              if (homeFeeds[index].images == [] || homeFeeds[index].images == null) {
+                return const SizedBox();
+              }
               return Container(
-                margin: const EdgeInsets.only(left: 7),
-                width: 135,
+                margin: const EdgeInsets.only(left: 10),
+                width: 120,
                 decoration: BoxDecoration(
                   color: AppColors.slate,
                   borderRadius: BorderRadius.circular(8),
                   image: DecorationImage(
                     image: CachedNetworkImageProvider(urlStories),
-                    fit: BoxFit.cover,
+                    // fit: BoxFit.fitWidth,
                   ),
                 ),
                 child: Column(
@@ -69,7 +72,17 @@ class ListViewStories extends StatelessWidget {
                               padding: const EdgeInsets.all(3),
                               child: CircleAvatar(
                                 backgroundColor: AppColors.slate,
-                                backgroundImage: CachedNetworkImageProvider(urlAvatar),
+                                child: ClipOval(
+                                  child: CachedNetworkImage(
+                                    imageUrl: urlAvatar,
+                                    errorWidget: (_, __, ___) => Image.asset(
+                                      AppAssetIcons.avatar,
+                                      color: AppColors.blueGrey,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -94,6 +107,13 @@ class ListViewStories extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _errorImage(BuildContext context) {
+    print('Icon Icon Icon');
+    return Center(
+      child: Image.asset(AppAssetIcons.plus),
     );
   }
 }
