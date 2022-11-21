@@ -42,7 +42,7 @@ class _SplashPageState extends State<MyApp> {
           bodyText1: TextStyle(),
           bodyText2: TextStyle(),
         ).apply(bodyColor: AppColors.white),
-        fontFamily: FontFamily.avenir,
+        fontFamily: FontFamily.arial,
         scaffoldBackgroundColor: AppColors.dark,
       ),
       home: Provider<AppStateBloc>(

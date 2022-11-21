@@ -5,6 +5,7 @@ import 'package:social_app/pages/home/blocs/home_feed_bloc.dart';
 import 'package:social_app/pages/home/models/home_feed.dart';
 import 'package:social_app/pages/home/models/home_feed.dart';
 import 'package:social_app/pages/home/repositorys/list_home_feeds_repo.dart';
+import 'package:social_app/pages/home/view/create_post_page.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/widgets/icon_button_widget.dart';
 
@@ -63,12 +64,13 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           GestureDetector(
             onTap: () {
-              print('Click Add Photo');
+              print('Click Create Post');
               // ListHomeFeedsRepo().getHomeFeeds();
               // context.read<HomeFeedBloc>().add(LoadHomeFeeds());
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const CreatePostPage()));
             },
             child: Container(
-              margin: const EdgeInsets.only(right: 15, top: 10, bottom: 10),
+              margin: const EdgeInsets.fromLTRB(0, 10, 15, 10),
               decoration: const BoxDecoration(
                 gradient: Gradients.defaultGradientButton,
                 shape: BoxShape.circle,
@@ -96,7 +98,6 @@ class _HomeScreenState extends State<HomeScreen> {
               return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
             },
           ),
-
         ],
       ),
     );

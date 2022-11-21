@@ -31,7 +31,6 @@ class _MyTextFieldState extends State<MyTextField> {
       child: TextField(
         style: AppTextStyles.h5.copyWith(color: AppColors.white),
         obscureText: widget.hintText == 'Password' ? _obscureText : false,
-
         decoration: InputDecoration(
           hintText: widget.hintText,
           hintStyle: AppTextStyles.h5.copyWith(color: AppColors.white),

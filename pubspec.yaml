@@ -56,6 +56,8 @@ dependencies:
   cached_network_image: ^3.2.2
   # Grid View
   flutter_staggered_grid_view: ^0.6.2
+  # Show more text
+  readmore: ^2.2.0
 
 dev_dependencies:
   flutter_test:
@@ -102,10 +104,11 @@ flutter:
   # list giving the asset and other descriptors for the font. For
 #   example:
   fonts:
-    - family: Avenir
+    - family: Arial
       fonts:
-        - asset: assets/fonts/avenir/Avenir-Bold.otf
-        - asset: assets/fonts/avenir/Avenir-Regular.otf
+        - asset: assets/fonts/arial/Arial-Bold.ttf
+        - asset: assets/fonts/arial/Arial-Lt.ttf
+        - asset: assets/fonts/arial/Arial-Regular.ttf
           weight: 700
   #   - family: Trajan Pro
   #     fonts:

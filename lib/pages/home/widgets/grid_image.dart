@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:social_app/pages/home/models/home_feed.dart';
+import 'package:social_app/themes/app_color.dart';
+import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/utils/image_utils.dart';
 
 class GridImage extends StatelessWidget {
@@ -34,7 +36,7 @@ class GridImage extends StatelessWidget {
       case 5:
         return _buildFiveImage(images, width, context);
       default:
-        return _buildOneImage(images[0], width, context);
+        return _buildMoreImage(images, width, context);
     }
   }
 
@@ -554,6 +556,96 @@ class GridImage extends StatelessWidget {
             child: CachedNetworkImage(
               imageUrl: urlImage5,
               fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMoreImage(List<Images> images, double width, BuildContext context) {
+    final urlImage1 = ImageUtils.genImgIx(images[0].url, (width - 4) ~/ 2, (width - 4) ~/ 2, focusFace: true);
+    final urlImage2 = ImageUtils.genImgIx(images[1].url, (width - 4) ~/ 2, (width - 8) ~/ 3, focusFace: true);
+    final urlImage3 = ImageUtils.genImgIx(images[2].url, (width - 4) ~/ 2, (width - 8) ~/ 3, focusFace: true);
+    final urlImage4 = ImageUtils.genImgIx(images[3].url, (width - 4) ~/ 2, (width - 4) ~/ 2, focusFace: true);
+    final urlImage5 = ImageUtils.genImgIx(images[4].url, (width - 4) ~/ 2, (width - 8) ~/ 3, focusFace: true);
+    // print('url Image1 = $urlImage1');
+    // print('url Image2 = $urlImage2');
+    // print('url Image3 = $urlImage3');
+    // print('url Image4 = $urlImage4');
+    // print('url Image5 = $urlImage5');
+    return StaggeredGrid.count(
+      crossAxisCount: 4,
+      mainAxisSpacing: 4,
+      crossAxisSpacing: 4,
+      children: [
+        StaggeredGridTile.count(
+          crossAxisCellCount: 2,
+          mainAxisCellCount: 2,
+          child: GestureDetector(
+            onTap: () => navigateToPhotoPage(images, 0, context),
+            child: CachedNetworkImage(
+              imageUrl: urlImage1,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        StaggeredGridTile.count(
+          crossAxisCellCount: 2,
+          mainAxisCellCount: 4 / 3,
+          child: GestureDetector(
+            onTap: () => navigateToPhotoPage(images, 1, context),
+            child: CachedNetworkImage(
+              imageUrl: urlImage2,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        StaggeredGridTile.count(
+          crossAxisCellCount: 2,
+          mainAxisCellCount: 4 / 3,
+          child: GestureDetector(
+            onTap: () => navigateToPhotoPage(images, 2, context),
+            child: CachedNetworkImage(
+              imageUrl: urlImage3,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        StaggeredGridTile.count(
+          crossAxisCellCount: 2,
+          mainAxisCellCount: 2,
+          child: GestureDetector(
+            onTap: () => navigateToPhotoPage(images, 3, context),
+            child: CachedNetworkImage(
+              imageUrl: urlImage4,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        StaggeredGridTile.count(
+          crossAxisCellCount: 2,
+          mainAxisCellCount: 4 / 3,
+          child: GestureDetector(
+            onTap: () => navigateToPhotoPage(images, 4, context),
+            child: Stack(
+              children: [
+                CachedNetworkImage(
+                  imageUrl: urlImage5,
+                  fit: BoxFit.cover,
+                ),
+                Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  color: AppColors.black.withOpacity(0.6),
+                  child: Center(
+                    child: Text(
+                      '+${images.length - 4}',
+                      style: AppTextStyles.h2.copyWith(fontWeight: FontWeight.normal),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),

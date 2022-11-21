@@ -31,7 +31,7 @@ class ListViewStories extends StatelessWidget {
             itemBuilder: (context, index) {
               final urlStories = ImageUtils.genImgIx(homeFeeds[index].images?[0].url, 120, 179, fillBlur: true);
               final urlAvatar = ImageUtils.genImgIx(homeFeeds[index].user?.avatar?.url, 36, 36);
-              print('url stories = $urlStories');
+              // print('url stories = $urlStories');
               // print('url Avatar = $urlAvatar');
               if (homeFeeds[index].images == [] || homeFeeds[index].images == null) {
                 return const SizedBox();
