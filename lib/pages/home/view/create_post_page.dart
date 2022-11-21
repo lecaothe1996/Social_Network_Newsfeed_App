@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/widgets/button_widget.dart';
@@ -27,7 +28,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
             Navigator.pop(context);
           },
         ),
-        title: const Text('Create post'),
+        title: const Text('Tạo bài viết'),
         actions: [
           Container(
             margin: const EdgeInsets.fromLTRB(0, 10, 15, 10),
@@ -35,7 +36,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
               onPressed: () {
                 print('Click Post');
               },
-              text: 'POST',
+              text: 'ĐĂNG',
               width: 80,
             ),
           ),
@@ -48,15 +49,16 @@ class _CreatePostPageState extends State<CreatePostPage> {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               // color: Colors.blueGrey,
               child: TextField(
-                minLines: 10,
+                minLines: 5,
                 maxLines: null,
-                maxLength: 1000,
+                maxLength: 5000,
                 keyboardType: TextInputType.multiline,
-                style: AppTextStyles.h5.copyWith(color: AppColors.white),
+                style: AppTextStyles.body.copyWith(color: AppColors.white),
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: 'What you thinking?',
-                  hintStyle: AppTextStyles.h5.copyWith(color: AppColors.white),
+                  hintText: 'Bạn đang nghĩ gì?',
+                  hintStyle: AppTextStyles.body.copyWith(fontSize: 25, color: AppColors.blueGrey),
+                  counter: const Offstage(),
                 ),
               ),
             ),

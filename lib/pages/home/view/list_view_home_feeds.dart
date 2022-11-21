@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:readmore/readmore.dart';
 import 'package:social_app/pages/home/models/home_feed.dart';
 import 'package:social_app/pages/home/widgets/grid_image.dart';
 import 'package:social_app/themes/app_text_styles.dart';
@@ -109,8 +110,13 @@ class ListViewHomeFeeds extends StatelessWidget {
                             ),
                       homeFeeds[index].description!.isEmpty || homeFeeds[index].description == null
                           ? const SizedBox()
-                          : Text(
+                          : ReadMoreText(
                               homeFeeds[index].description ?? '',
+                              trimLines: 3,
+                              colorClickableText: AppColors.blueGrey,
+                              trimMode: TrimMode.Line,
+                              trimCollapsedText: 'Show more',
+                              trimExpandedText: '',
                               style: AppTextStyles.body,
                             ),
                     ],

@@ -8,5 +8,5 @@ class AppTextStyles {
   static const TextStyle h5 = TextStyle(fontSize: 17);
   static const TextStyle h6 = TextStyle(fontSize: 13);
   static const TextStyle h7 = TextStyle(fontSize: 11);
-  static const TextStyle body = TextStyle(fontSize: 15);
+  static const TextStyle body = TextStyle(fontSize: 15, height: 1.3);
 }
