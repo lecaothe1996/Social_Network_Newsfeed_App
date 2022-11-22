@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:social_app/pages/home/models/home_feed.dart';
+import 'package:social_app/pages/home/models/post.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/utils/image_utils.dart';
 
@@ -8,11 +8,11 @@ import '../../../themes/app_color.dart';
 import '../../../themes/app_text_styles.dart';
 
 class ListViewStories extends StatelessWidget {
-  final List<HomeFeed> homeFeeds;
+  final List<Post> posts;
 
   const ListViewStories({
     Key? key,
-    required this.homeFeeds,
+    required this.posts,
   }) : super(key: key);
 
   @override
@@ -27,13 +27,13 @@ class ListViewStories extends StatelessWidget {
           height: 179,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: homeFeeds.length,
+            itemCount: posts.length,
             itemBuilder: (context, index) {
-              final urlStories = ImageUtils.genImgIx(homeFeeds[index].images?[0].url, 120, 179, fillBlur: true);
-              final urlAvatar = ImageUtils.genImgIx(homeFeeds[index].user?.avatar?.url, 36, 36);
+              final urlStories = ImageUtils.genImgIx(posts[index].images?[0].url, 120, 179, fillBlur: true);
+              final urlAvatar = ImageUtils.genImgIx(posts[index].user?.avatar?.url, 36, 36);
               // print('url stories = $urlStories');
               // print('url Avatar = $urlAvatar');
-              if (homeFeeds[index].images == [] || homeFeeds[index].images == null) {
+              if (posts[index].images == [] || posts[index].images == null) {
                 return const SizedBox();
               }
               return Container(
@@ -90,7 +90,7 @@ class ListViewStories extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.only(left: 5),
                               child: Text(
-                                '${homeFeeds[index].user?.firstName ?? ''} ${homeFeeds[index].user?.lastName ?? 'User'}',
+                                '${posts[index].user?.firstName ?? ''} ${posts[index].user?.lastName ?? 'User'}',
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: AppTextStyles.h7.copyWith(fontWeight: FontWeight.bold),

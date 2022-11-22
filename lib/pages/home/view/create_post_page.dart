@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/widgets/button_widget.dart';
@@ -15,6 +18,18 @@ class CreatePostPage extends StatefulWidget {
 }
 
 class _CreatePostPageState extends State<CreatePostPage> {
+  File? _image;
+
+  Future pickImage () async {
+    final ImagePicker _picker = ImagePicker();
+    // final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    final List<XFile> images = await _picker.pickMultiImage();
+    print('images===${images}');
+
+    setState(() {
+      _image = File(images[0].path ?? '');
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,6 +50,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
             child: MyElevatedButton(
               onPressed: () {
                 print('Click Post');
+                pickImage();
               },
               text: 'ĐĂNG',
               width: 80,
@@ -66,6 +82,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
               width: double.infinity,
               height: 300,
               color: Colors.brown,
+              child: Image.file(_image ?? File('')),
             )
           ],
         ),

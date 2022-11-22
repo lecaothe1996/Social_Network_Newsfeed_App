@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:social_app/pages/home/blocs/home_feed_bloc.dart';
+import 'package:social_app/pages/home/blocs/post_bloc.dart';
 
 import 'blocs/app_state_bloc.dart';
 import 'pages/pages.dart';
@@ -64,7 +64,7 @@ class _SplashPageState extends State<MyApp> {
               );
             }
             return BlocProvider(
-              create: (context) => HomeFeedBloc()..add(LoadHomeFeeds()),
+              create: (context) => PostBloc()..add(LoadPosts()),
               child: const Pages(),
             );
           },

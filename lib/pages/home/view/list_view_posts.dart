@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart';
-import 'package:social_app/pages/home/models/home_feed.dart';
+import 'package:social_app/pages/home/models/post.dart';
 import 'package:social_app/pages/home/widgets/grid_image.dart';
 import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/utils/convert_to_time_ago.dart';
@@ -12,12 +12,12 @@ import '../../../themes/app_assets.dart';
 import '../../../themes/app_color.dart';
 import '../../../widgets/icon_button_widget.dart';
 
-class ListViewHomeFeeds extends StatelessWidget {
-  final List<HomeFeed> homeFeeds;
+class ListViewPosts extends StatelessWidget {
+  final List<Post> posts;
 
-  const ListViewHomeFeeds({
+  const ListViewPosts({
     Key? key,
-    required this.homeFeeds,
+    required this.posts,
   }) : super(key: key);
 
   @override
@@ -26,9 +26,9 @@ class ListViewHomeFeeds extends StatelessWidget {
     print('device width==${MediaQuery.of(context).size.width}');
     return SliverList(
       delegate: SliverChildBuilderDelegate(
-        childCount: homeFeeds.length,
+        childCount: posts.length,
         (context, index) {
-          final urlAvatar = ImageUtils.genImgIx(homeFeeds[index].user?.avatar?.url, 40, 40);
+          final urlAvatar = ImageUtils.genImgIx(posts[index].user?.avatar?.url, 40, 40);
           // print('url Avatar = $urlAvatar');
           return Container(
             margin: const EdgeInsets.only(top: 15),
@@ -69,7 +69,7 @@ class ListViewHomeFeeds extends StatelessWidget {
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          '${homeFeeds[index].user?.firstName ?? ''} ${homeFeeds[index].user?.lastName ?? 'User'}',
+                                          '${posts[index].user?.firstName ?? ''} ${posts[index].user?.lastName ?? 'User'}',
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                           style: AppTextStyles.body.copyWith(fontWeight: FontWeight.bold),
@@ -88,7 +88,7 @@ class ListViewHomeFeeds extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 2),
                                   Text(
-                                    ConvertToTimeAgo().timeAgo(homeFeeds[index].createdAt ?? DateTime.now()),
+                                    ConvertToTimeAgo().timeAgo(posts[index].createdAt ?? DateTime.now()),
                                     overflow: TextOverflow.ellipsis,
                                     style: AppTextStyles.h6.copyWith(color: AppColors.blueGrey),
                                   ),
@@ -99,19 +99,19 @@ class ListViewHomeFeeds extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 15),
-                      homeFeeds[index].tags == null || homeFeeds[index].tags!.isEmpty
+                      posts[index].tags == null || posts[index].tags!.isEmpty
                           ? const SizedBox()
                           : Padding(
                               padding: const EdgeInsets.only(bottom: 3),
                               child: Text(
-                                homeFeeds[index].tags!.join(', #'),
+                                posts[index].tags!.join(', #'),
                                 style: const TextStyle(color: AppColors.redMedium),
                               ),
                             ),
-                      homeFeeds[index].description!.isEmpty || homeFeeds[index].description == null
+                      posts[index].description!.isEmpty || posts[index].description == null
                           ? const SizedBox()
                           : ReadMoreText(
-                              homeFeeds[index].description ?? '',
+                              posts[index].description ?? '',
                               trimLines: 3,
                               colorClickableText: AppColors.blueGrey,
                               trimMode: TrimMode.Line,
@@ -123,9 +123,9 @@ class ListViewHomeFeeds extends StatelessWidget {
                   ),
                 ),
                 // GridImage
-                homeFeeds[index].images?[0].url == null
+                posts[index].images?[0].url == null
                     ? const SizedBox()
-                    : GridImage(images: homeFeeds[index].images ?? []),
+                    : GridImage(images: posts[index].images ?? []),
                 Container(
                   margin: const EdgeInsets.all(10),
                   // padding: const EdgeInsets.all(15),
@@ -136,20 +136,20 @@ class ListViewHomeFeeds extends StatelessWidget {
                       Image.asset(AppAssetIcons.like),
                       Expanded(
                         child: Text(
-                          homeFeeds[index].likeCounts.toString(),
+                          posts[index].likeCounts.toString(),
                           overflow: TextOverflow.ellipsis,
                           style: AppTextStyles.h6,
                         ),
                       ),
                       Image.asset(AppAssetIcons.comment),
                       Text(
-                        homeFeeds[index].commentCounts.toString(),
+                        posts[index].commentCounts.toString(),
                         overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(width: 15),
                       Image.asset(AppAssetIcons.share),
                       Text(
-                        homeFeeds[index].viewCounts.toString(),
+                        posts[index].viewCounts.toString(),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ],

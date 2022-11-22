@@ -1,6 +1,6 @@
 
-class HomeFeed {
-  HomeFeed({
+class Post {
+  Post({
     this.id,
     this.status,
     this.createdAt,
@@ -32,7 +32,7 @@ class HomeFeed {
   final User? user;
   final bool? liked;
 
-  factory HomeFeed.fromJson(Map<String, dynamic> json) => HomeFeed(
+  factory Post.fromJson(Map<String, dynamic> json) => Post(
     id: json["id"],
     status: json["status"],
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),

@@ -1,14 +1,14 @@
-import 'package:social_app/pages/home/models/home_feed.dart';
+import 'package:social_app/pages/home/models/post.dart';
 import 'package:social_app/services/my_client.dart';
 import 'package:social_app/utils/my_exception.dart';
 
-class ListHomeFeedsRepo {
+class ListPostsRepo {
   final _myClient = MyClient();
 
-  Future<List<HomeFeed>> getHomeFeeds() async {
+  Future<List<Post>> getPosts() async {
     final res = await _myClient.get(
-      '/homefeeds',
-      queryParameters: {'page': '19'},
+      '/posts',
+      queryParameters: {'page': '2'},
     );
     // print('res====${res.data}');
     if (res.statusCode != 200) {
@@ -19,8 +19,8 @@ class ListHomeFeedsRepo {
     if (data == null) {
       throw MyException('End Home Feed!!!');
     }
-    final homeFeeds = List<HomeFeed>.from(data.map((x) => HomeFeed.fromJson(x)));
+    final posts = List<Post>.from(data.map((x) => Post.fromJson(x)));
     // print('homeFeeds==$homeFeeds');
-    return homeFeeds;
+    return posts;
   }
 }

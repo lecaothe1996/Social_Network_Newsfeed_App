@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import 'package:social_app/pages/home/blocs/home_feed_bloc.dart';
+import 'package:social_app/pages/home/blocs/post_bloc.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/utils/preference_utils.dart';
 

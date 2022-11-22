@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:social_app/pages/home/blocs/home_feed_bloc.dart';
-import 'package:social_app/pages/home/models/home_feed.dart';
-import 'package:social_app/pages/home/models/home_feed.dart';
-import 'package:social_app/pages/home/repositorys/list_home_feeds_repo.dart';
+import 'package:social_app/pages/home/blocs/post_bloc.dart';
+import 'package:social_app/pages/home/models/post.dart';
+import 'package:social_app/pages/home/models/post.dart';
+import 'package:social_app/pages/home/repositorys/list_posts_repo.dart';
 import 'package:social_app/pages/home/view/create_post_page.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/widgets/icon_button_widget.dart';
@@ -14,7 +14,7 @@ import '../../../themes/app_color.dart';
 import '../../../themes/app_text_styles.dart';
 import '../../../welcome/auth/gmail_login.dart';
 import '../../../widgets/text_field_widget.dart';
-import 'list_view_home_feeds.dart';
+import 'list_view_posts.dart';
 import 'list_view_stories.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
               print('Click Create Post');
               // ListHomeFeedsRepo().getHomeFeeds();
               // context.read<HomeFeedBloc>().add(LoadHomeFeeds());
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const CreatePostPage()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => CreatePostPage()));
             },
             child: Container(
               margin: const EdgeInsets.fromLTRB(0, 10, 15, 10),
@@ -82,18 +82,18 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: CustomScrollView(
         slivers: [
-          BlocBuilder<HomeFeedBloc, HomeFeedState>(
+          BlocBuilder<PostBloc, PostState>(
             builder: (context, state) {
-              if (state is HomeFeedsLoaded) {
-                return ListViewStories(homeFeeds: state.data);
+              if (state is PostsLoaded) {
+                return ListViewStories(posts: state.data);
               }
               return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
             },
           ),
-          BlocBuilder<HomeFeedBloc, HomeFeedState>(
+          BlocBuilder<PostBloc, PostState>(
             builder: (context, state) {
-              if (state is HomeFeedsLoaded) {
-                return ListViewHomeFeeds(homeFeeds: state.data);
+              if (state is PostsLoaded) {
+                return ListViewPosts(posts: state.data);
               }
               return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
             },
