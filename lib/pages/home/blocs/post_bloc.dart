@@ -22,7 +22,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   FutureOr<void> _onLoadPosts(LoadPosts event, Emitter<PostState> emit) async {
     try {
       final posts = await _listPostsRepo.getPosts();
-      print('⚡️ Posts: posts');
+      // print('⚡️ Posts: $posts');
       _posts = posts;
       emit(PostsLoaded(data: _posts));
     } catch (e) {
@@ -32,8 +32,9 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
   FutureOr<void> _onCreatePost(CreatePost event, Emitter<PostState> emit) async {
     try {
-      print('description==${event.description}');
-      print('images==${event.images}');
+      // print('description==${event.description}');
+      // print('images==${event.images}');
+      _listPostsRepo.createPosts(event.description, event.images);
     } catch (e) {
       print('⚡️ Error Create Post: $e');
     }

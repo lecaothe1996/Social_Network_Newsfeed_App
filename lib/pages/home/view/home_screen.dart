@@ -67,7 +67,15 @@ class _HomeScreenState extends State<HomeScreen> {
               print('Click Create Post');
               // ListHomeFeedsRepo().getHomeFeeds();
               // context.read<PostBloc>().add(LoadPosts());
-              Navigator.push(context, MaterialPageRoute(builder: (context) => CreatePostPage()));
+              // context.read<PostBloc>().add(CreatePost(description: '123', images: []));
+              Navigator.of(context).push(
+                MaterialPageRoute<CreatePostPage>(
+                  builder: (_) => BlocProvider.value(
+                    value: BlocProvider.of<PostBloc>(context),
+                    child: const CreatePostPage(),
+                  ),
+                ),
+              );
             },
             child: Container(
               margin: const EdgeInsets.fromLTRB(0, 10, 15, 10),

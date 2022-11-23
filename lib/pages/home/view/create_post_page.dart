@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:social_app/pages/home/blocs/post_bloc.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
@@ -19,11 +20,12 @@ class CreatePostPage extends StatefulWidget {
 }
 
 class _CreatePostPageState extends State<CreatePostPage> {
+  final _descriptionCtl = TextEditingController();
   List<XFile>? _images;
 
   Future pickImage() async {
-    final ImagePicker _picker = ImagePicker();
-    final List<XFile> images = await _picker.pickMultiImage();
+    final ImagePicker picker = ImagePicker();
+    final List<XFile> images = await picker.pickMultiImage();
     // print('images===${images}');
 
     setState(() {
@@ -53,7 +55,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
             child: MyElevatedButton(
               onPressed: () {
                 print('Click Post');
-                context.read<PostBloc>().add(CreatePost(description: '123', images: _images = []));
+                BlocProvider.of<PostBloc>(context).add(CreatePost(description: _descriptionCtl.text, images: _images ?? []));
               },
               text: 'ĐĂNG',
               width: 80,
@@ -69,6 +71,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               // color: Colors.blueGrey,
               child: TextField(
+                controller: _descriptionCtl,
                 minLines: 5,
                 maxLines: null,
                 maxLength: 5000,
