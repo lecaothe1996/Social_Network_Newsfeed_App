@@ -1,8 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:social_app/pages/home/blocs/post_bloc.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/widgets/button_widget.dart';
@@ -18,20 +19,22 @@ class CreatePostPage extends StatefulWidget {
 }
 
 class _CreatePostPageState extends State<CreatePostPage> {
-  File? _image;
+  List<XFile>? _images;
 
-  Future pickImage () async {
+  Future pickImage() async {
     final ImagePicker _picker = ImagePicker();
-    // final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     final List<XFile> images = await _picker.pickMultiImage();
-    print('images===${images}');
+    // print('images===${images}');
 
     setState(() {
-      _image = File(images[0].path ?? '');
+      _images = images;
+      // print('_image===${_image}');
     });
   }
+
   @override
   Widget build(BuildContext context) {
+    print('_image===${_images}');
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -50,7 +53,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
             child: MyElevatedButton(
               onPressed: () {
                 print('Click Post');
-                pickImage();
+                context.read<PostBloc>().add(CreatePost(description: '123', images: _images = []));
               },
               text: 'ĐĂNG',
               width: 80,
@@ -60,6 +63,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
       ),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -78,12 +82,47 @@ class _CreatePostPageState extends State<CreatePostPage> {
                 ),
               ),
             ),
-            Container(
-              width: double.infinity,
-              height: 300,
-              color: Colors.brown,
-              child: Image.file(_image ?? File('')),
-            )
+            _images == null || _images!.isEmpty
+                ? const SizedBox()
+                : GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      childAspectRatio: 0.75,
+                      crossAxisSpacing: 4,
+                      mainAxisSpacing: 4,
+                    ),
+                    padding: const EdgeInsets.only(bottom: 15),
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: _images?.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        // margin: const EdgeInsets.symmetric(horizontal: 15),
+                        // width: 120,
+                        // height: 180,
+                        decoration: BoxDecoration(
+                          color: AppColors.slate,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Image.file(File(_images?[index].path ?? '')),
+                      );
+                    },
+                  ),
+            GestureDetector(
+              onTap: () {
+                pickImage();
+              },
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 15),
+                width: 120,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: AppColors.slate,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Center(child: Text('Thêm hình ảnh')),
+              ),
+            ),
           ],
         ),
       ),

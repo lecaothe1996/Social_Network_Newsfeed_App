@@ -8,7 +8,7 @@ class ListPostsRepo {
   Future<List<Post>> getPosts() async {
     final res = await _myClient.get(
       '/posts',
-      queryParameters: {'page': '2'},
+      queryParameters: {'page': '1'},
     );
     // print('res====${res.data}');
     if (res.statusCode != 200) {
@@ -17,10 +17,10 @@ class ListPostsRepo {
     final data = res.data['data'];
     // print('data====${data}');
     if (data == null) {
-      throw MyException('End Home Feed!!!');
+      throw MyException('End Post!!!');
     }
     final posts = List<Post>.from(data.map((x) => Post.fromJson(x)));
-    // print('homeFeeds==$homeFeeds');
+    // print('posts==posts');
     return posts;
   }
 }

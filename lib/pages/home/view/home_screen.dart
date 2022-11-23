@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
             onTap: () {
               print('Click Create Post');
               // ListHomeFeedsRepo().getHomeFeeds();
-              // context.read<HomeFeedBloc>().add(LoadHomeFeeds());
+              // context.read<PostBloc>().add(LoadPosts());
               Navigator.push(context, MaterialPageRoute(builder: (context) => CreatePostPage()));
             },
             child: Container(
