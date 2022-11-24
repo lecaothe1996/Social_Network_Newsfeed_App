@@ -86,6 +86,9 @@ class _CreatePostPageState extends State<CreatePostPage> {
               stream: imageBloc.image,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
+                  if (snapshot.data!.isEmpty) {
+                    return const SizedBox();
+                  }
                   return GridView.builder(
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
@@ -101,9 +104,14 @@ class _CreatePostPageState extends State<CreatePostPage> {
                       return Image.file(
                         File(snapshot.data?[index].path ?? ''),
                         fit: BoxFit.cover,
+                        width: 100,
+                        height: 150,
                       );
                     },
                   );
+                }
+                if (snapshot.hasError) {
+                  return Text(snapshot.error.toString());
                 }
                 return const SizedBox();
               },
