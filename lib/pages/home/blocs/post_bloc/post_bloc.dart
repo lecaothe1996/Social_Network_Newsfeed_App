@@ -12,6 +12,8 @@ part 'post_state.dart';
 class PostBloc extends Bloc<PostEvent, PostState> {
   final _listPostsRepo = ListPostsRepo();
 
+  List<XFile> _images = [];
+
   List<Post> _posts = [];
 
   PostBloc() : super(PostsLoading()) {

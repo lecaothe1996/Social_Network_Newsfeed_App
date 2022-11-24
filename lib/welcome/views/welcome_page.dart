@@ -1,19 +1,14 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/login/views/login_page.dart';
+import 'package:social_app/my_app/blocs/app_state_bloc.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
-import 'package:social_app/welcome/auth/gmail_login.dart';
 import 'package:social_app/welcome/blocs/auth_bloc.dart';
-
-import '../../blocs/app_state_bloc.dart';
-import '../../themes/app_color.dart';
-import '../../widgets/button_widget.dart';
-import '../../widgets/icon_button_widget.dart';
+import 'package:social_app/widgets/button_widget.dart';
+import 'package:social_app/widgets/icon_button_widget.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({Key? key}) : super(key: key);

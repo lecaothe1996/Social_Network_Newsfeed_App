@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:social_app/pages/home/blocs/post_bloc.dart';
+import 'package:social_app/pages/home/blocs/image_bloc.dart';
+import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/widgets/button_widget.dart';
@@ -21,22 +22,18 @@ class CreatePostPage extends StatefulWidget {
 
 class _CreatePostPageState extends State<CreatePostPage> {
   final _descriptionCtl = TextEditingController();
-  List<XFile>? _images;
 
-  Future pickImage() async {
-    final ImagePicker picker = ImagePicker();
-    final List<XFile> images = await picker.pickMultiImage();
-    // print('images===${images}');
+  final imageBloc = ImageBloc();
 
-    setState(() {
-      _images = images;
-      // print('_image===${_image}');
-    });
+  @override
+  void dispose() {
+    imageBloc.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    print('_image===${_images}');
+    // print('_image===${_images}');
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -55,7 +52,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
             child: MyElevatedButton(
               onPressed: () {
                 print('Click Post');
-                BlocProvider.of<PostBloc>(context).add(CreatePost(description: _descriptionCtl.text, images: _images ?? []));
+                BlocProvider.of<PostBloc>(context).add(CreatePost(description: _descriptionCtl.text, images: imageBloc.images ?? []));
               },
               text: 'ĐĂNG',
               width: 80,
@@ -85,9 +82,11 @@ class _CreatePostPageState extends State<CreatePostPage> {
                 ),
               ),
             ),
-            _images == null || _images!.isEmpty
-                ? const SizedBox()
-                : GridView.builder(
+            StreamBuilder<List<XFile>>(
+              stream: imageBloc.image,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return GridView.builder(
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       childAspectRatio: 0.75,
@@ -97,23 +96,22 @@ class _CreatePostPageState extends State<CreatePostPage> {
                     padding: const EdgeInsets.only(bottom: 15),
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: _images?.length,
+                    itemCount: snapshot.data?.length,
                     itemBuilder: (context, index) {
-                      return Container(
-                        // margin: const EdgeInsets.symmetric(horizontal: 15),
-                        // width: 120,
-                        // height: 180,
-                        decoration: BoxDecoration(
-                          color: AppColors.slate,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Image.file(File(_images?[index].path ?? '')),
+                      return Image.file(
+                        File(snapshot.data?[index].path ?? ''),
+                        fit: BoxFit.cover,
                       );
                     },
-                  ),
+                  );
+                }
+                return const SizedBox();
+              },
+            ),
             GestureDetector(
               onTap: () {
-                pickImage();
+                // BlocProvider.of<PostBloc>(context).add(AddImages());
+                imageBloc.onAddImages();
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 15),

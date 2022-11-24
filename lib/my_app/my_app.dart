@@ -1,16 +1,13 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:social_app/pages/home/blocs/post_bloc.dart';
-
-import 'blocs/app_state_bloc.dart';
-import 'pages/pages.dart';
-import 'themes/app_color.dart';
-import 'themes/app_fonts.dart';
-import 'welcome/blocs/auth_bloc.dart';
-import 'welcome/views/welcome_page.dart';
+import 'package:social_app/my_app/blocs/app_state_bloc.dart';
+import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
+import 'package:social_app/pages/pages.dart';
+import 'package:social_app/themes/app_color.dart';
+import 'package:social_app/themes/app_fonts.dart';
+import 'package:social_app/welcome/blocs/auth_bloc.dart';
+import 'package:social_app/welcome/views/welcome_page.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);

@@ -6,7 +6,7 @@ import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_fonts.dart';
 
 import 'firebase/firebase_initializer.dart';
-import 'my_app.dart';
+import 'my_app/my_app.dart';
 import 'utils/preference_utils.dart';
 import 'welcome/blocs/auth_bloc.dart';
 import 'welcome/views/welcome_page.dart';

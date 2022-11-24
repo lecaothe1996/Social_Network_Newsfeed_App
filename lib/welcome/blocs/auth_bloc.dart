@@ -1,9 +1,8 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../blocs/app_state_bloc.dart';
-import '../../utils/preference_utils.dart';
-import '../auth/gmail_login.dart';
+import 'package:social_app/my_app/blocs/app_state_bloc.dart';
+import 'package:social_app/utils/preference_utils.dart';
+import 'package:social_app/welcome/auth/gmail_login.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';

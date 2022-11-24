@@ -1,19 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:social_app/pages/home/blocs/post_bloc.dart';
-import 'package:social_app/pages/home/models/post.dart';
-import 'package:social_app/pages/home/models/post.dart';
-import 'package:social_app/pages/home/repositorys/list_posts_repo.dart';
-import 'package:social_app/pages/home/view/create_post_page.dart';
+import 'package:social_app/my_app/blocs/app_state_bloc.dart';
+import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
+import 'package:social_app/pages/home/view/create_post_screen.dart';
 import 'package:social_app/themes/app_assets.dart';
-import 'package:social_app/widgets/icon_button_widget.dart';
-
-import '../../../blocs/app_state_bloc.dart';
-import '../../../themes/app_color.dart';
-import '../../../themes/app_text_styles.dart';
-import '../../../welcome/auth/gmail_login.dart';
-import '../../../widgets/text_field_widget.dart';
+import 'package:social_app/themes/app_color.dart';
+import 'package:social_app/themes/app_text_styles.dart';
 import 'list_view_posts.dart';
 import 'list_view_stories.dart';
 
