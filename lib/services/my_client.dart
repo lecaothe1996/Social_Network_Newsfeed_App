@@ -19,7 +19,7 @@ class MyClient {
   }
 
   MyClient._internal() {
-    final baseOptions = BaseOptions(baseUrl: 'https://api.dofhunt.200lab.io/v1/123');
+    final baseOptions = BaseOptions(baseUrl: 'https://api.dofhunt.200lab.io/v1');
     _dio = Dio(baseOptions);
     setupInterceptors();
     (_dio.transformer as DefaultTransformer).jsonDecodeCallback = _parseAndDecode;

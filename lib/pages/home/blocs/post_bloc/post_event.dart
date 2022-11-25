@@ -7,6 +7,12 @@ class LoadPosts extends PostEvent {}
 
 class LoadMorePosts extends PostEvent {}
 
+class RefreshPosts extends PostEvent {
+  final int page;
+
+  RefreshPosts({this.page = 1});
+}
+
 class CreatePost extends PostEvent {
   final String description;
   final List<XFile> images;

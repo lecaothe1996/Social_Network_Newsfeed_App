@@ -8,28 +8,31 @@ class ErrorDialog {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text(
-          'Lỗi',
+          'Thông báo',
           textAlign: TextAlign.center,
           style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
         ),
         content: Text(
           msg,
           textAlign: TextAlign.center,
         ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-          actionsAlignment: MainAxisAlignment.spaceBetween,
+        actionsAlignment: MainAxisAlignment.start,
         actions: [
-          const Divider(height: 1),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(ErrorDialog);
-            },
-            child: Text(
-              'Ok',
-              textAlign: TextAlign.center,
-              style: AppTextStyles.h5.copyWith(color: AppColors.redMedium, fontWeight: FontWeight.bold),
+          const Divider(),
+          SizedBox(
+            width: double.infinity,
+            child: TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(ErrorDialog);
+              },
+              child: Text(
+                'Xác nhận',
+                textAlign: TextAlign.center,
+                style: AppTextStyles.h5.copyWith(color: AppColors.redMedium, fontWeight: FontWeight.bold),
+              ),
             ),
           ),
         ],

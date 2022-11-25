@@ -123,9 +123,7 @@ class ListViewPosts extends StatelessWidget {
                   ),
                 ),
                 // GridImage
-                posts[index].images?[0].url == null
-                    ? const SizedBox()
-                    : GridImage(images: posts[index].images ?? []),
+                posts[index].images?[0].url == null ? const SizedBox() : GridImage(images: posts[index].images ?? []),
                 Container(
                   margin: const EdgeInsets.all(10),
                   // padding: const EdgeInsets.all(15),

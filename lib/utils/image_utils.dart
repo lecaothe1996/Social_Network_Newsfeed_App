@@ -23,8 +23,10 @@ class ImageUtils {
     }
 
     if (url.startsWith('https://lh3.googleusercontent.com')) {
-      return url.replaceAll('=s96-c', '=s${(w * dpr).toInt()}');
-      // return '$url=s${(w * dpr).toInt()}';
+      if (url.endsWith('=s96-c')) {
+        return url.replaceAll('=s96-c', '=s${(w * dpr).toInt()}');
+      }
+      return '$url=s${(w * dpr).toInt()}';
     }
 
     if (fillBlur) {
