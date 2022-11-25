@@ -12,23 +12,36 @@ part 'post_state.dart';
 class PostBloc extends Bloc<PostEvent, PostState> {
   final _listPostsRepo = ListPostsRepo();
 
-  List<XFile> _images = [];
-
   List<Post> _posts = [];
+
+  int _page = 1;
 
   PostBloc() : super(PostsLoading()) {
     on<LoadPosts>(_onLoadPosts);
+    on<LoadMorePosts>(_onLoadMorePosts);
     on<CreatePost>(_onCreatePost);
   }
 
   FutureOr<void> _onLoadPosts(LoadPosts event, Emitter<PostState> emit) async {
     try {
-      final posts = await _listPostsRepo.getPosts();
+      final posts = await _listPostsRepo.getPosts(_page);
       // print('⚡️ Posts: $posts');
       _posts = posts;
       emit(PostsLoaded(data: _posts));
     } catch (e) {
       print('⚡️ Error Posts: $e');
+      emit(PostError(error: e.toString()));
+    }
+  }
+
+  FutureOr<void> _onLoadMorePosts(LoadMorePosts event, Emitter<PostState> emit) async {
+    try {
+      _page = _page + 1;
+      final posts = await _listPostsRepo.getPosts(_page);
+      _posts = List.from(_posts)..addAll(posts);
+      emit(PostsLoaded(data: _posts));
+    } catch (e) {
+      print('⚡️ Error Load More Posts: $e');
     }
   }
 
@@ -41,4 +54,6 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       print('⚡️ Error Create Post: $e');
     }
   }
+
+
 }

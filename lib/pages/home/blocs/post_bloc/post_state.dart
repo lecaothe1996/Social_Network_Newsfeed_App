@@ -10,3 +10,9 @@ class PostsLoaded extends PostState {
 
   PostsLoaded({required this.data});
 }
+
+class PostError extends PostState {
+  final String error;
+
+  PostError({required this.error});
+}

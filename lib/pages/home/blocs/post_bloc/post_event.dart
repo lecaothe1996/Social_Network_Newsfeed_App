@@ -5,6 +5,8 @@ abstract class PostEvent {}
 
 class LoadPosts extends PostEvent {}
 
+class LoadMorePosts extends PostEvent {}
+
 class CreatePost extends PostEvent {
   final String description;
   final List<XFile> images;

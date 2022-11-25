@@ -28,6 +28,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
   @override
   void dispose() {
     imageBloc.dispose();
+    _descriptionCtl.dispose();
     super.dispose();
   }
 
@@ -52,7 +53,8 @@ class _CreatePostPageState extends State<CreatePostPage> {
             child: MyElevatedButton(
               onPressed: () {
                 print('Click Post');
-                BlocProvider.of<PostBloc>(context).add(CreatePost(description: _descriptionCtl.text, images: imageBloc.images ?? []));
+                BlocProvider.of<PostBloc>(context)
+                    .add(CreatePost(description: _descriptionCtl.text, images: imageBloc.images ?? []));
               },
               text: 'ĐĂNG',
               width: 80,
@@ -101,11 +103,23 @@ class _CreatePostPageState extends State<CreatePostPage> {
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: snapshot.data?.length,
                     itemBuilder: (context, index) {
-                      return Image.file(
-                        File(snapshot.data?[index].path ?? ''),
-                        fit: BoxFit.cover,
-                        width: 100,
-                        height: 150,
+                      return Stack(
+                        children: [
+                          Image.file(
+                            File(snapshot.data?[index].path ?? ''),
+                            fit: BoxFit.cover,
+                          ),
+                          Positioned(
+                            right: 0,
+                            child: MyIconButton(
+                              onTap: () {
+                                print('Click close image');
+                                imageBloc.closeImage(index);
+                              },
+                              nameImage: AppAssetIcons.close,
+                            ),
+                          ),
+                        ],
                       );
                     },
                   );

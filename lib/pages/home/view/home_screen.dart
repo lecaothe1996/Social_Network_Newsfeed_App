@@ -7,6 +7,7 @@ import 'package:social_app/pages/home/view/create_post_screen.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
+import 'package:social_app/widgets/dialogs/error_dialog.dart';
 import 'list_view_posts.dart';
 import 'list_view_stories.dart';
 
@@ -18,71 +19,92 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final _scrollController = ScrollController();
+  bool _isLoading = false;
+
   AppStateBloc get appStateBloc => Provider.of<AppStateBloc>(context, listen: false);
+
+  @override
+  void didUpdateWidget(covariant HomeScreen oldWidget) {
+    if (_isLoading == true) {
+      _isLoading = false;
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.slate,
-      appBar: AppBar(
-        centerTitle: false,
-        // elevation: 1,
-        title: GestureDetector(
-          onTap: () {
-            print('Click Search');
-          },
-          child: Container(
-            height: 36,
-            decoration: BoxDecoration(
-              color: AppColors.blueGrey.withOpacity(0.12),
-              borderRadius: BorderRadius.circular(100),
-            ),
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 15),
-                  child: Image.asset(AppAssetIcons.search),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 7),
-                  child: Text(
-                    'Search',
-                    style: AppTextStyles.body.copyWith(color: AppColors.slate),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        actions: [
-          GestureDetector(
-            onTap: () {
-              print('Click Create Post');
-              // ListHomeFeedsRepo().getHomeFeeds();
-              // context.read<PostBloc>().add(LoadPosts());
-              // context.read<PostBloc>().add(CreatePost(description: '123', images: []));
-              Navigator.of(context).push(
-                MaterialPageRoute<CreatePostPage>(
-                  builder: (_) => BlocProvider.value(
-                    value: BlocProvider.of<PostBloc>(context),
-                    child: const CreatePostPage(),
-                  ),
-                ),
-              );
-            },
-            child: Container(
-              margin: const EdgeInsets.fromLTRB(0, 10, 15, 10),
-              decoration: const BoxDecoration(
-                gradient: Gradients.defaultGradientButton,
-                shape: BoxShape.circle,
-              ),
-              child: Image.asset(AppAssetIcons.plus),
-            ),
-          ),
-        ],
-      ),
       body: CustomScrollView(
+        controller: _scrollController,
         slivers: [
+          SliverAppBar(
+            centerTitle: false,
+            floating: true,
+            // forceElevated: true,
+            // elevation: 1,
+            title: GestureDetector(
+              onTap: () {
+                print('Click Search');
+                ErrorDialog.showMsgDialog(context, 'You can also customize the card theme globally with');
+              },
+              child: Container(
+                height: 36,
+                decoration: BoxDecoration(
+                  color: AppColors.blueGrey.withOpacity(0.12),
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15),
+                      child: Image.asset(AppAssetIcons.search),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 7),
+                      child: Text(
+                        'Search',
+                        style: AppTextStyles.body.copyWith(color: AppColors.slate),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            actions: [
+              GestureDetector(
+                onTap: () {
+                  print('Click Create Post');
+                  // ListHomeFeedsRepo().getHomeFeeds();
+                  // context.read<PostBloc>().add(LoadPosts());
+                  // context.read<PostBloc>().add(CreatePost(description: '123', images: []));
+                  Navigator.of(context).push(
+                    MaterialPageRoute<CreatePostPage>(
+                      builder: (_) => BlocProvider.value(
+                        value: BlocProvider.of<PostBloc>(context),
+                        child: const CreatePostPage(),
+                      ),
+                    ),
+                  );
+                },
+                child: Container(
+                  margin: const EdgeInsets.fromLTRB(0, 10, 15, 10),
+                  decoration: const BoxDecoration(
+                    gradient: Gradients.defaultGradientButton,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Image.asset(AppAssetIcons.plus),
+                ),
+              ),
+            ],
+          ),
           BlocBuilder<PostBloc, PostState>(
             builder: (context, state) {
               if (state is PostsLoaded) {
@@ -91,9 +113,17 @@ class _HomeScreenState extends State<HomeScreen> {
               return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
             },
           ),
-          BlocBuilder<PostBloc, PostState>(
+          BlocConsumer<PostBloc, PostState>(
+            listener: (context, state) {
+              if (state is PostError) {
+                ErrorDialog.showMsgDialog(context, state.error);
+              }
+            },
             builder: (context, state) {
               if (state is PostsLoaded) {
+                if (_isLoading == true) {
+                  _isLoading = false;
+                }
                 return ListViewPosts(posts: state.data);
               }
               return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
@@ -102,5 +132,23 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
+  }
+
+  void _scrollListener() {
+    final currentScroll = _scrollController.position.pixels;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+
+    // print('current Scroll===$currentScroll');
+    // print('max Scroll===$maxScroll');
+    // print('Total Scroll===${maxScroll -currentScroll}');
+
+    if (maxScroll - currentScroll <= 5000) {
+      print('_isLoading===${_isLoading}');
+      if (_isLoading == false) {
+        _isLoading = true;
+        print('Call function load more');
+        BlocProvider.of<PostBloc>(context).add(LoadMorePosts());
+      }
+    }
   }
 }

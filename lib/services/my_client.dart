@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:social_app/utils/my_exception.dart';
 import 'package:social_app/utils/preference_utils.dart';
 
 class MyClient {
@@ -18,7 +19,7 @@ class MyClient {
   }
 
   MyClient._internal() {
-    final baseOptions = BaseOptions(baseUrl: 'https://api.dofhunt.200lab.io/v1');
+    final baseOptions = BaseOptions(baseUrl: 'https://api.dofhunt.200lab.io/v1/123');
     _dio = Dio(baseOptions);
     setupInterceptors();
     (_dio.transformer as DefaultTransformer).jsonDecodeCallback = _parseAndDecode;

@@ -6,23 +6,27 @@ import 'package:social_app/utils/my_exception.dart';
 class ListPostsRepo {
   final _myClient = MyClient();
 
-  Future<List<Post>> getPosts() async {
-    final res = await _myClient.get(
-      '/posts',
-      queryParameters: {'page': '1'},
-    );
-    // print('res====${res.data}');
-    if (res.statusCode != 200) {
-      throw MyException('Server Error!!!');
+  Future<List<Post>> getPosts(int page) async {
+    try {
+      final res = await _myClient.get(
+        '/posts',
+        queryParameters: {'page': page},
+      );
+      // print('res====${res.data}');
+      if (res.statusCode != 200) {
+        throw MyException('Server Error!!!');
+      }
+      final data = res.data['data'];
+      // print('data====${data}');
+      if (data == null) {
+        throw MyException('End Post!!!');
+      }
+      final posts = List<Post>.from(data.map((x) => Post.fromJson(x)));
+      // print('posts==posts');
+      return posts;
+    } catch (e) {
+      throw MyException('Lỗi tải bài viết!');
     }
-    final data = res.data['data'];
-    // print('data====${data}');
-    if (data == null) {
-      throw MyException('End Post!!!');
-    }
-    final posts = List<Post>.from(data.map((x) => Post.fromJson(x)));
-    // print('posts==posts');
-    return posts;
   }
 
   Future createPosts(String description, List<XFile> images) async {

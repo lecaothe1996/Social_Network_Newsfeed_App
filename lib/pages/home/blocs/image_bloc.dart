@@ -14,7 +14,13 @@ class ImageBloc {
     // final ImagePicker picker = ImagePicker();
     final List<XFile> images = await ImagePicker().pickMultiImage();
     _images = List.from(_images)..addAll(images);
-    print('⚡️ _images===$_images');
+    // print('⚡️ _images===$_images');
+    _image.sink.add(_images);
+  }
+
+  void closeImage(int index) {
+    _images = List.from(_images)..removeAt(index);
+    // print('⚡️ index===$index');
     _image.sink.add(_images);
   }
 
