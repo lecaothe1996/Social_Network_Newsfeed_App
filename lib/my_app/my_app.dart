@@ -31,6 +31,7 @@ class _SplashPageState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         appBarTheme: const AppBarTheme(
+
           color: AppColors.dark,
           elevation: 0,
           centerTitle: true,

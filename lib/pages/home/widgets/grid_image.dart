@@ -8,11 +8,13 @@ import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/utils/image_utils.dart';
 
 class GridImage extends StatelessWidget {
+  final Post post;
   final List<Images> images;
   final List<Post> photos;
 
   const GridImage({
     Key? key,
+    required this.post,
     required this.images,
     required this.photos,
   }) : super(key: key);
@@ -659,6 +661,6 @@ class GridImage extends StatelessWidget {
   void navigateToPhotoPage(List<Images> images, int index, BuildContext context) {
     // print('⚡️ Chose image number ${index + 1}');
     // print('⚡️ Photos number ${photos.length}');
-    Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPostScreen(photos: photos),));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPostScreen(post: post, photos: photos),));
   }
 }

@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart';
 import 'package:social_app/pages/home/models/post.dart';
 import 'package:social_app/pages/home/widgets/grid_image.dart';
+import 'package:social_app/pages/home/widgets/like_comment_view.dart';
 import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/utils/convert_to_time_ago.dart';
 import 'package:social_app/utils/image_utils.dart';
@@ -100,15 +101,6 @@ class ListViewPosts extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 15),
-                      posts[index].tags == null || posts[index].tags!.isEmpty
-                          ? const SizedBox()
-                          : Padding(
-                              padding: const EdgeInsets.only(bottom: 3),
-                              child: Text(
-                                posts[index].tags!.join(', #'),
-                                style: const TextStyle(color: AppColors.redMedium),
-                              ),
-                            ),
                       posts[index].description!.isEmpty || posts[index].description == null
                           ? const SizedBox()
                           : ReadMoreText(
@@ -127,36 +119,29 @@ class ListViewPosts extends StatelessWidget {
                 posts[index].images?[0].url == null
                     ? const SizedBox()
                     : GridImage(
+                        post: Post(
+                          createdAt: posts[index].createdAt,
+                          likeCounts: posts[index].likeCounts,
+                          commentCounts: posts[index].commentCounts,
+                          viewCounts: posts[index].viewCounts,
+                          user: User(
+                            avatar: Images(
+                              url: urlAvatar,
+                            ),
+                            firstName: posts[index].user?.firstName ?? '',
+                            lastName: posts[index].user?.lastName ?? '',
+                          ),
+                          description: posts[index].description ?? '',
+                        ),
                         images: posts[index].images ?? [],
                         photos: posts[index].photos ?? [],
                       ),
-                Container(
-                  margin: const EdgeInsets.all(10),
-                  // padding: const EdgeInsets.all(15),
-                  height: 28,
-                  child: Row(
-                    // crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Image.asset(AppAssetIcons.like),
-                      Expanded(
-                        child: Text(
-                          posts[index].likeCounts.toString(),
-                          overflow: TextOverflow.ellipsis,
-                          style: AppTextStyles.h6,
-                        ),
-                      ),
-                      Image.asset(AppAssetIcons.comment),
-                      Text(
-                        posts[index].commentCounts.toString(),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(width: 15),
-                      Image.asset(AppAssetIcons.share),
-                      Text(
-                        posts[index].viewCounts.toString(),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: LikeCommentView(
+                    likeCounts: posts[index].likeCounts ?? 0,
+                    commentCounts: posts[index].commentCounts ?? 0,
+                    viewCounts: posts[index].viewCounts ?? 0,
                   ),
                 ),
               ],
