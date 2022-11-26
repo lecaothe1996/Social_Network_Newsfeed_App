@@ -32,7 +32,8 @@ class ListViewPosts extends StatelessWidget {
           // print('url Avatar = $urlAvatar');
           return Container(
             margin: const EdgeInsets.only(top: 15),
-            color: Colors.black.withOpacity(0.5),
+            // color: Colors.black.withOpacity(0.5),
+            color: AppColors.dark,
             child: Column(
               children: [
                 Padding(
@@ -123,7 +124,12 @@ class ListViewPosts extends StatelessWidget {
                   ),
                 ),
                 // GridImage
-                posts[index].images?[0].url == null ? const SizedBox() : GridImage(images: posts[index].images ?? []),
+                posts[index].images?[0].url == null
+                    ? const SizedBox()
+                    : GridImage(
+                        images: posts[index].images ?? [],
+                        photos: posts[index].photos ?? [],
+                      ),
                 Container(
                   margin: const EdgeInsets.all(10),
                   // padding: const EdgeInsets.all(15),

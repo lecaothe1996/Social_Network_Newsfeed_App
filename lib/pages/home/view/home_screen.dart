@@ -38,104 +38,110 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.slate,
-      body: RefreshIndicator(
-        onRefresh: () {
-          final postsBloc = context.read<PostBloc>()..add(RefreshPosts(page: 1));
-          return postsBloc.stream.firstWhere(
-                (element) {
-              return element is PostsLoaded;
-            },
-          );
-        },
-        child: CustomScrollView(
-          controller: _scrollController,
-          slivers: [
-            SliverAppBar(
-              centerTitle: false,
-              floating: true,
-              // forceElevated: true,
-              // elevation: 1,
-              title: GestureDetector(
-                onTap: () {
-                  print('Click Search');
-                },
-                child: Container(
-                  height: 36,
-                  decoration: BoxDecoration(
-                    color: AppColors.blueGrey.withOpacity(0.12),
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15),
-                        child: Image.asset(AppAssetIcons.search),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 7),
-                        child: Text(
-                          'Search',
-                          style: AppTextStyles.body.copyWith(color: AppColors.slate),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              actions: [
-                GestureDetector(
+    return WillPopScope(
+      onWillPop: () async {
+        _scrollToTop();
+        return false;
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.slate,
+        body: RefreshIndicator(
+          onRefresh: () {
+            final postsBloc = context.read<PostBloc>()..add(RefreshPosts(page: 1));
+            return postsBloc.stream.firstWhere(
+              (element) {
+                return element is PostsLoaded;
+              },
+            );
+          },
+          child: CustomScrollView(
+            controller: _scrollController,
+            slivers: [
+              SliverAppBar(
+                centerTitle: false,
+                floating: true,
+                // forceElevated: true,
+                // elevation: 1,
+                title: GestureDetector(
                   onTap: () {
-                    print('Click Create Post');
-                    // ListHomeFeedsRepo().getHomeFeeds();
-                    // context.read<PostBloc>().add(LoadPosts());
-                    // context.read<PostBloc>().add(CreatePost(description: '123', images: []));
-                    Navigator.of(context).push(
-                      MaterialPageRoute<CreatePostPage>(
-                        builder: (_) => BlocProvider.value(
-                          value: BlocProvider.of<PostBloc>(context),
-                          child: const CreatePostPage(),
-                        ),
-                      ),
-                    );
+                    print('Click Search');
                   },
                   child: Container(
-                    margin: const EdgeInsets.fromLTRB(0, 10, 15, 10),
-                    decoration: const BoxDecoration(
-                      gradient: Gradients.defaultGradientButton,
-                      shape: BoxShape.circle,
+                    height: 36,
+                    decoration: BoxDecoration(
+                      color: AppColors.blueGrey.withOpacity(0.12),
+                      borderRadius: BorderRadius.circular(100),
                     ),
-                    child: Image.asset(AppAssetIcons.plus),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Image.asset(AppAssetIcons.search),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 7),
+                          child: Text(
+                            'Search',
+                            style: AppTextStyles.body.copyWith(color: AppColors.slate),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ],
-            ),
-            BlocBuilder<PostBloc, PostState>(
-              builder: (context, state) {
-                if (state is PostsLoaded) {
-                  return ListViewStories(posts: state.data);
-                }
-                return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
-              },
-            ),
-            BlocConsumer<PostBloc, PostState>(
-              listener: (context, state) {
-                if (state is PostError) {
-                  ErrorDialog.showMsgDialog(context, state.error);
-                }
-              },
-              builder: (context, state) {
-                if (state is PostsLoaded) {
-                  if (_isLoading == true) {
-                    _isLoading = false;
+                actions: [
+                  GestureDetector(
+                    onTap: () {
+                      print('Click Create Post');
+                      // ListHomeFeedsRepo().getHomeFeeds();
+                      // context.read<PostBloc>().add(LoadPosts());
+                      // context.read<PostBloc>().add(CreatePost(description: '123', images: []));
+                      Navigator.of(context).push(
+                        MaterialPageRoute<CreatePostPage>(
+                          builder: (_) => BlocProvider.value(
+                            value: BlocProvider.of<PostBloc>(context),
+                            child: const CreatePostPage(),
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.fromLTRB(0, 10, 15, 10),
+                      decoration: const BoxDecoration(
+                        gradient: Gradients.defaultGradientButton,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Image.asset(AppAssetIcons.plus),
+                    ),
+                  ),
+                ],
+              ),
+              BlocBuilder<PostBloc, PostState>(
+                builder: (context, state) {
+                  if (state is PostsLoaded) {
+                    return ListViewStories(posts: state.data);
                   }
-                  return ListViewPosts(posts: state.data);
-                }
-                return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
-              },
-            ),
-          ],
+                  return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
+                },
+              ),
+              BlocConsumer<PostBloc, PostState>(
+                listener: (context, state) {
+                  if (state is PostError) {
+                    ErrorDialog.showMsgDialog(context, state.error);
+                  }
+                },
+                builder: (context, state) {
+                  if (state is PostsLoaded) {
+                    if (_isLoading == true) {
+                      _isLoading = false;
+                    }
+                    return ListViewPosts(posts: state.data);
+                  }
+                  return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -145,16 +151,19 @@ class _HomeScreenState extends State<HomeScreen> {
     final currentScroll = _scrollController.position.pixels;
     final maxScroll = _scrollController.position.maxScrollExtent;
 
-    // print('current Scroll===$currentScroll');
-    // print('max Scroll===$maxScroll');
-    // print('Total Scroll===${maxScroll -currentScroll}');
-
     if (maxScroll - currentScroll <= 5000) {
       if (_isLoading == false) {
         _isLoading = true;
-        // print('Call event load more');
         BlocProvider.of<PostBloc>(context).add(LoadMorePosts());
       }
     }
+  }
+
+  void _scrollToTop() {
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeOutCirc,
+    );
   }
 }

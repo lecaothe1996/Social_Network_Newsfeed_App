@@ -2,23 +2,26 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:social_app/pages/home/models/post.dart';
+import 'package:social_app/pages/home/view/detail_post_screen.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/utils/image_utils.dart';
 
 class GridImage extends StatelessWidget {
   final List<Images> images;
+  final List<Post> photos;
 
   const GridImage({
     Key? key,
     required this.images,
+    required this.photos,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     // print('List Images===${images}');
-    final width = MediaQuery.of(context).size.width;
-    return buildImageGrid(images, width, context);
+    final deviceWidth = MediaQuery.of(context).size.width;
+    return buildImageGrid(images, deviceWidth, context);
   }
 
   Widget buildImageGrid(List<Images> images, double width, BuildContext context) {
@@ -47,11 +50,11 @@ class GridImage extends StatelessWidget {
     // print('url One Image = $urlOneImage');
 
     // view lớn hơn tỷ lệ 9/16
-    if (heightView >= width * 1.8) {
+    if (heightView >= width * 1.5) {
       return GestureDetector(
         onTap: () => navigateToPhotoPage([image], 0, context),
         child: SizedBox(
-          height: width * 1.8,
+          height: width * 1.5,
           width: width,
           child: CachedNetworkImage(
             imageUrl: urlOneImage,
@@ -654,6 +657,8 @@ class GridImage extends StatelessWidget {
   }
 
   void navigateToPhotoPage(List<Images> images, int index, BuildContext context) {
-    print('⚡️ Chose image number ${index + 1}');
+    // print('⚡️ Chose image number ${index + 1}');
+    // print('⚡️ Photos number ${photos.length}');
+    Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPostScreen(photos: photos),));
   }
 }
