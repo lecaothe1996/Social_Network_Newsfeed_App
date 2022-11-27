@@ -2,28 +2,23 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:social_app/pages/home/models/post.dart';
-import 'package:social_app/pages/home/view/detail_post_screen.dart';
+import 'package:social_app/pages/home/view/photo_screen.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/utils/image_utils.dart';
 
 class GridImage extends StatelessWidget {
   final Post post;
-  final List<Images> images;
-  final List<Post> photos;
 
   const GridImage({
     Key? key,
     required this.post,
-    required this.images,
-    required this.photos,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // print('List Images===${images}');
     final deviceWidth = MediaQuery.of(context).size.width;
-    return buildImageGrid(images, deviceWidth, context);
+    return buildImageGrid(post.images ?? [], deviceWidth, context);
   }
 
   Widget buildImageGrid(List<Images> images, double width, BuildContext context) {
@@ -53,11 +48,12 @@ class GridImage extends StatelessWidget {
 
     // view lớn hơn tỷ lệ 9/16
     if (heightView >= width * 1.5) {
-      return GestureDetector(
-        onTap: () => navigateToPhotoPage([image], 0, context),
-        child: SizedBox(
-          height: width * 1.5,
-          width: width,
+      return Container(
+        height: width * 1.5,
+        width: width,
+        color: AppColors.slate,
+        child: GestureDetector(
+          onTap: () => _navigateToPhotoListScreen([image], 0, context),
           child: CachedNetworkImage(
             imageUrl: urlOneImage,
             fit: BoxFit.cover,
@@ -66,11 +62,12 @@ class GridImage extends StatelessWidget {
       );
     }
 
-    return GestureDetector(
-      onTap: () => navigateToPhotoPage([image], 0, context),
-      child: SizedBox(
-        height: heightView,
-        width: width,
+    return Container(
+      height: heightView,
+      width: width,
+      color: AppColors.slate,
+      child: GestureDetector(
+        onTap: () => _navigateToPhotoListScreen([image], 0, context),
         child: CachedNetworkImage(
           imageUrl: urlOneImage,
           fit: BoxFit.cover,
@@ -109,22 +106,28 @@ class GridImage extends StatelessWidget {
           StaggeredGridTile.count(
             crossAxisCellCount: 2,
             mainAxisCellCount: 3,
-            child: GestureDetector(
-              onTap: () => navigateToPhotoPage(images, 0, context),
-              child: CachedNetworkImage(
-                imageUrl: urlVerticalImage1,
-                fit: BoxFit.cover,
+            child: Container(
+              color: AppColors.slate,
+              child: GestureDetector(
+                onTap: () => _navigateToPhotoListScreen(images, 0, context),
+                child: CachedNetworkImage(
+                  imageUrl: urlVerticalImage1,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
           StaggeredGridTile.count(
             crossAxisCellCount: 2,
             mainAxisCellCount: 3,
-            child: GestureDetector(
-              onTap: () => navigateToPhotoPage(images, 1, context),
-              child: CachedNetworkImage(
-                imageUrl: urlVerticalImage2,
-                fit: BoxFit.cover,
+            child: Container(
+              color: AppColors.slate,
+              child: GestureDetector(
+                onTap: () => _navigateToPhotoListScreen(images, 1, context),
+                child: CachedNetworkImage(
+                  imageUrl: urlVerticalImage2,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
@@ -140,22 +143,28 @@ class GridImage extends StatelessWidget {
           StaggeredGridTile.count(
             crossAxisCellCount: 2,
             mainAxisCellCount: 1,
-            child: GestureDetector(
-              onTap: () => navigateToPhotoPage(images, 0, context),
-              child: CachedNetworkImage(
-                imageUrl: urlHorizontalImage1,
-                fit: BoxFit.cover,
+            child: Container(
+              color: AppColors.slate,
+              child: GestureDetector(
+                onTap: () => _navigateToPhotoListScreen(images, 0, context),
+                child: CachedNetworkImage(
+                  imageUrl: urlHorizontalImage1,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
           StaggeredGridTile.count(
             crossAxisCellCount: 2,
             mainAxisCellCount: 1,
-            child: GestureDetector(
-              onTap: () => navigateToPhotoPage(images, 1, context),
-              child: CachedNetworkImage(
-                imageUrl: urlHorizontalImage2,
-                fit: BoxFit.cover,
+            child: Container(
+              color: AppColors.slate,
+              child: GestureDetector(
+                onTap: () => _navigateToPhotoListScreen(images, 1, context),
+                child: CachedNetworkImage(
+                  imageUrl: urlHorizontalImage2,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
@@ -171,22 +180,28 @@ class GridImage extends StatelessWidget {
           StaggeredGridTile.count(
             crossAxisCellCount: 1,
             mainAxisCellCount: 1,
-            child: GestureDetector(
-              onTap: () => navigateToPhotoPage(images, 0, context),
-              child: CachedNetworkImage(
-                imageUrl: urlSquareImage1,
-                fit: BoxFit.cover,
+            child: Container(
+              color: AppColors.slate,
+              child: GestureDetector(
+                onTap: () => _navigateToPhotoListScreen(images, 0, context),
+                child: CachedNetworkImage(
+                  imageUrl: urlSquareImage1,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
           StaggeredGridTile.count(
             crossAxisCellCount: 1,
             mainAxisCellCount: 1,
-            child: GestureDetector(
-              onTap: () => navigateToPhotoPage(images, 1, context),
-              child: CachedNetworkImage(
-                imageUrl: urlSquareImage2,
-                fit: BoxFit.cover,
+            child: Container(
+              color: AppColors.slate,
+              child: GestureDetector(
+                onTap: () => _navigateToPhotoListScreen(images, 1, context),
+                child: CachedNetworkImage(
+                  imageUrl: urlSquareImage2,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
@@ -221,33 +236,42 @@ class GridImage extends StatelessWidget {
           StaggeredGridTile.count(
             crossAxisCellCount: 2,
             mainAxisCellCount: 3,
-            child: GestureDetector(
-              onTap: () => navigateToPhotoPage(images, 0, context),
-              child: CachedNetworkImage(
-                imageUrl: urlVerticalImage1,
-                fit: BoxFit.cover,
+            child: Container(
+              color: AppColors.slate,
+              child: GestureDetector(
+                onTap: () => _navigateToPhotoListScreen(images, 0, context),
+                child: CachedNetworkImage(
+                  imageUrl: urlVerticalImage1,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
           StaggeredGridTile.count(
             crossAxisCellCount: 1,
             mainAxisCellCount: 3 / 2,
-            child: GestureDetector(
-              onTap: () => navigateToPhotoPage(images, 1, context),
-              child: CachedNetworkImage(
-                imageUrl: urlVerticalImage2,
-                fit: BoxFit.cover,
+            child: Container(
+              color: AppColors.slate,
+              child: GestureDetector(
+                onTap: () => _navigateToPhotoListScreen(images, 1, context),
+                child: CachedNetworkImage(
+                  imageUrl: urlVerticalImage2,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
           StaggeredGridTile.count(
             crossAxisCellCount: 1,
             mainAxisCellCount: 3 / 2,
-            child: GestureDetector(
-              onTap: () => navigateToPhotoPage(images, 2, context),
-              child: CachedNetworkImage(
-                imageUrl: urlVerticalImage3,
-                fit: BoxFit.cover,
+            child: Container(
+              color: AppColors.slate,
+              child: GestureDetector(
+                onTap: () => _navigateToPhotoListScreen(images, 2, context),
+                child: CachedNetworkImage(
+                  imageUrl: urlVerticalImage3,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
@@ -263,33 +287,42 @@ class GridImage extends StatelessWidget {
         StaggeredGridTile.count(
           crossAxisCellCount: 2,
           mainAxisCellCount: 1,
-          child: GestureDetector(
-            onTap: () => navigateToPhotoPage(images, 0, context),
-            child: CachedNetworkImage(
-              imageUrl: images[0].orgWidth! >= images[0].orgHeight! ? urlHorizontalImage1 : urlVerticalImage1,
-              fit: BoxFit.cover,
+          child: Container(
+            color: AppColors.slate,
+            child: GestureDetector(
+              onTap: () => _navigateToPhotoListScreen(images, 0, context),
+              child: CachedNetworkImage(
+                imageUrl: images[0].orgWidth! >= images[0].orgHeight! ? urlHorizontalImage1 : urlVerticalImage1,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
         StaggeredGridTile.count(
           crossAxisCellCount: 1,
           mainAxisCellCount: 1,
-          child: GestureDetector(
-            onTap: () => navigateToPhotoPage(images, 1, context),
-            child: CachedNetworkImage(
-              imageUrl: urlHorizontalImage2,
-              fit: BoxFit.cover,
+          child: Container(
+            color: AppColors.slate,
+            child: GestureDetector(
+              onTap: () => _navigateToPhotoListScreen(images, 1, context),
+              child: CachedNetworkImage(
+                imageUrl: urlHorizontalImage2,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
         StaggeredGridTile.count(
           crossAxisCellCount: 1,
           mainAxisCellCount: 1,
-          child: GestureDetector(
-            onTap: () => navigateToPhotoPage(images, 2, context),
-            child: CachedNetworkImage(
-              imageUrl: urlHorizontalImage3,
-              fit: BoxFit.cover,
+          child: Container(
+            color: AppColors.slate,
+            child: GestureDetector(
+              onTap: () => _navigateToPhotoListScreen(images, 2, context),
+              child: CachedNetworkImage(
+                imageUrl: urlHorizontalImage3,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
@@ -341,44 +374,56 @@ class GridImage extends StatelessWidget {
           StaggeredGridTile.count(
             crossAxisCellCount: 2,
             mainAxisCellCount: 3,
-            child: GestureDetector(
-              onTap: () => navigateToPhotoPage(images, 0, context),
-              child: CachedNetworkImage(
-                imageUrl: urlVerticalImage1,
-                fit: BoxFit.cover,
+            child: Container(
+              color: AppColors.slate,
+              child: GestureDetector(
+                onTap: () => _navigateToPhotoListScreen(images, 0, context),
+                child: CachedNetworkImage(
+                  imageUrl: urlVerticalImage1,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
           StaggeredGridTile.count(
             crossAxisCellCount: 1,
             mainAxisCellCount: 1,
-            child: GestureDetector(
-              onTap: () => navigateToPhotoPage(images, 1, context),
-              child: CachedNetworkImage(
-                imageUrl: urlVerticalImage2,
-                fit: BoxFit.cover,
+            child: Container(
+              color: AppColors.slate,
+              child: GestureDetector(
+                onTap: () => _navigateToPhotoListScreen(images, 1, context),
+                child: CachedNetworkImage(
+                  imageUrl: urlVerticalImage2,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
           StaggeredGridTile.count(
             crossAxisCellCount: 1,
             mainAxisCellCount: 1,
-            child: GestureDetector(
-              onTap: () => navigateToPhotoPage(images, 2, context),
-              child: CachedNetworkImage(
-                imageUrl: urlVerticalImage3,
-                fit: BoxFit.cover,
+            child: Container(
+              color: AppColors.slate,
+              child: GestureDetector(
+                onTap: () => _navigateToPhotoListScreen(images, 2, context),
+                child: CachedNetworkImage(
+                  imageUrl: urlVerticalImage3,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
           StaggeredGridTile.count(
             crossAxisCellCount: 1,
             mainAxisCellCount: 1,
-            child: GestureDetector(
-              onTap: () => navigateToPhotoPage(images, 3, context),
-              child: CachedNetworkImage(
-                imageUrl: urlVerticalImage4,
-                fit: BoxFit.cover,
+            child: Container(
+              color: AppColors.slate,
+              child: GestureDetector(
+                onTap: () => _navigateToPhotoListScreen(images, 3, context),
+                child: CachedNetworkImage(
+                  imageUrl: urlVerticalImage4,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
@@ -394,44 +439,56 @@ class GridImage extends StatelessWidget {
           StaggeredGridTile.count(
             crossAxisCellCount: 3,
             mainAxisCellCount: 2,
-            child: GestureDetector(
-              onTap: () => navigateToPhotoPage(images, 0, context),
-              child: CachedNetworkImage(
-                imageUrl: urlHorizontalImage1,
-                fit: BoxFit.cover,
+            child: Container(
+              color: AppColors.slate,
+              child: GestureDetector(
+                onTap: () => _navigateToPhotoListScreen(images, 0, context),
+                child: CachedNetworkImage(
+                  imageUrl: urlHorizontalImage1,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
           StaggeredGridTile.count(
             crossAxisCellCount: 1,
             mainAxisCellCount: 1,
-            child: GestureDetector(
-              onTap: () => navigateToPhotoPage(images, 1, context),
-              child: CachedNetworkImage(
-                imageUrl: urlHorizontalImage2,
-                fit: BoxFit.cover,
+            child: Container(
+              color: AppColors.slate,
+              child: GestureDetector(
+                onTap: () => _navigateToPhotoListScreen(images, 1, context),
+                child: CachedNetworkImage(
+                  imageUrl: urlHorizontalImage2,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
           StaggeredGridTile.count(
             crossAxisCellCount: 1,
             mainAxisCellCount: 1,
-            child: GestureDetector(
-              onTap: () => navigateToPhotoPage(images, 2, context),
-              child: CachedNetworkImage(
-                imageUrl: urlHorizontalImage3,
-                fit: BoxFit.cover,
+            child: Container(
+              color: AppColors.slate,
+              child: GestureDetector(
+                onTap: () => _navigateToPhotoListScreen(images, 2, context),
+                child: CachedNetworkImage(
+                  imageUrl: urlHorizontalImage3,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
           StaggeredGridTile.count(
             crossAxisCellCount: 1,
             mainAxisCellCount: 1,
-            child: GestureDetector(
-              onTap: () => navigateToPhotoPage(images, 3, context),
-              child: CachedNetworkImage(
-                imageUrl: urlHorizontalImage4,
-                fit: BoxFit.cover,
+            child: Container(
+              color: AppColors.slate,
+              child: GestureDetector(
+                onTap: () => _navigateToPhotoListScreen(images, 3, context),
+                child: CachedNetworkImage(
+                  imageUrl: urlHorizontalImage4,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
@@ -447,44 +504,56 @@ class GridImage extends StatelessWidget {
           StaggeredGridTile.count(
             crossAxisCellCount: 1,
             mainAxisCellCount: 1,
-            child: GestureDetector(
-              onTap: () => navigateToPhotoPage(images, 0, context),
-              child: CachedNetworkImage(
-                imageUrl: urlSquareImage1,
-                fit: BoxFit.cover,
+            child: Container(
+              color: AppColors.slate,
+              child: GestureDetector(
+                onTap: () => _navigateToPhotoListScreen(images, 0, context),
+                child: CachedNetworkImage(
+                  imageUrl: urlSquareImage1,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
           StaggeredGridTile.count(
             crossAxisCellCount: 1,
             mainAxisCellCount: 1,
-            child: GestureDetector(
-              onTap: () => navigateToPhotoPage(images, 1, context),
-              child: CachedNetworkImage(
-                imageUrl: urlSquareImage2,
-                fit: BoxFit.cover,
+            child: Container(
+              color: AppColors.slate,
+              child: GestureDetector(
+                onTap: () => _navigateToPhotoListScreen(images, 1, context),
+                child: CachedNetworkImage(
+                  imageUrl: urlSquareImage2,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
           StaggeredGridTile.count(
             crossAxisCellCount: 1,
             mainAxisCellCount: 1,
-            child: GestureDetector(
-              onTap: () => navigateToPhotoPage(images, 2, context),
-              child: CachedNetworkImage(
-                imageUrl: urlSquareImage3,
-                fit: BoxFit.cover,
+            child: Container(
+              color: AppColors.slate,
+              child: GestureDetector(
+                onTap: () => _navigateToPhotoListScreen(images, 2, context),
+                child: CachedNetworkImage(
+                  imageUrl: urlSquareImage3,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
           StaggeredGridTile.count(
             crossAxisCellCount: 1,
             mainAxisCellCount: 1,
-            child: GestureDetector(
-              onTap: () => navigateToPhotoPage(images, 3, context),
-              child: CachedNetworkImage(
-                imageUrl: urlSquareImage4,
-                fit: BoxFit.cover,
+            child: Container(
+              color: AppColors.slate,
+              child: GestureDetector(
+                onTap: () => _navigateToPhotoListScreen(images, 3, context),
+                child: CachedNetworkImage(
+                  imageUrl: urlSquareImage4,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
@@ -512,55 +581,70 @@ class GridImage extends StatelessWidget {
         StaggeredGridTile.count(
           crossAxisCellCount: 2,
           mainAxisCellCount: 2,
-          child: GestureDetector(
-            onTap: () => navigateToPhotoPage(images, 0, context),
-            child: CachedNetworkImage(
-              imageUrl: urlImage1,
-              fit: BoxFit.cover,
+          child: Container(
+            color: AppColors.slate,
+            child: GestureDetector(
+              onTap: () => _navigateToPhotoListScreen(images, 0, context),
+              child: CachedNetworkImage(
+                imageUrl: urlImage1,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
         StaggeredGridTile.count(
           crossAxisCellCount: 2,
           mainAxisCellCount: 4 / 3,
-          child: GestureDetector(
-            onTap: () => navigateToPhotoPage(images, 1, context),
-            child: CachedNetworkImage(
-              imageUrl: urlImage2,
-              fit: BoxFit.cover,
+          child: Container(
+            color: AppColors.slate,
+            child: GestureDetector(
+              onTap: () => _navigateToPhotoListScreen(images, 1, context),
+              child: CachedNetworkImage(
+                imageUrl: urlImage2,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
         StaggeredGridTile.count(
           crossAxisCellCount: 2,
           mainAxisCellCount: 4 / 3,
-          child: GestureDetector(
-            onTap: () => navigateToPhotoPage(images, 2, context),
-            child: CachedNetworkImage(
-              imageUrl: urlImage3,
-              fit: BoxFit.cover,
+          child: Container(
+            color: AppColors.slate,
+            child: GestureDetector(
+              onTap: () => _navigateToPhotoListScreen(images, 2, context),
+              child: CachedNetworkImage(
+                imageUrl: urlImage3,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
         StaggeredGridTile.count(
           crossAxisCellCount: 2,
           mainAxisCellCount: 2,
-          child: GestureDetector(
-            onTap: () => navigateToPhotoPage(images, 3, context),
-            child: CachedNetworkImage(
-              imageUrl: urlImage4,
-              fit: BoxFit.cover,
+          child: Container(
+            color: AppColors.slate,
+            child: GestureDetector(
+              onTap: () => _navigateToPhotoListScreen(images, 3, context),
+              child: CachedNetworkImage(
+                imageUrl: urlImage4,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
         StaggeredGridTile.count(
           crossAxisCellCount: 2,
           mainAxisCellCount: 4 / 3,
-          child: GestureDetector(
-            onTap: () => navigateToPhotoPage(images, 4, context),
-            child: CachedNetworkImage(
-              imageUrl: urlImage5,
-              fit: BoxFit.cover,
+          child: Container(
+            color: AppColors.slate,
+            child: GestureDetector(
+              onTap: () => _navigateToPhotoListScreen(images, 4, context),
+              child: CachedNetworkImage(
+                imageUrl: urlImage5,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
@@ -587,70 +671,85 @@ class GridImage extends StatelessWidget {
         StaggeredGridTile.count(
           crossAxisCellCount: 2,
           mainAxisCellCount: 2,
-          child: GestureDetector(
-            onTap: () => navigateToPhotoPage(images, 0, context),
-            child: CachedNetworkImage(
-              imageUrl: urlImage1,
-              fit: BoxFit.cover,
+          child: Container(
+            color: AppColors.slate,
+            child: GestureDetector(
+              onTap: () => _navigateToPhotoListScreen(images, 0, context),
+              child: CachedNetworkImage(
+                imageUrl: urlImage1,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
         StaggeredGridTile.count(
           crossAxisCellCount: 2,
           mainAxisCellCount: 4 / 3,
-          child: GestureDetector(
-            onTap: () => navigateToPhotoPage(images, 1, context),
-            child: CachedNetworkImage(
-              imageUrl: urlImage2,
-              fit: BoxFit.cover,
+          child: Container(
+            color: AppColors.slate,
+            child: GestureDetector(
+              onTap: () => _navigateToPhotoListScreen(images, 1, context),
+              child: CachedNetworkImage(
+                imageUrl: urlImage2,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
         StaggeredGridTile.count(
           crossAxisCellCount: 2,
           mainAxisCellCount: 4 / 3,
-          child: GestureDetector(
-            onTap: () => navigateToPhotoPage(images, 2, context),
-            child: CachedNetworkImage(
-              imageUrl: urlImage3,
-              fit: BoxFit.cover,
+          child: Container(
+            color: AppColors.slate,
+            child: GestureDetector(
+              onTap: () => _navigateToPhotoListScreen(images, 2, context),
+              child: CachedNetworkImage(
+                imageUrl: urlImage3,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
         StaggeredGridTile.count(
           crossAxisCellCount: 2,
           mainAxisCellCount: 2,
-          child: GestureDetector(
-            onTap: () => navigateToPhotoPage(images, 3, context),
-            child: CachedNetworkImage(
-              imageUrl: urlImage4,
-              fit: BoxFit.cover,
+          child: Container(
+            color: AppColors.slate,
+            child: GestureDetector(
+              onTap: () => _navigateToPhotoListScreen(images, 3, context),
+              child: CachedNetworkImage(
+                imageUrl: urlImage4,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
         StaggeredGridTile.count(
           crossAxisCellCount: 2,
           mainAxisCellCount: 4 / 3,
-          child: GestureDetector(
-            onTap: () => navigateToPhotoPage(images, 4, context),
-            child: Stack(
-              children: [
-                CachedNetworkImage(
-                  imageUrl: urlImage5,
-                  fit: BoxFit.cover,
-                ),
-                Container(
-                  width: double.infinity,
-                  height: double.infinity,
-                  color: AppColors.black.withOpacity(0.6),
-                  child: Center(
-                    child: Text(
-                      '+${images.length - 4}',
-                      style: AppTextStyles.h2.copyWith(fontWeight: FontWeight.normal),
+          child: Container(
+            color: AppColors.slate,
+            child: GestureDetector(
+              onTap: () => _navigateToPhotoListScreen(images, 4, context),
+              child: Stack(
+                children: [
+                  CachedNetworkImage(
+                    imageUrl: urlImage5,
+                    fit: BoxFit.cover,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    color: AppColors.black.withOpacity(0.6),
+                    child: Center(
+                      child: Text(
+                        '+${images.length - 4}',
+                        style: AppTextStyles.h2.copyWith(fontWeight: FontWeight.normal),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -658,9 +757,9 @@ class GridImage extends StatelessWidget {
     );
   }
 
-  void navigateToPhotoPage(List<Images> images, int index, BuildContext context) {
+  void _navigateToPhotoListScreen(List<Images> images, int index, BuildContext context) {
     // print('⚡️ Chose image number ${index + 1}');
     // print('⚡️ Photos number ${photos.length}');
-    Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPostScreen(post: post, photos: photos),));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => PhotoListScreen(post: post)));
   }
 }

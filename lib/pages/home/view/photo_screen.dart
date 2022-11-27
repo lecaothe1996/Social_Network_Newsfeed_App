@@ -10,14 +10,12 @@ import 'package:social_app/utils/convert_to_time_ago.dart';
 import 'package:social_app/utils/image_utils.dart';
 import 'package:social_app/widgets/icon_button_widget.dart';
 
-class DetailPostScreen extends StatelessWidget {
+class PhotoListScreen extends StatelessWidget {
   final Post post;
-  final List<Post> photos;
 
-  const DetailPostScreen({
+  const PhotoListScreen({
     Key? key,
     required this.post,
-    required this.photos,
   }) : super(key: key);
 
   @override
@@ -114,22 +112,23 @@ class DetailPostScreen extends StatelessWidget {
                     commentCounts: post.commentCounts ?? 0,
                     viewCounts: post.viewCounts ?? 0,
                   ),
-                  const Divider(color: AppColors.blueGrey),
+                  const Divider(color: AppColors.slate),
                 ],
               ),
             ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
-                childCount: photos.length,
+                childCount: post.photos?.length,
                 (context, index) {
                   final deviceWidth = MediaQuery.of(context).size.width;
                   final heightImage = ImageUtils.getHeightView(
-                      deviceWidth, photos[index].image?.orgWidth ?? 1, photos[index].image?.orgHeight ?? 1);
-                  final urlImage = ImageUtils.genImgIx(photos[index].image?.url, deviceWidth.toInt(), heightImage.toInt());
+                      deviceWidth, post.photos?[index].image?.orgWidth ?? 1, post.photos?[index].image?.orgHeight ?? 1);
+                  final urlImage = ImageUtils.genImgIx(post.photos?[index].image?.url, deviceWidth.toInt(), heightImage.toInt());
                   if (heightImage >= deviceWidth * 2.5) {
-                    return SizedBox(
+                    return Container(
                       height: deviceWidth * 2.5,
                       width: deviceWidth,
+                      color: AppColors.slate,
                       child: CachedNetworkImage(
                         imageUrl: urlImage,
                         fit: BoxFit.fitWidth,
@@ -149,11 +148,11 @@ class DetailPostScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       LikeCommentView(
-                        likeCounts: photos[index].likeCounts ?? 0,
-                        commentCounts: photos[index].commentCounts ?? 0,
-                        viewCounts: photos[index].viewCounts ?? 0,
+                        likeCounts: post.photos?[index].likeCounts ?? 0,
+                        commentCounts: post.photos?[index].commentCounts ?? 0,
+                        viewCounts: post.photos?[index].viewCounts ?? 0,
                       ),
-                      const Divider(color: AppColors.blueGrey),
+                      const Divider(color: AppColors.slate),
                     ],
                   );
                 },

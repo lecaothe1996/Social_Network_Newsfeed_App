@@ -132,9 +132,9 @@ class ListViewPosts extends StatelessWidget {
                             lastName: posts[index].user?.lastName ?? '',
                           ),
                           description: posts[index].description ?? '',
+                          images: posts[index].images ?? [],
+                          photos: posts[index].photos ?? [],
                         ),
-                        images: posts[index].images ?? [],
-                        photos: posts[index].photos ?? [],
                       ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
