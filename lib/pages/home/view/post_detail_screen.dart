@@ -108,10 +108,7 @@ class PostDetailScreen extends StatelessWidget {
                     ),
                   ),
                   LikeCommentView(
-                    liked: post.liked ?? false,
-                    likeCounts: post.likeCounts ?? 0,
-                    commentCounts: post.commentCounts ?? 0,
-                    viewCounts: post.viewCounts ?? 0,
+                    post: post,
                   ),
                   const Divider(color: AppColors.slate),
                 ],
@@ -148,14 +145,14 @@ class PostDetailScreen extends StatelessWidget {
                           fit: BoxFit.fitWidth,
                         ),
                       ),
-                      // const SizedBox(height: 10),
+                      const SizedBox(height: 15),
                       // LikeCommentView(
                       //   liked: post.photos?[index].liked ?? false,
                       //   likeCounts: post.photos?[index].likeCounts ?? 0,
                       //   commentCounts: post.photos?[index].commentCounts ?? 0,
                       //   viewCounts: post.photos?[index].viewCounts ?? 0,
                       // ),
-                      const Divider(color: AppColors.slate),
+                      // const Divider(color: AppColors.slate),
                     ],
                   );
                 },

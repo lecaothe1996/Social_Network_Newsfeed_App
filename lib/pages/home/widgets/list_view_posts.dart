@@ -140,10 +140,7 @@ class ListViewPosts extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: LikeCommentView(
-                    liked: posts[index].liked ?? false,
-                    likeCounts: posts[index].likeCounts ?? 0,
-                    commentCounts: posts[index].commentCounts ?? 0,
-                    viewCounts: posts[index].viewCounts ?? 0,
+                    post: posts[index],
                   ),
                 ),
               ],
