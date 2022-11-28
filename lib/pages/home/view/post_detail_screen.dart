@@ -10,10 +10,10 @@ import 'package:social_app/utils/convert_to_time_ago.dart';
 import 'package:social_app/utils/image_utils.dart';
 import 'package:social_app/widgets/icon_button_widget.dart';
 
-class PhotoListScreen extends StatelessWidget {
+class PostDetailScreen extends StatelessWidget {
   final Post post;
 
-  const PhotoListScreen({
+  const PostDetailScreen({
     Key? key,
     required this.post,
   }) : super(key: key);
@@ -108,6 +108,7 @@ class PhotoListScreen extends StatelessWidget {
                     ),
                   ),
                   LikeCommentView(
+                    liked: post.liked ?? false,
                     likeCounts: post.likeCounts ?? 0,
                     commentCounts: post.commentCounts ?? 0,
                     viewCounts: post.viewCounts ?? 0,
@@ -123,10 +124,11 @@ class PhotoListScreen extends StatelessWidget {
                   final deviceWidth = MediaQuery.of(context).size.width;
                   final heightImage = ImageUtils.getHeightView(
                       deviceWidth, post.photos?[index].image?.orgWidth ?? 1, post.photos?[index].image?.orgHeight ?? 1);
-                  final urlImage = ImageUtils.genImgIx(post.photos?[index].image?.url, deviceWidth.toInt(), heightImage.toInt());
-                  if (heightImage >= deviceWidth * 2.5) {
+                  final urlImage =
+                      ImageUtils.genImgIx(post.photos?[index].image?.url, deviceWidth.toInt(), heightImage.toInt());
+                  if (heightImage >= deviceWidth * 3) {
                     return Container(
-                      height: deviceWidth * 2.5,
+                      height: deviceWidth * 3,
                       width: deviceWidth,
                       color: AppColors.slate,
                       child: CachedNetworkImage(
@@ -146,12 +148,13 @@ class PhotoListScreen extends StatelessWidget {
                           fit: BoxFit.fitWidth,
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      LikeCommentView(
-                        likeCounts: post.photos?[index].likeCounts ?? 0,
-                        commentCounts: post.photos?[index].commentCounts ?? 0,
-                        viewCounts: post.photos?[index].viewCounts ?? 0,
-                      ),
+                      // const SizedBox(height: 10),
+                      // LikeCommentView(
+                      //   liked: post.photos?[index].liked ?? false,
+                      //   likeCounts: post.photos?[index].likeCounts ?? 0,
+                      //   commentCounts: post.photos?[index].commentCounts ?? 0,
+                      //   viewCounts: post.photos?[index].viewCounts ?? 0,
+                      // ),
                       const Divider(color: AppColors.slate),
                     ],
                   );

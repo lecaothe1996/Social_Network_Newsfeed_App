@@ -4,12 +4,12 @@ import 'package:provider/provider.dart';
 import 'package:social_app/my_app/blocs/app_state_bloc.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/home/view/create_post_screen.dart';
+import 'package:social_app/pages/home/widgets/list_view_posts.dart';
+import 'package:social_app/pages/home/widgets/list_view_stories.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/widgets/dialogs/error_dialog.dart';
-import 'list_view_posts.dart';
-import 'list_view_stories.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);

@@ -121,6 +121,7 @@ class ListViewPosts extends StatelessWidget {
                     : GridImage(
                         post: Post(
                           createdAt: posts[index].createdAt,
+                          liked: posts[index].liked,
                           likeCounts: posts[index].likeCounts,
                           commentCounts: posts[index].commentCounts,
                           viewCounts: posts[index].viewCounts,
@@ -139,6 +140,7 @@ class ListViewPosts extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: LikeCommentView(
+                    liked: posts[index].liked ?? false,
                     likeCounts: posts[index].likeCounts ?? 0,
                     commentCounts: posts[index].commentCounts ?? 0,
                     viewCounts: posts[index].viewCounts ?? 0,

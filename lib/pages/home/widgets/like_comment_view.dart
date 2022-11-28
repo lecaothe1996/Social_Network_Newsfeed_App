@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:social_app/themes/app_assets.dart';
+import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
 
 class LikeCommentView extends StatelessWidget {
+  final bool liked;
   final int likeCounts;
   final int commentCounts;
   final int viewCounts;
 
   const LikeCommentView({
     Key? key,
+    required this.liked,
     required this.likeCounts,
     required this.commentCounts,
     required this.viewCounts,
@@ -24,7 +27,10 @@ class LikeCommentView extends StatelessWidget {
       child: Row(
         // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.asset(AppAssetIcons.like),
+          Image.asset(
+            AppAssetIcons.like,
+            color: liked ? AppColors.redMedium : AppColors.paleLilac,
+          ),
           Expanded(
             child: Text(
               likeCounts.toString(),

@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:social_app/pages/home/models/post.dart';
-import 'package:social_app/pages/home/view/photo_screen.dart';
+import 'package:social_app/pages/home/view/post_detail_screen.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/utils/image_utils.dart';
@@ -53,7 +53,7 @@ class GridImage extends StatelessWidget {
         width: width,
         color: AppColors.slate,
         child: GestureDetector(
-          onTap: () => _navigateToPhotoListScreen([image], 0, context),
+          onTap: () => _navigateToPostDetailScreen([image], 0, context),
           child: CachedNetworkImage(
             imageUrl: urlOneImage,
             fit: BoxFit.cover,
@@ -67,7 +67,7 @@ class GridImage extends StatelessWidget {
       width: width,
       color: AppColors.slate,
       child: GestureDetector(
-        onTap: () => _navigateToPhotoListScreen([image], 0, context),
+        onTap: () => _navigateToPostDetailScreen([image], 0, context),
         child: CachedNetworkImage(
           imageUrl: urlOneImage,
           fit: BoxFit.cover,
@@ -109,7 +109,7 @@ class GridImage extends StatelessWidget {
             child: Container(
               color: AppColors.slate,
               child: GestureDetector(
-                onTap: () => _navigateToPhotoListScreen(images, 0, context),
+                onTap: () => _navigateToPostDetailScreen(images, 0, context),
                 child: CachedNetworkImage(
                   imageUrl: urlVerticalImage1,
                   fit: BoxFit.cover,
@@ -123,7 +123,7 @@ class GridImage extends StatelessWidget {
             child: Container(
               color: AppColors.slate,
               child: GestureDetector(
-                onTap: () => _navigateToPhotoListScreen(images, 1, context),
+                onTap: () => _navigateToPostDetailScreen(images, 1, context),
                 child: CachedNetworkImage(
                   imageUrl: urlVerticalImage2,
                   fit: BoxFit.cover,
@@ -146,7 +146,7 @@ class GridImage extends StatelessWidget {
             child: Container(
               color: AppColors.slate,
               child: GestureDetector(
-                onTap: () => _navigateToPhotoListScreen(images, 0, context),
+                onTap: () => _navigateToPostDetailScreen(images, 0, context),
                 child: CachedNetworkImage(
                   imageUrl: urlHorizontalImage1,
                   fit: BoxFit.cover,
@@ -160,7 +160,7 @@ class GridImage extends StatelessWidget {
             child: Container(
               color: AppColors.slate,
               child: GestureDetector(
-                onTap: () => _navigateToPhotoListScreen(images, 1, context),
+                onTap: () => _navigateToPostDetailScreen(images, 1, context),
                 child: CachedNetworkImage(
                   imageUrl: urlHorizontalImage2,
                   fit: BoxFit.cover,
@@ -183,7 +183,7 @@ class GridImage extends StatelessWidget {
             child: Container(
               color: AppColors.slate,
               child: GestureDetector(
-                onTap: () => _navigateToPhotoListScreen(images, 0, context),
+                onTap: () => _navigateToPostDetailScreen(images, 0, context),
                 child: CachedNetworkImage(
                   imageUrl: urlSquareImage1,
                   fit: BoxFit.cover,
@@ -197,7 +197,7 @@ class GridImage extends StatelessWidget {
             child: Container(
               color: AppColors.slate,
               child: GestureDetector(
-                onTap: () => _navigateToPhotoListScreen(images, 1, context),
+                onTap: () => _navigateToPostDetailScreen(images, 1, context),
                 child: CachedNetworkImage(
                   imageUrl: urlSquareImage2,
                   fit: BoxFit.cover,
@@ -239,7 +239,7 @@ class GridImage extends StatelessWidget {
             child: Container(
               color: AppColors.slate,
               child: GestureDetector(
-                onTap: () => _navigateToPhotoListScreen(images, 0, context),
+                onTap: () => _navigateToPostDetailScreen(images, 0, context),
                 child: CachedNetworkImage(
                   imageUrl: urlVerticalImage1,
                   fit: BoxFit.cover,
@@ -253,7 +253,7 @@ class GridImage extends StatelessWidget {
             child: Container(
               color: AppColors.slate,
               child: GestureDetector(
-                onTap: () => _navigateToPhotoListScreen(images, 1, context),
+                onTap: () => _navigateToPostDetailScreen(images, 1, context),
                 child: CachedNetworkImage(
                   imageUrl: urlVerticalImage2,
                   fit: BoxFit.cover,
@@ -267,7 +267,7 @@ class GridImage extends StatelessWidget {
             child: Container(
               color: AppColors.slate,
               child: GestureDetector(
-                onTap: () => _navigateToPhotoListScreen(images, 2, context),
+                onTap: () => _navigateToPostDetailScreen(images, 2, context),
                 child: CachedNetworkImage(
                   imageUrl: urlVerticalImage3,
                   fit: BoxFit.cover,
@@ -290,7 +290,7 @@ class GridImage extends StatelessWidget {
           child: Container(
             color: AppColors.slate,
             child: GestureDetector(
-              onTap: () => _navigateToPhotoListScreen(images, 0, context),
+              onTap: () => _navigateToPostDetailScreen(images, 0, context),
               child: CachedNetworkImage(
                 imageUrl: images[0].orgWidth! >= images[0].orgHeight! ? urlHorizontalImage1 : urlVerticalImage1,
                 fit: BoxFit.cover,
@@ -304,7 +304,7 @@ class GridImage extends StatelessWidget {
           child: Container(
             color: AppColors.slate,
             child: GestureDetector(
-              onTap: () => _navigateToPhotoListScreen(images, 1, context),
+              onTap: () => _navigateToPostDetailScreen(images, 1, context),
               child: CachedNetworkImage(
                 imageUrl: urlHorizontalImage2,
                 fit: BoxFit.cover,
@@ -318,7 +318,7 @@ class GridImage extends StatelessWidget {
           child: Container(
             color: AppColors.slate,
             child: GestureDetector(
-              onTap: () => _navigateToPhotoListScreen(images, 2, context),
+              onTap: () => _navigateToPostDetailScreen(images, 2, context),
               child: CachedNetworkImage(
                 imageUrl: urlHorizontalImage3,
                 fit: BoxFit.cover,
@@ -377,7 +377,7 @@ class GridImage extends StatelessWidget {
             child: Container(
               color: AppColors.slate,
               child: GestureDetector(
-                onTap: () => _navigateToPhotoListScreen(images, 0, context),
+                onTap: () => _navigateToPostDetailScreen(images, 0, context),
                 child: CachedNetworkImage(
                   imageUrl: urlVerticalImage1,
                   fit: BoxFit.cover,
@@ -391,7 +391,7 @@ class GridImage extends StatelessWidget {
             child: Container(
               color: AppColors.slate,
               child: GestureDetector(
-                onTap: () => _navigateToPhotoListScreen(images, 1, context),
+                onTap: () => _navigateToPostDetailScreen(images, 1, context),
                 child: CachedNetworkImage(
                   imageUrl: urlVerticalImage2,
                   fit: BoxFit.cover,
@@ -405,7 +405,7 @@ class GridImage extends StatelessWidget {
             child: Container(
               color: AppColors.slate,
               child: GestureDetector(
-                onTap: () => _navigateToPhotoListScreen(images, 2, context),
+                onTap: () => _navigateToPostDetailScreen(images, 2, context),
                 child: CachedNetworkImage(
                   imageUrl: urlVerticalImage3,
                   fit: BoxFit.cover,
@@ -419,7 +419,7 @@ class GridImage extends StatelessWidget {
             child: Container(
               color: AppColors.slate,
               child: GestureDetector(
-                onTap: () => _navigateToPhotoListScreen(images, 3, context),
+                onTap: () => _navigateToPostDetailScreen(images, 3, context),
                 child: CachedNetworkImage(
                   imageUrl: urlVerticalImage4,
                   fit: BoxFit.cover,
@@ -442,7 +442,7 @@ class GridImage extends StatelessWidget {
             child: Container(
               color: AppColors.slate,
               child: GestureDetector(
-                onTap: () => _navigateToPhotoListScreen(images, 0, context),
+                onTap: () => _navigateToPostDetailScreen(images, 0, context),
                 child: CachedNetworkImage(
                   imageUrl: urlHorizontalImage1,
                   fit: BoxFit.cover,
@@ -456,7 +456,7 @@ class GridImage extends StatelessWidget {
             child: Container(
               color: AppColors.slate,
               child: GestureDetector(
-                onTap: () => _navigateToPhotoListScreen(images, 1, context),
+                onTap: () => _navigateToPostDetailScreen(images, 1, context),
                 child: CachedNetworkImage(
                   imageUrl: urlHorizontalImage2,
                   fit: BoxFit.cover,
@@ -470,7 +470,7 @@ class GridImage extends StatelessWidget {
             child: Container(
               color: AppColors.slate,
               child: GestureDetector(
-                onTap: () => _navigateToPhotoListScreen(images, 2, context),
+                onTap: () => _navigateToPostDetailScreen(images, 2, context),
                 child: CachedNetworkImage(
                   imageUrl: urlHorizontalImage3,
                   fit: BoxFit.cover,
@@ -484,7 +484,7 @@ class GridImage extends StatelessWidget {
             child: Container(
               color: AppColors.slate,
               child: GestureDetector(
-                onTap: () => _navigateToPhotoListScreen(images, 3, context),
+                onTap: () => _navigateToPostDetailScreen(images, 3, context),
                 child: CachedNetworkImage(
                   imageUrl: urlHorizontalImage4,
                   fit: BoxFit.cover,
@@ -507,7 +507,7 @@ class GridImage extends StatelessWidget {
             child: Container(
               color: AppColors.slate,
               child: GestureDetector(
-                onTap: () => _navigateToPhotoListScreen(images, 0, context),
+                onTap: () => _navigateToPostDetailScreen(images, 0, context),
                 child: CachedNetworkImage(
                   imageUrl: urlSquareImage1,
                   fit: BoxFit.cover,
@@ -521,7 +521,7 @@ class GridImage extends StatelessWidget {
             child: Container(
               color: AppColors.slate,
               child: GestureDetector(
-                onTap: () => _navigateToPhotoListScreen(images, 1, context),
+                onTap: () => _navigateToPostDetailScreen(images, 1, context),
                 child: CachedNetworkImage(
                   imageUrl: urlSquareImage2,
                   fit: BoxFit.cover,
@@ -535,7 +535,7 @@ class GridImage extends StatelessWidget {
             child: Container(
               color: AppColors.slate,
               child: GestureDetector(
-                onTap: () => _navigateToPhotoListScreen(images, 2, context),
+                onTap: () => _navigateToPostDetailScreen(images, 2, context),
                 child: CachedNetworkImage(
                   imageUrl: urlSquareImage3,
                   fit: BoxFit.cover,
@@ -549,7 +549,7 @@ class GridImage extends StatelessWidget {
             child: Container(
               color: AppColors.slate,
               child: GestureDetector(
-                onTap: () => _navigateToPhotoListScreen(images, 3, context),
+                onTap: () => _navigateToPostDetailScreen(images, 3, context),
                 child: CachedNetworkImage(
                   imageUrl: urlSquareImage4,
                   fit: BoxFit.cover,
@@ -584,7 +584,7 @@ class GridImage extends StatelessWidget {
           child: Container(
             color: AppColors.slate,
             child: GestureDetector(
-              onTap: () => _navigateToPhotoListScreen(images, 0, context),
+              onTap: () => _navigateToPostDetailScreen(images, 0, context),
               child: CachedNetworkImage(
                 imageUrl: urlImage1,
                 fit: BoxFit.cover,
@@ -598,7 +598,7 @@ class GridImage extends StatelessWidget {
           child: Container(
             color: AppColors.slate,
             child: GestureDetector(
-              onTap: () => _navigateToPhotoListScreen(images, 1, context),
+              onTap: () => _navigateToPostDetailScreen(images, 1, context),
               child: CachedNetworkImage(
                 imageUrl: urlImage2,
                 fit: BoxFit.cover,
@@ -612,7 +612,7 @@ class GridImage extends StatelessWidget {
           child: Container(
             color: AppColors.slate,
             child: GestureDetector(
-              onTap: () => _navigateToPhotoListScreen(images, 2, context),
+              onTap: () => _navigateToPostDetailScreen(images, 2, context),
               child: CachedNetworkImage(
                 imageUrl: urlImage3,
                 fit: BoxFit.cover,
@@ -626,7 +626,7 @@ class GridImage extends StatelessWidget {
           child: Container(
             color: AppColors.slate,
             child: GestureDetector(
-              onTap: () => _navigateToPhotoListScreen(images, 3, context),
+              onTap: () => _navigateToPostDetailScreen(images, 3, context),
               child: CachedNetworkImage(
                 imageUrl: urlImage4,
                 fit: BoxFit.cover,
@@ -640,7 +640,7 @@ class GridImage extends StatelessWidget {
           child: Container(
             color: AppColors.slate,
             child: GestureDetector(
-              onTap: () => _navigateToPhotoListScreen(images, 4, context),
+              onTap: () => _navigateToPostDetailScreen(images, 4, context),
               child: CachedNetworkImage(
                 imageUrl: urlImage5,
                 fit: BoxFit.cover,
@@ -674,7 +674,7 @@ class GridImage extends StatelessWidget {
           child: Container(
             color: AppColors.slate,
             child: GestureDetector(
-              onTap: () => _navigateToPhotoListScreen(images, 0, context),
+              onTap: () => _navigateToPostDetailScreen(images, 0, context),
               child: CachedNetworkImage(
                 imageUrl: urlImage1,
                 fit: BoxFit.cover,
@@ -688,7 +688,7 @@ class GridImage extends StatelessWidget {
           child: Container(
             color: AppColors.slate,
             child: GestureDetector(
-              onTap: () => _navigateToPhotoListScreen(images, 1, context),
+              onTap: () => _navigateToPostDetailScreen(images, 1, context),
               child: CachedNetworkImage(
                 imageUrl: urlImage2,
                 fit: BoxFit.cover,
@@ -702,7 +702,7 @@ class GridImage extends StatelessWidget {
           child: Container(
             color: AppColors.slate,
             child: GestureDetector(
-              onTap: () => _navigateToPhotoListScreen(images, 2, context),
+              onTap: () => _navigateToPostDetailScreen(images, 2, context),
               child: CachedNetworkImage(
                 imageUrl: urlImage3,
                 fit: BoxFit.cover,
@@ -716,7 +716,7 @@ class GridImage extends StatelessWidget {
           child: Container(
             color: AppColors.slate,
             child: GestureDetector(
-              onTap: () => _navigateToPhotoListScreen(images, 3, context),
+              onTap: () => _navigateToPostDetailScreen(images, 3, context),
               child: CachedNetworkImage(
                 imageUrl: urlImage4,
                 fit: BoxFit.cover,
@@ -730,7 +730,7 @@ class GridImage extends StatelessWidget {
           child: Container(
             color: AppColors.slate,
             child: GestureDetector(
-              onTap: () => _navigateToPhotoListScreen(images, 4, context),
+              onTap: () => _navigateToPostDetailScreen(images, 4, context),
               child: Stack(
                 children: [
                   CachedNetworkImage(
@@ -757,9 +757,9 @@ class GridImage extends StatelessWidget {
     );
   }
 
-  void _navigateToPhotoListScreen(List<Images> images, int index, BuildContext context) {
+  void _navigateToPostDetailScreen(List<Images> images, int index, BuildContext context) {
     // print('⚡️ Chose image number ${index + 1}');
     // print('⚡️ Photos number ${photos.length}');
-    Navigator.push(context, MaterialPageRoute(builder: (context) => PhotoListScreen(post: post)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => PostDetailScreen(post: post)));
   }
 }
