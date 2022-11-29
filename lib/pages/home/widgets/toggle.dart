@@ -3,20 +3,18 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class Toggle extends StatefulWidget {
+  final bool isActivated;
   final Function(bool) onTrigger;
   final Function(bool) onTap;
   final Widget deActivatedChild;
   final Widget activatedChild;
-  final bool isActivated;
-  final int delay;
 
   const Toggle({Key? key,
+    required this.isActivated,
     required this.onTrigger,
     required this.onTap,
     required this.deActivatedChild,
     required this.activatedChild,
-    this.isActivated = false,
-    this.delay = 300,
   }) : super(key: key);
 
   @override
@@ -56,7 +54,7 @@ class _ToggleState extends State<Toggle> {
           _debounce!.cancel();
         }
 
-        _debounce = Timer(Duration(milliseconds: widget.delay), () {
+        _debounce = Timer(const Duration(milliseconds: 500), () {
           if (_count % 2 == 1) {
             _count = 0;
             widget.onTrigger(_isOn);

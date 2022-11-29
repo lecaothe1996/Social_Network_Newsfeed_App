@@ -151,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final currentScroll = _scrollController.position.pixels;
     final maxScroll = _scrollController.position.maxScrollExtent;
 
-    if (maxScroll - currentScroll <= 5000) {
+    if (maxScroll - currentScroll <= 3000) {
       if (_isLoading == false) {
         _isLoading = true;
         BlocProvider.of<PostBloc>(context).add(LoadMorePosts());
