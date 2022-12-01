@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:social_app/pages/home/blocs/like_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_app/pages/home/blocs/like_bloc/like_bloc.dart';
 import 'package:social_app/pages/home/models/post.dart';
 import 'package:social_app/pages/home/widgets/toggle.dart';
 import 'package:social_app/themes/app_assets.dart';
@@ -23,8 +24,6 @@ class _LikeCommentViewState extends State<LikeCommentView> {
   int likeCount = 0;
   bool isLiked = false;
 
-  final _likeBloc = LikeBloc();
-
   @override
   void initState() {
     likeCount = post.likeCounts ?? 0;
@@ -44,13 +43,12 @@ class _LikeCommentViewState extends State<LikeCommentView> {
 
   @override
   void dispose() {
-    _likeBloc.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    print('build');
+    // print('build');
     return Container(
       margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
       // padding: const EdgeInsets.all(15),
@@ -59,49 +57,27 @@ class _LikeCommentViewState extends State<LikeCommentView> {
       child: Row(
         // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Toggle(
-          //   isActivated: isLiked,
-          //   onTrigger: (isLiked) {
-          //     print('Call API like');
-          //   },
-          //   onTap: (isOn) {
-          //     setState(() {
-          //       likeCount = isOn ? likeCount + 1 : likeCount - 1;
-          //       isLiked = isOn;
-          //     });
-          //   },
-          //   activatedChild: Image.asset(
-          //     AppAssetIcons.like,
-          //     color: AppColors.redMedium,
-          //   ),
-          //   deActivatedChild: Image.asset(
-          //     AppAssetIcons.like,
-          //   ),
-          // ),
-          GestureDetector(
-            onTap: () {
-              print('Likeeeeeeeeeeeee');
-              isLiked ? _likeBloc.likeBloc() : _likeBloc.unLikeBloc();
-
+          Toggle(
+            isActivated: isLiked,
+            onTrigger: (isLiked) {
+              // print('Call API like');
+              isLiked ?
+              BlocProvider.of<LikeBloc>(context).add(Like(id: 'id'))
+                  : BlocProvider.of<LikeBloc>(context).add(UnLike(id: 'id'));
+            },
+            onTap: (isOn) {
               setState(() {
-                likeCount = isLiked ? likeCount - 1 : likeCount + 1;
-                // isLiked = isOn;
+                likeCount = isOn ? likeCount + 1 : likeCount - 1;
+                isLiked = isOn;
               });
             },
-            child: StreamBuilder<bool>(
-                stream: _likeBloc.like,
-                initialData: isLiked,
-                builder: (context, snapshot) {
-                  // print('snapshot.data == ${snapshot.data}');
-                  if (snapshot.data == false) {
-                    isLiked = snapshot.data ?? false;
-                    return Image.asset(
-                      AppAssetIcons.like,
-                    );
-                  }
-                  isLiked = snapshot.data ?? false;
-                  return Image.asset(AppAssetIcons.like, color: AppColors.redMedium);
-                }),
+            activatedChild: Image.asset(
+              AppAssetIcons.like,
+              color: AppColors.redMedium,
+            ),
+            deActivatedChild: Image.asset(
+              AppAssetIcons.like,
+            ),
           ),
           Expanded(
             child: Text(
@@ -110,7 +86,15 @@ class _LikeCommentViewState extends State<LikeCommentView> {
               style: AppTextStyles.h6,
             ),
           ),
-          Image.asset(AppAssetIcons.comment),
+          BlocBuilder<LikeBloc, LikeState>(
+            builder: (context, state) {
+              print('State Like === ${state}');
+              if (state is LikeSuccess) {
+                return Image.asset(AppAssetIcons.comment, color: Colors.red,);
+              }
+              return Image.asset(AppAssetIcons.comment);
+            },
+          ),
           Text(
             widget.post.commentCounts.toString(),
             overflow: TextOverflow.ellipsis,

@@ -109,11 +109,4 @@ class ListViewStories extends StatelessWidget {
       ),
     );
   }
-
-  Widget _errorImage(BuildContext context) {
-    print('Icon Icon Icon');
-    return Center(
-      child: Image.asset(AppAssetIcons.plus),
-    );
-  }
 }

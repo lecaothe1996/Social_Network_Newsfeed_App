@@ -5,12 +5,18 @@ abstract class PostEvent {}
 
 class LoadPosts extends PostEvent {}
 
+class LoadDetailPost extends PostEvent {
+  final String id;
+
+  LoadDetailPost({required this.id});
+}
+
 class LoadMorePosts extends PostEvent {}
 
 class RefreshPosts extends PostEvent {
   final int page;
 
-  RefreshPosts({this.page = 1});
+  RefreshPosts({required this.page});
 }
 
 class CreatePost extends PostEvent {

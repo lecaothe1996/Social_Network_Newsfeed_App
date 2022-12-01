@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart';
+import 'package:social_app/pages/home/blocs/like_bloc/like_bloc.dart';
 import 'package:social_app/pages/home/models/post.dart';
 import 'package:social_app/pages/home/widgets/grid_image.dart';
 import 'package:social_app/pages/home/widgets/like_comment_view.dart';
@@ -23,12 +25,12 @@ class ListViewPosts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('devicePixelRatio==${MediaQuery.of(context).devicePixelRatio}');
-    print('device width==${MediaQuery.of(context).size.width}');
+    // print('devicePixelRatio==${MediaQuery.of(context).devicePixelRatio}');
+    // print('device width==${MediaQuery.of(context).size.width}');
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         childCount: posts.length,
-        (context, index) {
+            (context, index) {
           final urlAvatar = ImageUtils.genImgIx(posts[index].user?.avatar?.url, 40, 40);
           // print('url Avatar = $urlAvatar');
           return Container(
@@ -51,12 +53,13 @@ class ListViewPosts extends StatelessWidget {
                             child: ClipOval(
                               child: CachedNetworkImage(
                                 imageUrl: urlAvatar,
-                                errorWidget: (_, __, ___) => Image.asset(
-                                  AppAssetIcons.avatar,
-                                  color: AppColors.blueGrey,
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
-                                ),
+                                errorWidget: (_, __, ___) =>
+                                    Image.asset(
+                                      AppAssetIcons.avatar,
+                                      color: AppColors.blueGrey,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                    ),
                               ),
                             ),
                           ),
@@ -104,14 +107,14 @@ class ListViewPosts extends StatelessWidget {
                       posts[index].description!.isEmpty || posts[index].description == null
                           ? const SizedBox()
                           : ReadMoreText(
-                              posts[index].description ?? '',
-                              trimLines: 3,
-                              colorClickableText: AppColors.blueGrey,
-                              trimMode: TrimMode.Line,
-                              trimCollapsedText: 'Show more',
-                              trimExpandedText: '',
-                              style: AppTextStyles.body,
-                            ),
+                        posts[index].description ?? '',
+                        trimLines: 3,
+                        colorClickableText: AppColors.blueGrey,
+                        trimMode: TrimMode.Line,
+                        trimCollapsedText: 'Show more',
+                        trimExpandedText: '',
+                        style: AppTextStyles.body,
+                      ),
                     ],
                   ),
                 ),
@@ -119,28 +122,32 @@ class ListViewPosts extends StatelessWidget {
                 posts[index].images?[0].url == null
                     ? const SizedBox()
                     : GridImage(
-                        post: Post(
-                          createdAt: posts[index].createdAt,
-                          liked: posts[index].liked,
-                          likeCounts: posts[index].likeCounts,
-                          commentCounts: posts[index].commentCounts,
-                          viewCounts: posts[index].viewCounts,
-                          user: User(
-                            avatar: Images(
-                              url: urlAvatar,
-                            ),
-                            firstName: posts[index].user?.firstName ?? '',
-                            lastName: posts[index].user?.lastName ?? '',
-                          ),
-                          description: posts[index].description ?? '',
-                          images: posts[index].images ?? [],
-                          photos: posts[index].photos ?? [],
-                        ),
-                      ),
+                  post: posts[index],
+                  // post: Post(
+                  //   createdAt: posts[index].createdAt,
+                  //   liked: posts[index].liked,
+                  //   likeCounts: posts[index].likeCounts,
+                  //   commentCounts: posts[index].commentCounts,
+                  //   viewCounts: posts[index].viewCounts,
+                  //   user: User(
+                  //     avatar: Images(
+                  //       url: urlAvatar,
+                  //     ),
+                  //     firstName: posts[index].user?.firstName ?? '',
+                  //     lastName: posts[index].user?.lastName ?? '',
+                  //   ),
+                  //   description: posts[index].description ?? '',
+                  //   images: posts[index].images ?? [],
+                  //   photos: posts[index].photos ?? [],
+                  // ),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: LikeCommentView(
-                    post: posts[index],
+                  child: BlocProvider(
+                    create: (_) => LikeBloc(),
+                    child: LikeCommentView(
+                      post: posts[index],
+                    ),
                   ),
                 ),
               ],

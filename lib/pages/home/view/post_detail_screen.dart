@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readmore/readmore.dart';
+import 'package:social_app/pages/home/blocs/like_bloc/like_bloc.dart';
+import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/home/models/post.dart';
 import 'package:social_app/pages/home/widgets/like_comment_view.dart';
 import 'package:social_app/themes/app_assets.dart';
@@ -10,7 +13,7 @@ import 'package:social_app/utils/convert_to_time_ago.dart';
 import 'package:social_app/utils/image_utils.dart';
 import 'package:social_app/widgets/icon_button_widget.dart';
 
-class PostDetailScreen extends StatelessWidget {
+class PostDetailScreen extends StatefulWidget {
   final Post post;
 
   const PostDetailScreen({
@@ -19,8 +22,19 @@ class PostDetailScreen extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<PostDetailScreen> createState() => _PostDetailScreenState();
+}
+
+class _PostDetailScreenState extends State<PostDetailScreen> {
+  @override
+  void initState() {
+    // BlocProvider.of<PostBloc>(context).add(LoadDetailPost(id: widget.post.id ?? ''));
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // final urlAvatar = ImageUtils.genImgIx(photos[0].user?.avatar?.url, 40, 40);
+    final urlAvatar = ImageUtils.genImgIx(widget.post.user?.avatar?.url, 40, 40);
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.dark,
@@ -42,7 +56,7 @@ class PostDetailScreen extends StatelessWidget {
                               backgroundColor: AppColors.slate,
                               child: ClipOval(
                                 child: CachedNetworkImage(
-                                  imageUrl: post.user?.avatar?.url ?? AppAssetIcons.avatar,
+                                  imageUrl: urlAvatar,
                                   errorWidget: (_, __, ___) => Image.asset(
                                     AppAssetIcons.avatar,
                                     color: AppColors.blueGrey,
@@ -63,7 +77,7 @@ class PostDetailScreen extends StatelessWidget {
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            '${post.user?.firstName ?? ''} ${post.user?.lastName ?? 'Người dùng'}',
+                                            '${widget.post.user?.firstName ?? ''} ${widget.post.user?.lastName ?? 'Người dùng'}',
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                             style: AppTextStyles.body.copyWith(fontWeight: FontWeight.bold),
@@ -82,7 +96,7 @@ class PostDetailScreen extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
-                                      ConvertToTimeAgo().timeAgo(post.createdAt ?? DateTime.now()),
+                                      ConvertToTimeAgo().timeAgo(widget.post.createdAt ?? DateTime.now()),
                                       overflow: TextOverflow.ellipsis,
                                       style: AppTextStyles.h6.copyWith(color: AppColors.blueGrey),
                                     ),
@@ -93,10 +107,10 @@ class PostDetailScreen extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 15),
-                        post.description!.isEmpty || post.description == null
+                        widget.post.description!.isEmpty || widget.post.description == null
                             ? const SizedBox()
                             : ReadMoreText(
-                                post.description ?? '',
+                                widget.post.description ?? '',
                                 trimLines: 8,
                                 colorClickableText: AppColors.blueGrey,
                                 trimMode: TrimMode.Line,
@@ -107,8 +121,11 @@ class PostDetailScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  LikeCommentView(
-                    post: post,
+                  BlocProvider(
+                    create: (context) => LikeBloc(),
+                    child: LikeCommentView(
+                      post: widget.post,
+                    ),
                   ),
                   const Divider(color: AppColors.slate),
                 ],
@@ -116,13 +133,13 @@ class PostDetailScreen extends StatelessWidget {
             ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
-                childCount: post.photos?.length,
+                childCount: widget.post.photos?.length,
                 (context, index) {
                   final deviceWidth = MediaQuery.of(context).size.width;
-                  final heightImage = ImageUtils.getHeightView(
-                      deviceWidth, post.photos?[index].image?.orgWidth ?? 1, post.photos?[index].image?.orgHeight ?? 1);
+                  final heightImage = ImageUtils.getHeightView(deviceWidth, widget.post.photos?[index].image?.orgWidth ?? 1,
+                      widget.post.photos?[index].image?.orgHeight ?? 1);
                   final urlImage =
-                      ImageUtils.genImgIx(post.photos?[index].image?.url, deviceWidth.toInt(), heightImage.toInt());
+                      ImageUtils.genImgIx(widget.post.photos?[index].image?.url, deviceWidth.toInt(), heightImage.toInt());
                   if (heightImage >= deviceWidth * 3) {
                     return Container(
                       height: deviceWidth * 3,

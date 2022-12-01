@@ -18,6 +18,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
   PostBloc() : super(PostsLoading()) {
     on<LoadPosts>(_onLoadPosts);
+    on<LoadDetailPost>(_onLoadDetailPost);
     on<LoadMorePosts>(_onLoadMorePosts);
     on<RefreshPosts>(_onRefreshPosts);
     on<CreatePost>(_onCreatePost);
@@ -29,7 +30,17 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       _posts = List.from(posts)..shuffle();
       emit(PostsLoaded(data: _posts));
     } catch (e) {
-      print('⚡️ Error Posts: $e');
+      print('⚡️ Error Load Posts: $e');
+      emit(PostError(error: e.toString()));
+    }
+  }
+
+  FutureOr<void> _onLoadDetailPost(LoadDetailPost event, Emitter<PostState> emit) async {
+    try {
+      final post = await _listPostsRepo.getDetailPost(event.id);
+      emit(DetailPostLoaded(data: post));
+    } catch (e) {
+      print('⚡️ Error Load Detail Post: $e');
       emit(PostError(error: e.toString()));
     }
   }
@@ -71,7 +82,6 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       print('⚡️ Error Create Post: $e');
     }
   }
-
 
 
 

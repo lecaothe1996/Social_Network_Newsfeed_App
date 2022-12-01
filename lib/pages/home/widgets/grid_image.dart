@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/home/models/post.dart';
 import 'package:social_app/pages/home/view/post_detail_screen.dart';
 import 'package:social_app/themes/app_color.dart';
@@ -760,6 +762,17 @@ class GridImage extends StatelessWidget {
   void _navigateToPostDetailScreen(List<Images> images, int index, BuildContext context) {
     // print('⚡️ Chose image number ${index + 1}');
     // print('⚡️ Photos number ${photos.length}');
-    Navigator.push(context, MaterialPageRoute(builder: (context) => PostDetailScreen(post: post)));
+    final postsBloc = context.read<PostBloc>()..add(LoadDetailPost(id: post.id ?? ''));
+    postsBloc.stream.firstWhere(
+      (element) {
+        if (element is DetailPostLoaded) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => PostDetailScreen(post: post)));
+          return true;
+        } else if (element is PostError) {
+          return true;
+        }
+        return false;
+      },
+    );
   }
 }

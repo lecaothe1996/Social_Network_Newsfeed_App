@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/my_app/blocs/app_state_bloc.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
+import 'package:social_app/pages/home/repositorys/list_posts_repo.dart';
 import 'package:social_app/pages/home/view/create_post_screen.dart';
 import 'package:social_app/pages/home/widgets/list_view_posts.dart';
 import 'package:social_app/pages/home/widgets/list_view_stories.dart';
@@ -65,6 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 title: GestureDetector(
                   onTap: () {
                     print('Click Search');
+                    // ListPostsRepo().getDetailPost('5GSS8xFihDWibS9SNa');
                   },
                   child: Container(
                     height: 36,
@@ -116,19 +118,27 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-              BlocBuilder<PostBloc, PostState>(
-                builder: (context, state) {
-                  if (state is PostsLoaded) {
-                    return ListViewStories(posts: state.data);
-                  }
-                  return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
-                },
-              ),
+              // BlocBuilder<PostBloc, PostState>(
+              //   builder: (context, state) {
+              //     if (state is PostsLoaded) {
+              //       return ListViewStories(posts: state.data);
+              //     }
+              //     return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
+              //   },
+              // ),
               BlocConsumer<PostBloc, PostState>(
                 listener: (context, state) {
                   if (state is PostError) {
                     ErrorDialog.showMsgDialog(context, state.error);
                   }
+                },
+                buildWhen: (previous, current) {
+                  if (current is DetailPostLoaded) {
+                    return false;
+                  } else if (current is PostError) {
+                    return false;
+                  }
+                  return true;
                 },
                 builder: (context, state) {
                   if (state is PostsLoaded) {

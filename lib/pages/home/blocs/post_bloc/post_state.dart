@@ -11,6 +11,12 @@ class PostsLoaded extends PostState {
   PostsLoaded({required this.data});
 }
 
+class DetailPostLoaded extends PostState {
+  final Post data;
+
+  DetailPostLoaded({required this.data});
+}
+
 class PostsRefresh extends PostState {}
 
 class PostError extends PostState {
