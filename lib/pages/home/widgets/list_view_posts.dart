@@ -1,19 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart';
-import 'package:social_app/pages/home/blocs/like_bloc/like_bloc.dart';
 import 'package:social_app/pages/home/models/post.dart';
 import 'package:social_app/pages/home/widgets/grid_image.dart';
 import 'package:social_app/pages/home/widgets/like_comment_view.dart';
+import 'package:social_app/themes/app_assets.dart';
+import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/utils/convert_to_time_ago.dart';
 import 'package:social_app/utils/image_utils.dart';
-
-import '../../../themes/app_assets.dart';
-import '../../../themes/app_color.dart';
-import '../../../widgets/icon_button_widget.dart';
+import 'package:social_app/widgets/icon_button_widget.dart';
 
 class ListViewPosts extends StatelessWidget {
   final List<Post> posts;
@@ -143,11 +139,8 @@ class ListViewPosts extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: BlocProvider(
-                    create: (_) => LikeBloc(),
-                    child: LikeCommentView(
-                      post: posts[index],
-                    ),
+                  child: LikeCommentView(
+                    post: posts[index],
                   ),
                 ),
               ],

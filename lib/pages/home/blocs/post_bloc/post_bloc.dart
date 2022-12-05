@@ -1,8 +1,7 @@
 import 'dart:async';
-
-import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:meta/meta.dart';
 import 'package:social_app/pages/home/models/post.dart';
 import 'package:social_app/pages/home/repositorys/list_posts_repo.dart';
 
@@ -22,6 +21,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     on<LoadMorePosts>(_onLoadMorePosts);
     on<RefreshPosts>(_onRefreshPosts);
     on<CreatePost>(_onCreatePost);
+    on<LikeAndUnLike>(_onLikeAndUnLike);
   }
 
   FutureOr<void> _onLoadPosts(LoadPosts event, Emitter<PostState> emit) async {
@@ -83,6 +83,44 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     }
   }
 
+  FutureOr<void> _onLikeAndUnLike(LikeAndUnLike event, Emitter<PostState> emit) {
+    // print('Post===${event.post.id}');
+    // print('eventLike===${event.eventLike}');
+    List<Post> posts = _posts.map((post) {
+      if (post.id == event.post.id) {
+        // print('id===${event.post.id}');
+        if (event.eventLike == EventLike.likePost) {
+          post..likeCounts = event.post.likeCounts! + 1..liked = true;
+          print('likeCounts===${post.likeCounts}');
+          return post;
+        }
+        print('UnlikePost');
+        return post;
+      }
+      print('No idddddd');
+      return post;
+    }).toList();
 
-
+    _posts = posts;
+    emit(PostsLoaded(data: _posts));
+    // final index = _posts.indexWhere((p) => p.id == event.post.id);
+    //
+    // if(index == -1){
+    //   // return;
+    // }
+    //
+    // final post = _posts[index];
+    //
+    //
+    // final likeCount = post.likeCounts;
+    // final eventIsLike = event.eventLike == EventLike.likePost ? true : false;
+    // final likeCountNew = eventIsLike ? likeCount! + 1 : likeCount! - 1;
+    //
+    // post..likeCounts = likeCountNew..liked = eventIsLike;
+    //
+    // _posts[index] = post;
+    //
+    //
+    // print('No idddddd==${_posts.toList()}');
+  }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_app/pages/home/blocs/like_bloc/like_bloc.dart';
+import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/home/models/post.dart';
 import 'package:social_app/pages/home/widgets/toggle.dart';
 import 'package:social_app/themes/app_assets.dart';
@@ -21,15 +21,14 @@ class LikeCommentView extends StatefulWidget {
 
 class _LikeCommentViewState extends State<LikeCommentView> {
   Post get post => widget.post;
-  int likeCount = 0;
-  bool isLiked = false;
+  int _likeCount = 0;
+  bool _isLiked = false;
 
   @override
   void initState() {
-    likeCount = post.likeCounts ?? 0;
-    isLiked = post.liked ?? false;
+    _likeCount = post.likeCounts ?? 0;
+    _isLiked = post.liked ?? false;
     print('initState');
-    // _likeBloc.isActivated(post.liked ?? false);
     super.initState();
   }
 
@@ -58,17 +57,17 @@ class _LikeCommentViewState extends State<LikeCommentView> {
         // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Toggle(
-            isActivated: isLiked,
+            isActivated: _isLiked,
             onTrigger: (isLiked) {
               // print('Call API like');
-              isLiked ?
-              BlocProvider.of<LikeBloc>(context).add(Like(id: 'id'))
-                  : BlocProvider.of<LikeBloc>(context).add(UnLike(id: 'id'));
+              isLiked
+                  ? context.read<PostBloc>().add(LikeAndUnLike(post: post, eventLike: EventLike.likePost))
+                  : context.read<PostBloc>().add(LikeAndUnLike(post: post, eventLike: EventLike.unLikePost));
             },
             onTap: (isOn) {
               setState(() {
-                likeCount = isOn ? likeCount + 1 : likeCount - 1;
-                isLiked = isOn;
+                _likeCount = isOn ? _likeCount + 1 : _likeCount - 1;
+                _isLiked = isOn;
               });
             },
             activatedChild: Image.asset(
@@ -81,20 +80,12 @@ class _LikeCommentViewState extends State<LikeCommentView> {
           ),
           Expanded(
             child: Text(
-              likeCount.toString(),
+              _likeCount.toString(),
               overflow: TextOverflow.ellipsis,
               style: AppTextStyles.h6,
             ),
           ),
-          BlocBuilder<LikeBloc, LikeState>(
-            builder: (context, state) {
-              print('State Like === ${state}');
-              if (state is LikeSuccess) {
-                return Image.asset(AppAssetIcons.comment, color: Colors.red,);
-              }
-              return Image.asset(AppAssetIcons.comment);
-            },
-          ),
+          Image.asset(AppAssetIcons.comment),
           Text(
             widget.post.commentCounts.toString(),
             overflow: TextOverflow.ellipsis,

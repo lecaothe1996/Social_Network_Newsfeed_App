@@ -1,5 +1,10 @@
 part of 'post_bloc.dart';
 
+enum EventLike {
+  likePost,
+  unLikePost,
+}
+
 @immutable
 abstract class PostEvent {}
 
@@ -23,5 +28,12 @@ class CreatePost extends PostEvent {
   final String description;
   final List<XFile> images;
 
-  CreatePost({this.description = '', this.images = const <XFile>[]});
+  CreatePost({this.description = '', required this.images});
+}
+
+class LikeAndUnLike extends PostEvent {
+  final Post post;
+  final EventLike eventLike;
+
+  LikeAndUnLike({required this.post, required this.eventLike});
 }

@@ -31,7 +31,7 @@ class Post {
   final String? description;
   final int? commentCounts;
   final List<Images>? images;
-  final int? likeCounts;
+  int? likeCounts;
   final int? viewCounts;
   final int? pulseScore;
   final bool? isSensitive;
@@ -39,7 +39,7 @@ class Post {
   final List? tags;
   final User? user;
   final List<Post>? photos;
-  final bool? liked;
+  bool? liked;
   final Images? image;
   final int? collectionCounts;
   final String? pulseType;

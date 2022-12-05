@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 class Toggle extends StatefulWidget {
@@ -9,7 +8,8 @@ class Toggle extends StatefulWidget {
   final Widget deActivatedChild;
   final Widget activatedChild;
 
-  const Toggle({Key? key,
+  const Toggle({
+    Key? key,
     required this.isActivated,
     required this.onTrigger,
     required this.onTap,
