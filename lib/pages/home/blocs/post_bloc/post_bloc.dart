@@ -76,11 +76,18 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
   FutureOr<void> _onCreatePost(CreatePost event, Emitter<PostState> emit) async {
     try {
-      // print('description==${event.description}');
-      // print('images==${event.images}');
-      _listPostsRepo.createPosts(event.description, event.images);
+      final post = await _listPostsRepo.createPosts(event.description, event.images);
+      _posts = List.from(_posts)..insert(0, post);
+      emit(PostsLoaded(
+        data: _posts,
+        stateName: StateName.createPost,
+      ));
     } catch (e) {
       print('⚡️ Error Create Post: $e');
+      emit(PostError(
+        error: e.toString(),
+        stateName: StateName.createPost,
+      ));
     }
   }
 

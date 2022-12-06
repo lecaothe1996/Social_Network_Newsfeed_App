@@ -28,7 +28,15 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     _scrollController.addListener(_scrollListener);
+    print('initState');
     super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant HomeScreen oldWidget) {
+    print('Updateeeeeeeeeee');
+    _scrollToTop();
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -129,7 +137,9 @@ class _HomeScreenState extends State<HomeScreen> {
               BlocConsumer<PostBloc, PostState>(
                 listener: (context, state) {
                   if (state is PostError) {
-                    ErrorDialog.showMsgDialog(context, state.error);
+                    if (state.stateName != StateName.createPost) {
+                      ErrorDialog.showMsgDialog(context, state.error);
+                    }
                   }
                 },
                 buildWhen: (previous, current) {

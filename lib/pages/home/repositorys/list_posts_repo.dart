@@ -20,34 +20,48 @@ class ListPostsRepo {
       final posts = List<Post>.from(data.map((x) => Post.fromJson(x)));
       return posts;
     } on DioError catch (e) {
-      if (e.response?.statusCode != 200) {
+      if (e.response?.statusCode == 400) {
         throw MyException('Lỗi tải bài viết, xin vui lòng thử lại');
       }
-      throw MyException('Lỗi tải bài viết!');
+      throw MyException('Lỗi kết nối!');
     }
   }
 
-  Future createPosts(String description, List<XFile> images) async {
-    print('description:::${description}');
-    print('images:::${images.first.path}');
+  Future<Post> createPosts(String description, List<XFile> images) async {
+    // print('description:::${description}');
+    // print('images:::${images.first.path}');
+    try {
+      List<String> ids = [];
+      // Upload image to server
+      for (var image in images) {
+        // print('image.name===${image.name}');
+        FormData formData = FormData.fromMap({
+          "file": await MultipartFile.fromFile(
+            image.path,
+            filename: image.name,
+          )
+        });
+        final res = await _myClient.post('/upload', data: formData);
+        String id = res.data['data']['id'];
+        ids.add(id);
+      }
+      // Create post
+      final resCreatePost = await _myClient.post('/posts', data: {
+        "description": description,
+        "img_upload_ids": ids,
+      });
+      final String idPost = resCreatePost.data['data'];
+      print('⚡️ ID resCreatePost====${resCreatePost.data['data']}');
 
-    FormData formData = FormData.fromMap({
-      "file": await MultipartFile.fromFile(
-        images.first.path,
-        filename: images.first.name,
-      )
-    });
+      return getDetailPost(idPost);
+    } on DioError catch (e) {
+      print('⚡️ statusCode====${e.response?.statusCode}');
+      if (e.response?.statusCode == 400) {
+        throw MyException('Lỗi tạo bài viết');
+      }
+      throw MyException('Không thể kết nối');
+    }
 
-    final res = await _myClient.post('/upload', data: formData);
-    String id = res.data['data']['id'];
-    print('id===${id}');
-
-    final resCreatePost = await _myClient.post('/posts', data: {
-      "description": description,
-      "img_upload_ids": [id],
-    });
-
-    print('resCreatePost===${resCreatePost.data['data']}');
   }
 
   Future<Post> getDetailPost(String id) async {
@@ -59,6 +73,7 @@ class ListPostsRepo {
       // print('post====${post}');
       return post;
     } on DioError catch (e) {
+      print('statusCode====${e.response?.statusCode}');
       if (e.response?.statusCode == 400) {
         throw MyException('Bài viết đã bị xóa');
       }

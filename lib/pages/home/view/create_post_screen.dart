@@ -9,6 +9,7 @@ import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/widgets/button_widget.dart';
+import 'package:social_app/widgets/dialogs/error_dialog.dart';
 import 'package:social_app/widgets/icon_button_widget.dart';
 
 import '../../../themes/app_text_styles.dart';
@@ -50,14 +51,27 @@ class _CreatePostPageState extends State<CreatePostPage> {
         actions: [
           Container(
             margin: const EdgeInsets.fromLTRB(0, 10, 15, 10),
-            child: MyElevatedButton(
-              onPressed: () {
-                print('Click Post');
-                BlocProvider.of<PostBloc>(context)
-                    .add(CreatePost(description: _descriptionCtl.text, images: imageBloc.images ?? []));
+            child: BlocListener<PostBloc, PostState>(
+              listener: (context, state) {
+                if (state is PostError) {
+                  if (state.stateName == StateName.createPost) {
+                    ErrorDialog.showMsgDialog(context, state.error);
+                  }
+                } else if (state is PostsLoaded) {
+                  if (state.stateName == StateName.createPost) {
+                    Navigator.pop(context);
+                  }
+                }
               },
-              text: 'ĐĂNG',
-              width: 80,
+              child: MyElevatedButton(
+                onPressed: () {
+                  print('Click Post');
+                  context.read<PostBloc>().add(
+                      CreatePost(description: _descriptionCtl.text, images: imageBloc.images ?? []));
+                },
+                text: 'ĐĂNG',
+                width: 80,
+              ),
             ),
           ),
         ],
