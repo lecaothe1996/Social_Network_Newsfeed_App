@@ -27,7 +27,30 @@ class ListPostsRepo {
     }
   }
 
-  Future<Post> getDetailPost (String id) async {
+  Future createPosts(String description, List<XFile> images) async {
+    print('description:::${description}');
+    print('images:::${images.first.path}');
+
+    FormData formData = FormData.fromMap({
+      "file": await MultipartFile.fromFile(
+        images.first.path,
+        filename: images.first.name,
+      )
+    });
+
+    final res = await _myClient.post('/upload', data: formData);
+    String id = res.data['data']['id'];
+    print('id===${id}');
+
+    final resCreatePost = await _myClient.post('/posts', data: {
+      "description": description,
+      "img_upload_ids": [id],
+    });
+
+    print('resCreatePost===${resCreatePost.data['data']}');
+  }
+
+  Future<Post> getDetailPost(String id) async {
     // print('id====${id}');
     try {
       final res = await _myClient.get('/posts/$id');
@@ -41,28 +64,5 @@ class ListPostsRepo {
       }
       throw MyException('Không thể kết nối');
     }
-  }
-
-  Future createPosts(String description, List<XFile> images) async {
-    print('description:::${description}');
-    print('images:::${images}');
-
-    return  ;
-    // final res = await _myClient.get(
-    //   '/posts',
-    //   queryParameters: {'page': '1'},
-    // );
-    // // print('res====${res.data}');
-    // if (res.statusCode != 200) {
-    //   throw MyException('Server Error!!!');
-    // }
-    // final data = res.data['data'];
-    // // print('data====${data}');
-    // if (data == null) {
-    //   throw MyException('End Post!!!');
-    // }
-    // final posts = List<Post>.from(data.map((x) => Post.fromJson(x)));
-    // // print('posts==posts');
-    // return posts;
   }
 }

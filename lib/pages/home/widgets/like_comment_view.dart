@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_app/pages/home/blocs/like_bloc/like_cubit.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/home/models/post.dart';
 import 'package:social_app/pages/home/widgets/toggle.dart';
@@ -20,23 +21,24 @@ class LikeCommentView extends StatefulWidget {
 }
 
 class _LikeCommentViewState extends State<LikeCommentView> {
-  Post get post => widget.post;
+  final _likeCubit = LikeCubit();
+
   int _likeCount = 0;
   bool _isLiked = false;
 
   @override
   void initState() {
-    _likeCount = post.likeCounts ?? 0;
-    _isLiked = post.liked ?? false;
-    print('initState');
+    _likeCount = widget.post.likeCounts ?? 0;
+    _isLiked = widget.post.liked ?? false;
+    // print('initState');
     super.initState();
   }
 
   @override
   void didUpdateWidget(covariant LikeCommentView oldWidget) {
-    print('didUpdateWidget');
-    // likeCount = widget.post.likeCounts ?? 0;
-    // isLiked = widget.post.liked ?? false;
+    // print('didUpdateWidget');
+    _likeCount = widget.post.likeCounts ?? 0;
+    _isLiked = widget.post.liked ?? false;
     super.didUpdateWidget(oldWidget);
   }
 
@@ -59,10 +61,11 @@ class _LikeCommentViewState extends State<LikeCommentView> {
           Toggle(
             isActivated: _isLiked,
             onTrigger: (isLiked) {
-              // print('Call API like');
               isLiked
-                  ? context.read<PostBloc>().add(LikeAndUnLike(post: post, eventLike: EventLike.likePost))
-                  : context.read<PostBloc>().add(LikeAndUnLike(post: post, eventLike: EventLike.unLikePost));
+                  ? context.read<PostBloc>().add(LikeAndUnLike(post: widget.post, eventLike: EventLike.likePost))
+                  : context.read<PostBloc>().add(LikeAndUnLike(post: widget.post, eventLike: EventLike.unLikePost));
+              // print('Call API like');
+              _likeCubit.likeAndUnLike(widget.post.id ?? '', isLiked ? EventLike.likePost : EventLike.unLikePost);
             },
             onTap: (isOn) {
               setState(() {

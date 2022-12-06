@@ -766,7 +766,15 @@ class GridImage extends StatelessWidget {
     postsBloc.stream.firstWhere(
       (element) {
         if (element is DetailPostLoaded) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => PostDetailScreen(post: post)));
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => BlocProvider.value(
+                value: BlocProvider.of<PostBloc>(context),
+                child: PostDetailScreen(post: post),
+              ),
+            ),
+          );
           return true;
         } else if (element is PostError) {
           return true;

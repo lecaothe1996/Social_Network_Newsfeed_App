@@ -6,6 +6,7 @@ import 'package:social_app/pages/home/models/post.dart';
 import 'package:social_app/pages/home/repositorys/list_posts_repo.dart';
 
 part 'post_event.dart';
+
 part 'post_state.dart';
 
 class PostBloc extends Bloc<PostEvent, PostState> {
@@ -83,44 +84,43 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     }
   }
 
-  FutureOr<void> _onLikeAndUnLike(LikeAndUnLike event, Emitter<PostState> emit) {
+  void _onLikeAndUnLike(LikeAndUnLike event, Emitter<PostState> emit) {
     // print('Post===${event.post.id}');
     // print('eventLike===${event.eventLike}');
-    List<Post> posts = _posts.map((post) {
-      if (post.id == event.post.id) {
-        // print('id===${event.post.id}');
-        if (event.eventLike == EventLike.likePost) {
-          post..likeCounts = event.post.likeCounts! + 1..liked = true;
-          print('likeCounts===${post.likeCounts}');
-          return post;
-        }
-        print('UnlikePost');
-        return post;
-      }
-      print('No idddddd');
-      return post;
-    }).toList();
+    // List<Post> posts = _posts.map((post) {
+    //   if (post.id == event.post.id) {
+    //     // print('id===${event.post.id}');
+    //     if (event.eventLike == EventLike.likePost) {
+    //       post..likeCounts = event.post.likeCounts! + 1..liked = true;
+    //       print('likeCounts===${post.likeCounts}');
+    //       return post;
+    //     }
+    //     post..likeCounts = event.post.likeCounts! - 1..liked = false;
+    //     print('likeCounts===${post.likeCounts}');
+    //     return post;
+    //   }
+    //   print('No idddddd');
+    //   return post;
+    // }).toList();
+    //
+    // _posts = posts;
+    // emit(PostsLoaded(data: _posts));
 
-    _posts = posts;
-    emit(PostsLoaded(data: _posts));
-    // final index = _posts.indexWhere((p) => p.id == event.post.id);
-    //
-    // if(index == -1){
-    //   // return;
-    // }
-    //
-    // final post = _posts[index];
-    //
-    //
-    // final likeCount = post.likeCounts;
-    // final eventIsLike = event.eventLike == EventLike.likePost ? true : false;
-    // final likeCountNew = eventIsLike ? likeCount! + 1 : likeCount! - 1;
-    //
-    // post..likeCounts = likeCountNew..liked = eventIsLike;
-    //
-    // _posts[index] = post;
-    //
-    //
-    // print('No idddddd==${_posts.toList()}');
+    final oldPosts = _posts;
+
+    final index = oldPosts.indexWhere((post) => post.id == event.post.id);
+
+    final post = oldPosts[index];
+
+    final eventIsLike = event.eventLike == EventLike.likePost ? true : false;
+    final likeCountNew = eventIsLike ? post.likeCounts! + 1 : post.likeCounts! - 1;
+
+    post
+      ..likeCounts = likeCountNew
+      ..liked = eventIsLike;
+
+    oldPosts[index] = post;
+    // print('No idddddd');
+    emit(PostsLoaded(data: oldPosts));
   }
 }
