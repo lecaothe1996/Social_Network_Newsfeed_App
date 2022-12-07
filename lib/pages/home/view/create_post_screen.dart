@@ -108,7 +108,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
                   if (snapshot.data!.isEmpty) {
                     return const SizedBox();
                   }
-                  return GridImageCreatePost(imageXFile: snapshot.data ?? [],);
+                  return GridImageCreatePost(imagesXFile: snapshot.data ?? [],);
                   // return GridView.builder(
                   //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   //     crossAxisCount: 3,
