@@ -742,7 +742,7 @@ class GridImage extends StatelessWidget {
                   Container(
                     width: double.infinity,
                     height: double.infinity,
-                    color: AppColors.black.withOpacity(0.6),
+                    color: AppColors.black.withOpacity(0.4),
                     child: Center(
                       child: Text(
                         '+${images.length - 4}',

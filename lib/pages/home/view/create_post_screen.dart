@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/pages/home/blocs/pick_image_bloc.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
+import 'package:social_app/pages/home/widgets/grid_image_create_post.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/widgets/button_widget.dart';
@@ -66,8 +67,10 @@ class _CreatePostPageState extends State<CreatePostPage> {
               child: MyElevatedButton(
                 onPressed: () {
                   print('Click Post');
-                  context.read<PostBloc>().add(
-                      CreatePost(description: _descriptionCtl.text, images: imageBloc.images ?? []));
+                  if (imageBloc.images.isEmpty) {
+                    return ErrorDialog.showMsgDialog(context, 'Vui lòng chọn hình ảnh');
+                  }
+                  context.read<PostBloc>().add(CreatePost(description: _descriptionCtl.text, images: imageBloc.images));
                 },
                 text: 'ĐĂNG',
                 width: 80,
@@ -105,38 +108,39 @@ class _CreatePostPageState extends State<CreatePostPage> {
                   if (snapshot.data!.isEmpty) {
                     return const SizedBox();
                   }
-                  return GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      childAspectRatio: 0.75,
-                      crossAxisSpacing: 4,
-                      mainAxisSpacing: 4,
-                    ),
-                    padding: const EdgeInsets.only(bottom: 15),
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: snapshot.data?.length,
-                    itemBuilder: (context, index) {
-                      return Stack(
-                        children: [
-                          Image.file(
-                            File(snapshot.data?[index].path ?? ''),
-                            fit: BoxFit.cover,
-                          ),
-                          Positioned(
-                            right: 0,
-                            child: MyIconButton(
-                              onTap: () {
-                                print('Click close image');
-                                imageBloc.closeImage(index);
-                              },
-                              nameImage: AppAssetIcons.close,
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  );
+                  return GridImageCreatePost(imageXFile: snapshot.data ?? [],);
+                  // return GridView.builder(
+                  //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  //     crossAxisCount: 3,
+                  //     childAspectRatio: 0.75,
+                  //     crossAxisSpacing: 4,
+                  //     mainAxisSpacing: 4,
+                  //   ),
+                  //   padding: const EdgeInsets.only(bottom: 15),
+                  //   shrinkWrap: true,
+                  //   physics: const NeverScrollableScrollPhysics(),
+                  //   itemCount: snapshot.data?.length,
+                  //   itemBuilder: (context, index) {
+                  //     return Stack(
+                  //       children: [
+                  //         Image.file(
+                  //           File(snapshot.data?[index].path ?? ''),
+                  //           fit: BoxFit.cover,
+                  //         ),
+                  //         Positioned(
+                  //           right: 0,
+                  //           child: MyIconButton(
+                  //             onTap: () {
+                  //               print('Click close image');
+                  //               imageBloc.closeImage(index);
+                  //             },
+                  //             nameImage: AppAssetIcons.close,
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     );
+                  //   },
+                  // );
                 }
                 if (snapshot.hasError) {
                   return Text(snapshot.error.toString());

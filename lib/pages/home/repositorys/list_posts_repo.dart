@@ -28,13 +28,10 @@ class ListPostsRepo {
   }
 
   Future<Post> createPosts(String description, List<XFile> images) async {
-    // print('description:::${description}');
-    // print('images:::${images.first.path}');
     try {
       List<String> ids = [];
       // Upload image to server
       for (var image in images) {
-        // print('image.name===${image.name}');
         FormData formData = FormData.fromMap({
           "file": await MultipartFile.fromFile(
             image.path,
@@ -51,8 +48,7 @@ class ListPostsRepo {
         "img_upload_ids": ids,
       });
       final String idPost = resCreatePost.data['data'];
-      print('⚡️ ID resCreatePost====${resCreatePost.data['data']}');
-
+      // Get detail post
       return getDetailPost(idPost);
     } on DioError catch (e) {
       print('⚡️ statusCode====${e.response?.statusCode}');
@@ -65,12 +61,10 @@ class ListPostsRepo {
   }
 
   Future<Post> getDetailPost(String id) async {
-    // print('id====${id}');
     try {
       final res = await _myClient.get('/posts/$id');
       Map<String, dynamic> data = res.data['data'];
       final post = Post.fromJson(data);
-      // print('post====${post}');
       return post;
     } on DioError catch (e) {
       print('statusCode====${e.response?.statusCode}');
