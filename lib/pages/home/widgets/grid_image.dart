@@ -23,36 +23,36 @@ class GridImage extends StatelessWidget {
     return buildImageGrid(post.images ?? [], deviceWidth, context);
   }
 
-  Widget buildImageGrid(List<Images> images, double width, BuildContext context) {
+  Widget buildImageGrid(List<Images> images, double deviceWidth, BuildContext context) {
     switch (images.length) {
       case 0:
         return const SizedBox();
       case 1:
-        return _buildOneImage(images[0], width, context);
+        return _buildOneImage(images[0], deviceWidth, context);
       case 2:
-        return _buildTwoImage(images, width, context);
+        return _buildTwoImage(images, deviceWidth, context);
       case 3:
-        return _buildThreeImage(images, width, context);
+        return _buildThreeImage(images, deviceWidth, context);
       case 4:
-        return _buildFourImage(images, width, context);
+        return _buildFourImage(images, deviceWidth, context);
       case 5:
-        return _buildFiveImage(images, width, context);
+        return _buildFiveImage(images, deviceWidth, context);
       default:
-        return _buildMoreImage(images, width, context);
+        return _buildMoreImage(images, deviceWidth, context);
     }
   }
 
-  Widget _buildOneImage(Images image, double width, BuildContext context) {
-    final heightView = ImageUtils.getHeightView(width, image.orgWidth!, image.orgHeight!);
-    final urlOneImage = ImageUtils.genImgIx(image.url, width.toInt(), heightView.toInt());
+  Widget _buildOneImage(Images image, double deviceWidth, BuildContext context) {
+    final heightView = ImageUtils.getHeightView(deviceWidth, image.orgWidth!, image.orgHeight!);
+    final urlOneImage = ImageUtils.genImgIx(image.url, deviceWidth.toInt(), heightView.toInt());
 
     // print('url One Image = $urlOneImage');
 
     // view lớn hơn tỷ lệ 9/16
-    if (heightView >= width * 1.5) {
+    if (heightView >= deviceWidth * 1.5) {
       return Container(
-        height: width * 1.5,
-        width: width,
+        height: deviceWidth * 1.5,
+        width: deviceWidth,
         color: AppColors.slate,
         child: GestureDetector(
           onTap: () => _navigateToPostDetailScreen([image], 0, context),
@@ -66,7 +66,7 @@ class GridImage extends StatelessWidget {
 
     return Container(
       height: heightView,
-      width: width,
+      width: deviceWidth,
       color: AppColors.slate,
       child: GestureDetector(
         onTap: () => _navigateToPostDetailScreen([image], 0, context),
@@ -78,19 +78,19 @@ class GridImage extends StatelessWidget {
     );
   }
 
-  Widget _buildTwoImage(List<Images> images, double width, BuildContext context) {
-    final urlHorizontalImage1 = ImageUtils.genImgIx(images[0].url, width.toInt(), (width - 4) ~/ 2, focusFace: true);
-    final urlHorizontalImage2 = ImageUtils.genImgIx(images[1].url, width.toInt(), (width - 4) ~/ 2, focusFace: true);
-    // print('url Horizontal Image1 = $urlHorizontalImage1');
-    // print('url Horizontal Image2 = $urlHorizontalImage2');
-
-    final urlVerticalImage1 = ImageUtils.genImgIx(images[0].url, (width - 4) ~/ 2, width ~/ 1.333, focusFace: true);
-    final urlVerticalImage2 = ImageUtils.genImgIx(images[1].url, (width - 4) ~/ 2, width ~/ 1.333, focusFace: true);
+  Widget _buildTwoImage(List<Images> images, double deviceWidth, BuildContext context) {
+    final urlVerticalImage1 = ImageUtils.genImgIx(images[0].url, (deviceWidth - 4) ~/ 2, deviceWidth ~/ 1.333, focusFace: true);
+    final urlVerticalImage2 = ImageUtils.genImgIx(images[1].url, (deviceWidth - 4) ~/ 2, deviceWidth ~/ 1.333, focusFace: true);
     // print('url Vertical Image1 = $urlVerticalImage1');
     // print('url Vertical Image2 = $urlVerticalImage2');
 
-    final urlSquareImage1 = ImageUtils.genImgIx(images[0].url, (width - 4) ~/ 2, (width - 4) ~/ 2, focusFace: true);
-    final urlSquareImage2 = ImageUtils.genImgIx(images[1].url, (width - 4) ~/ 2, (width - 4) ~/ 2, focusFace: true);
+    final urlHorizontalImage1 = ImageUtils.genImgIx(images[0].url, deviceWidth.toInt(), (deviceWidth - 4) ~/ 2, focusFace: true);
+    final urlHorizontalImage2 = ImageUtils.genImgIx(images[1].url, deviceWidth.toInt(), (deviceWidth - 4) ~/ 2, focusFace: true);
+    // print('url Horizontal Image1 = $urlHorizontalImage1');
+    // print('url Horizontal Image2 = $urlHorizontalImage2');
+
+    final urlSquareImage1 = ImageUtils.genImgIx(images[0].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 4) ~/ 2, focusFace: true);
+    final urlSquareImage2 = ImageUtils.genImgIx(images[1].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 4) ~/ 2, focusFace: true);
     // print('url Square Image1 = $urlSquareImage1');
     // print('url Square Image2 = $urlSquareImage2');
 
@@ -212,18 +212,18 @@ class GridImage extends StatelessWidget {
     }
   }
 
-  Widget _buildThreeImage(List<Images> images, double width, BuildContext context) {
+  Widget _buildThreeImage(List<Images> images, double deviceWidth, BuildContext context) {
     final urlVerticalImage1 =
-        ImageUtils.genImgIx(images[0].url, ((width - 4) - ((width - 4) / 3)).toInt(), width.toInt(), focusFace: true);
-    final urlVerticalImage2 = ImageUtils.genImgIx(images[1].url, (width - 4) ~/ 3, (width - 4) ~/ 2, focusFace: true);
-    final urlVerticalImage3 = ImageUtils.genImgIx(images[2].url, (width - 4) ~/ 3, (width - 4) ~/ 2, focusFace: true);
+        ImageUtils.genImgIx(images[0].url, ((deviceWidth - 4) - ((deviceWidth - 4) / 3)).toInt(), deviceWidth.toInt(), focusFace: true);
+    final urlVerticalImage2 = ImageUtils.genImgIx(images[1].url, (deviceWidth - 4) ~/ 3, (deviceWidth - 4) ~/ 2, focusFace: true);
+    final urlVerticalImage3 = ImageUtils.genImgIx(images[2].url, (deviceWidth - 4) ~/ 3, (deviceWidth - 4) ~/ 2, focusFace: true);
     // print('url Vertical Image1 = $urlVerticalImage1');
     // print('url Vertical Image2 = $urlVerticalImage2');
     // print('url Vertical Image3 = $urlVerticalImage3');
 
-    final urlHorizontalImage1 = ImageUtils.genImgIx(images[0].url, width.toInt(), (width - 4) ~/ 2, focusFace: true);
-    final urlHorizontalImage2 = ImageUtils.genImgIx(images[1].url, (width - 4) ~/ 2, (width - 4) ~/ 2, focusFace: true);
-    final urlHorizontalImage3 = ImageUtils.genImgIx(images[2].url, (width - 4) ~/ 2, (width - 4) ~/ 2, focusFace: true);
+    final urlHorizontalImage1 = ImageUtils.genImgIx(images[0].url, deviceWidth.toInt(), (deviceWidth - 4) ~/ 2, focusFace: true);
+    final urlHorizontalImage2 = ImageUtils.genImgIx(images[1].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 4) ~/ 2, focusFace: true);
+    final urlHorizontalImage3 = ImageUtils.genImgIx(images[2].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 4) ~/ 2, focusFace: true);
     // print('url Horizontal Image1 = $urlHorizontalImage1');
     // print('url Horizontal Image2 = $urlHorizontalImage2');
     // print('url Horizontal Image3 = $urlHorizontalImage3');
@@ -332,31 +332,31 @@ class GridImage extends StatelessWidget {
     );
   }
 
-  Widget _buildFourImage(List<Images> images, double width, BuildContext context) {
+  Widget _buildFourImage(List<Images> images, double deviceWidth, BuildContext context) {
     final urlVerticalImage1 =
-        ImageUtils.genImgIx(images[0].url, ((width - 4) - ((width - 4) / 3)).toInt(), width.toInt(), focusFace: true);
-    final urlVerticalImage2 = ImageUtils.genImgIx(images[1].url, (width - 4) ~/ 3, (width - 8) ~/ 3, focusFace: true);
-    final urlVerticalImage3 = ImageUtils.genImgIx(images[2].url, (width - 4) ~/ 3, (width - 8) ~/ 3, focusFace: true);
-    final urlVerticalImage4 = ImageUtils.genImgIx(images[3].url, (width - 4) ~/ 3, (width - 8) ~/ 3, focusFace: true);
+        ImageUtils.genImgIx(images[0].url, ((deviceWidth - 4) - ((deviceWidth - 4) / 3)).toInt(), deviceWidth.toInt(), focusFace: true);
+    final urlVerticalImage2 = ImageUtils.genImgIx(images[1].url, (deviceWidth - 4) ~/ 3, (deviceWidth - 8) ~/ 3, focusFace: true);
+    final urlVerticalImage3 = ImageUtils.genImgIx(images[2].url, (deviceWidth - 4) ~/ 3, (deviceWidth - 8) ~/ 3, focusFace: true);
+    final urlVerticalImage4 = ImageUtils.genImgIx(images[3].url, (deviceWidth - 4) ~/ 3, (deviceWidth - 8) ~/ 3, focusFace: true);
     // print('url Vertical Image1 = $urlVerticalImage1');
     // print('url Vertical Image2 = $urlVerticalImage2');
     // print('url Vertical Image3 = $urlVerticalImage3');
     // print('url Vertical Image4 = $urlVerticalImage4');
 
     final urlHorizontalImage1 =
-        ImageUtils.genImgIx(images[0].url, width.toInt(), ((width - 4) - ((width - 4) / 3)).toInt(), focusFace: true);
-    final urlHorizontalImage2 = ImageUtils.genImgIx(images[1].url, (width - 8) ~/ 3, (width - 4) ~/ 3, focusFace: true);
-    final urlHorizontalImage3 = ImageUtils.genImgIx(images[2].url, (width - 8) ~/ 3, (width - 4) ~/ 3, focusFace: true);
-    final urlHorizontalImage4 = ImageUtils.genImgIx(images[3].url, (width - 8) ~/ 3, (width - 4) ~/ 3, focusFace: true);
+        ImageUtils.genImgIx(images[0].url, deviceWidth.toInt(), ((deviceWidth - 4) - ((deviceWidth - 4) / 3)).toInt(), focusFace: true);
+    final urlHorizontalImage2 = ImageUtils.genImgIx(images[1].url, (deviceWidth - 8) ~/ 3, (deviceWidth - 4) ~/ 3, focusFace: true);
+    final urlHorizontalImage3 = ImageUtils.genImgIx(images[2].url, (deviceWidth - 8) ~/ 3, (deviceWidth - 4) ~/ 3, focusFace: true);
+    final urlHorizontalImage4 = ImageUtils.genImgIx(images[3].url, (deviceWidth - 8) ~/ 3, (deviceWidth - 4) ~/ 3, focusFace: true);
     // print('url Horizontal Image1 = $urlHorizontalImage1');
     // print('url Horizontal Image2 = $urlHorizontalImage2');
     // print('url Horizontal Image3 = $urlHorizontalImage3');
     // print('url Horizontal Image4 = $urlHorizontalImage4');
 
-    final urlSquareImage1 = ImageUtils.genImgIx(images[0].url, (width - 4) ~/ 2, (width - 4) ~/ 2, focusFace: true);
-    final urlSquareImage2 = ImageUtils.genImgIx(images[1].url, (width - 4) ~/ 2, (width - 4) ~/ 2, focusFace: true);
-    final urlSquareImage3 = ImageUtils.genImgIx(images[2].url, (width - 4) ~/ 2, (width - 4) ~/ 2, focusFace: true);
-    final urlSquareImage4 = ImageUtils.genImgIx(images[3].url, (width - 4) ~/ 2, (width - 4) ~/ 2, focusFace: true);
+    final urlSquareImage1 = ImageUtils.genImgIx(images[0].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 4) ~/ 2, focusFace: true);
+    final urlSquareImage2 = ImageUtils.genImgIx(images[1].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 4) ~/ 2, focusFace: true);
+    final urlSquareImage3 = ImageUtils.genImgIx(images[2].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 4) ~/ 2, focusFace: true);
+    final urlSquareImage4 = ImageUtils.genImgIx(images[3].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 4) ~/ 2, focusFace: true);
     // print('url Square Image1 = $urlSquareImage1');
     // print('url Square Image2 = $urlSquareImage2');
     // print('url Square Image3 = $urlSquareImage3');
@@ -564,12 +564,12 @@ class GridImage extends StatelessWidget {
     }
   }
 
-  Widget _buildFiveImage(List<Images> images, double width, BuildContext context) {
-    final urlImage1 = ImageUtils.genImgIx(images[0].url, (width - 4) ~/ 2, (width - 4) ~/ 2, focusFace: true);
-    final urlImage2 = ImageUtils.genImgIx(images[1].url, (width - 4) ~/ 2, (width - 8) ~/ 3, focusFace: true);
-    final urlImage3 = ImageUtils.genImgIx(images[2].url, (width - 4) ~/ 2, (width - 8) ~/ 3, focusFace: true);
-    final urlImage4 = ImageUtils.genImgIx(images[3].url, (width - 4) ~/ 2, (width - 4) ~/ 2, focusFace: true);
-    final urlImage5 = ImageUtils.genImgIx(images[4].url, (width - 4) ~/ 2, (width - 8) ~/ 3, focusFace: true);
+  Widget _buildFiveImage(List<Images> images, double deviceWidth, BuildContext context) {
+    final urlImage1 = ImageUtils.genImgIx(images[0].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 4) ~/ 2, focusFace: true);
+    final urlImage2 = ImageUtils.genImgIx(images[1].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 8) ~/ 3, focusFace: true);
+    final urlImage3 = ImageUtils.genImgIx(images[2].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 8) ~/ 3, focusFace: true);
+    final urlImage4 = ImageUtils.genImgIx(images[3].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 4) ~/ 2, focusFace: true);
+    final urlImage5 = ImageUtils.genImgIx(images[4].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 8) ~/ 3, focusFace: true);
     // print('url Image1 = $urlImage1');
     // print('url Image2 = $urlImage2');
     // print('url Image3 = $urlImage3');
@@ -654,12 +654,12 @@ class GridImage extends StatelessWidget {
     );
   }
 
-  Widget _buildMoreImage(List<Images> images, double width, BuildContext context) {
-    final urlImage1 = ImageUtils.genImgIx(images[0].url, (width - 4) ~/ 2, (width - 4) ~/ 2, focusFace: true);
-    final urlImage2 = ImageUtils.genImgIx(images[1].url, (width - 4) ~/ 2, (width - 8) ~/ 3, focusFace: true);
-    final urlImage3 = ImageUtils.genImgIx(images[2].url, (width - 4) ~/ 2, (width - 8) ~/ 3, focusFace: true);
-    final urlImage4 = ImageUtils.genImgIx(images[3].url, (width - 4) ~/ 2, (width - 4) ~/ 2, focusFace: true);
-    final urlImage5 = ImageUtils.genImgIx(images[4].url, (width - 4) ~/ 2, (width - 8) ~/ 3, focusFace: true);
+  Widget _buildMoreImage(List<Images> images, double deviceWidth, BuildContext context) {
+    final urlImage1 = ImageUtils.genImgIx(images[0].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 4) ~/ 2, focusFace: true);
+    final urlImage2 = ImageUtils.genImgIx(images[1].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 8) ~/ 3, focusFace: true);
+    final urlImage3 = ImageUtils.genImgIx(images[2].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 8) ~/ 3, focusFace: true);
+    final urlImage4 = ImageUtils.genImgIx(images[3].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 4) ~/ 2, focusFace: true);
+    final urlImage5 = ImageUtils.genImgIx(images[4].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 8) ~/ 3, focusFace: true);
     // print('url Image1 = $urlImage1');
     // print('url Image2 = $urlImage2');
     // print('url Image3 = $urlImage3');

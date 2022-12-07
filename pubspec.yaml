@@ -60,6 +60,8 @@ dependencies:
   readmore: ^2.2.0
   # Image pick
   image_picker: ^0.8.6
+  # Get Width And Height Image
+  image_size_getter: ^2.1.2
 
 dev_dependencies:
   flutter_test:
