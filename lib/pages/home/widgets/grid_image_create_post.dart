@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,6 +18,7 @@ class GridImageCreatePost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
+    // print('deviceWidth==$deviceWidth');
     return buildImageGrid(imagesXFile, deviceWidth, context);
   }
 
@@ -31,8 +30,8 @@ class GridImageCreatePost extends StatelessWidget {
         return _buildOneImage(imagesXFile[0], deviceWidth, context);
       case 2:
         return _buildTwoImage(imagesXFile, deviceWidth, context);
-      // case 3:
-      //   return _buildThreeImage(images, width, context);
+      case 3:
+        return _buildThreeImage(imagesXFile, deviceWidth, context);
       // case 4:
       //   return _buildFourImage(images, width, context);
       // case 5:
@@ -56,8 +55,6 @@ class GridImageCreatePost extends StatelessWidget {
         color: AppColors.slate,
         child: Image.file(
           File(imageXFile.path),
-          cacheHeight: (heightView * 1.7).toInt(),
-          cacheWidth: (deviceWidth * 1.7).toInt(),
           fit: BoxFit.cover,
         ),
       );
@@ -68,36 +65,19 @@ class GridImageCreatePost extends StatelessWidget {
       color: AppColors.slate,
       child: Image.file(
         File(imageXFile.path),
-        cacheHeight: (heightView * 1.7).toInt(),
-        cacheWidth: (deviceWidth * 1.7).toInt(),
         fit: BoxFit.cover,
       ),
     );
   }
 
   Widget _buildTwoImage(List<XFile> imagesXFile, double deviceWidth, BuildContext context) {
-    final cacheVerticalWidth = ((deviceWidth - 4) / 2) * 3;
-    final cacheVerticalHeight = (deviceWidth / 1.333) * 3;
-    print('cache Vertical Width = $cacheVerticalWidth');
-    print('cache Vertical Height = $cacheVerticalHeight');
-
-    // final urlHorizontalImage1 = ImageUtils.genImgIx(imagesXFile[0].url, deviceWidth.toInt(), (deviceWidth - 4) ~/ 2, focusFace: true);
-    // final urlHorizontalImage2 = ImageUtils.genImgIx(imagesXFile[1].url, deviceWidth.toInt(), (deviceWidth - 4) ~/ 2, focusFace: true);
-    // print('url Horizontal Image1 = $urlHorizontalImage1');
-    // print('url Horizontal Image2 = $urlHorizontalImage2');
-
-    // final urlSquareImage1 = ImageUtils.genImgIx(imagesXFile[0].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 4) ~/ 2, focusFace: true);
-    // final urlSquareImage2 = ImageUtils.genImgIx(imagesXFile[1].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 4) ~/ 2, focusFace: true);
-    // print('url Square Image1 = $urlSquareImage1');
-    // print('url Square Image2 = $urlSquareImage2');
-
     final sizeImage1 = _getSize(imagesXFile[0]);
     // Tỉ lệ khung hình
     final ratio = sizeImage1.width / sizeImage1.height;
-    print('ratio=== $ratio');
+    // print('ratio=== $ratio');
 
     if (ratio <= 0.75) {
-      print('Hinh Docccccccccccccccccccccc');
+      // print('Hinh Docccccccccccccccccccccc');
       return StaggeredGrid.count(
         crossAxisCount: 4,
         mainAxisSpacing: 4,
@@ -110,11 +90,8 @@ class GridImageCreatePost extends StatelessWidget {
               color: AppColors.slate,
               child: Image.file(
                 File(imagesXFile[0].path),
-                // width: cacheVerticalWidth,
-                // height: cacheVerticalHeight,
-                cacheWidth: cacheVerticalWidth.toInt(),
-                cacheHeight: cacheVerticalHeight.toInt(),
                 fit: BoxFit.cover,
+                cacheHeight: 260 * 2,
               ),
             ),
           ),
@@ -125,81 +102,175 @@ class GridImageCreatePost extends StatelessWidget {
               color: AppColors.slate,
               child: Image.file(
                 File(imagesXFile[1].path),
-                width: cacheVerticalWidth,
-                height: cacheVerticalHeight,
-                // cacheWidth: cacheVerticalWidth.toInt(),
-                // cacheHeight: cacheVerticalHeight.toInt(),
-                // fit: BoxFit.cover,
+                fit: BoxFit.cover,
+                cacheHeight: 260 * 2,
               ),
             ),
           ),
         ],
       );
     } else if (ratio > 1.3) {
-      print('Hinh Ngangggggggggggggggggggg');
-      return SizedBox();
-      // return StaggeredGrid.count(
-      //   crossAxisCount: 2,
-      //   mainAxisSpacing: 4,
-      //   crossAxisSpacing: 4,
-      //   children: [
-      //     StaggeredGridTile.count(
-      //       crossAxisCellCount: 2,
-      //       mainAxisCellCount: 1,
-      //       child: Container(
-      //         color: AppColors.slate,
-      //         child: CachedNetworkImage(
-      //           imageUrl: urlHorizontalImage1,
-      //           fit: BoxFit.cover,
-      //         ),
-      //       ),
-      //     ),
-      //     StaggeredGridTile.count(
-      //       crossAxisCellCount: 2,
-      //       mainAxisCellCount: 1,
-      //       child: Container(
-      //         color: AppColors.slate,
-      //         child: CachedNetworkImage(
-      //           imageUrl: urlHorizontalImage2,
-      //           fit: BoxFit.cover,
-      //         ),
-      //       ),
-      //     ),
-      //   ],
-      // );
+      // print('Hinh Ngangggggggggggggggggggg');
+      return StaggeredGrid.count(
+        crossAxisCount: 2,
+        mainAxisSpacing: 4,
+        crossAxisSpacing: 4,
+        children: [
+          StaggeredGridTile.count(
+            crossAxisCellCount: 2,
+            mainAxisCellCount: 1,
+            child: Container(
+              color: AppColors.slate,
+              child: Image.file(
+                File(imagesXFile[0].path),
+                fit: BoxFit.cover,
+                cacheWidth: 390 * 2,
+              ),
+            ),
+          ),
+          StaggeredGridTile.count(
+            crossAxisCellCount: 2,
+            mainAxisCellCount: 1,
+            child: Container(
+              color: AppColors.slate,
+              child: Image.file(
+                File(imagesXFile[1].path),
+                fit: BoxFit.cover,
+                cacheWidth: 390 * 2,
+              ),
+            ),
+          ),
+        ],
+      );
     } else {
-      print('Hinh Vuongggggggggggggggggggg');
-      return SizedBox();
-      // return StaggeredGrid.count(
-      //   crossAxisCount: 2,
-      //   mainAxisSpacing: 4,
-      //   crossAxisSpacing: 4,
-      //   children: [
-      //     StaggeredGridTile.count(
-      //       crossAxisCellCount: 1,
-      //       mainAxisCellCount: 1,
-      //       child: Container(
-      //         color: AppColors.slate,
-      //         child: CachedNetworkImage(
-      //           imageUrl: urlSquareImage1,
-      //           fit: BoxFit.cover,
-      //         ),
-      //       ),
-      //     ),
-      //     StaggeredGridTile.count(
-      //       crossAxisCellCount: 1,
-      //       mainAxisCellCount: 1,
-      //       child: Container(
-      //         color: AppColors.slate,
-      //         child: CachedNetworkImage(
-      //           imageUrl: urlSquareImage2,
-      //           fit: BoxFit.cover,
-      //         ),
-      //       ),
-      //     ),
-      //   ],
-      // );
+      // print('Hinh Vuongggggggggggggggggggg');
+      return StaggeredGrid.count(
+        crossAxisCount: 2,
+        mainAxisSpacing: 4,
+        crossAxisSpacing: 4,
+        children: [
+          StaggeredGridTile.count(
+            crossAxisCellCount: 1,
+            mainAxisCellCount: 1,
+            child: Container(
+              color: AppColors.slate,
+              child: Image.file(
+                File(imagesXFile[0].path),
+                fit: BoxFit.cover,
+                cacheWidth: 194 * 2,
+              ),
+            ),
+          ),
+          StaggeredGridTile.count(
+            crossAxisCellCount: 1,
+            mainAxisCellCount: 1,
+            child: Container(
+              color: AppColors.slate,
+              child: Image.file(
+                File(imagesXFile[1].path),
+                fit: BoxFit.cover,
+                cacheWidth: 194 * 2,
+              ),
+            ),
+          ),
+        ],
+      );
     }
+  }
+
+  Widget _buildThreeImage(List<XFile> imagesXFile, double deviceWidth, BuildContext context) {
+    final sizeImage1 = _getSize(imagesXFile[0]);
+
+    if (sizeImage1.width < sizeImage1.height) {
+      // print('Hinh Docccccccccccccccccccccc');
+      return StaggeredGrid.count(
+        crossAxisCount: 3,
+        mainAxisSpacing: 4,
+        crossAxisSpacing: 4,
+        children: [
+          StaggeredGridTile.count(
+            crossAxisCellCount: 2,
+            mainAxisCellCount: 3,
+            child: Container(
+              color: AppColors.slate,
+              child: Image.file(
+                File(imagesXFile[0].path),
+                fit: BoxFit.cover,
+                cacheHeight: 390 * 2,
+              ),
+            ),
+          ),
+          StaggeredGridTile.count(
+            crossAxisCellCount: 1,
+            mainAxisCellCount: 3 / 2,
+            child: Container(
+              color: AppColors.slate,
+              child: Image.file(
+                File(imagesXFile[1].path),
+                fit: BoxFit.cover,
+                cacheHeight: 194 * 2,
+              ),
+            ),
+          ),
+          StaggeredGridTile.count(
+            crossAxisCellCount: 1,
+            mainAxisCellCount: 3 / 2,
+            child: Container(
+              color: AppColors.slate,
+              child: Image.file(
+                File(imagesXFile[2].path),
+                fit: BoxFit.cover,
+                cacheHeight: 194 * 2,
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+    // print('Hinh Ngangggggggggggggggggggg');
+    return StaggeredGrid.count(
+      crossAxisCount: 2,
+      mainAxisSpacing: 4,
+      crossAxisSpacing: 4,
+      children: [
+        StaggeredGridTile.count(
+          crossAxisCellCount: 2,
+          mainAxisCellCount: 1,
+          child: Container(
+            color: AppColors.slate,
+            child: Image.file(
+              File(imagesXFile[0].path),
+              fit: BoxFit.cover,
+              cacheWidth: 390 * 2,
+            ),
+          ),
+        ),
+        StaggeredGridTile.count(
+          crossAxisCellCount: 1,
+          mainAxisCellCount: 1,
+          child: Container(
+            color: AppColors.slate,
+            child: Image.file(
+              File(imagesXFile[1].path),
+              fit: BoxFit.cover,
+              cacheWidth: 194 * 2,
+            ),
+          ),
+        ),
+        StaggeredGridTile.count(
+          crossAxisCellCount: 1,
+          mainAxisCellCount: 1,
+          child: Container(
+            color: AppColors.slate,
+            child: Image.file(
+              File(imagesXFile[2].path),
+              fit: BoxFit.cover,
+              cacheWidth: 194 * 2,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   Size _getSize(XFile imageXFile) {

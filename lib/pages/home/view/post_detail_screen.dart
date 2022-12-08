@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readmore/readmore.dart';
 import 'package:social_app/pages/home/models/post.dart';
-import 'package:social_app/pages/home/widgets/like_comment_view.dart';
+import 'package:social_app/pages/home/widgets/action_like_comment_view.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';

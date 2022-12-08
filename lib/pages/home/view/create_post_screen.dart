@@ -24,12 +24,11 @@ class CreatePostPage extends StatefulWidget {
 
 class _CreatePostPageState extends State<CreatePostPage> {
   final _descriptionCtl = TextEditingController();
-
-  final imageBloc = ImageBloc();
+  final _pickImageBloc = PickImageBloc();
 
   @override
   void dispose() {
-    imageBloc.dispose();
+    _pickImageBloc.dispose();
     _descriptionCtl.dispose();
     super.dispose();
   }
@@ -67,10 +66,10 @@ class _CreatePostPageState extends State<CreatePostPage> {
               child: MyElevatedButton(
                 onPressed: () {
                   print('Click Post');
-                  if (imageBloc.images.isEmpty) {
+                  if (_pickImageBloc.images.isEmpty) {
                     return ErrorDialog.showMsgDialog(context, 'Vui lòng chọn hình ảnh');
                   }
-                  context.read<PostBloc>().add(CreatePost(description: _descriptionCtl.text, images: imageBloc.images));
+                  context.read<PostBloc>().add(CreatePost(description: _descriptionCtl.text, images: _pickImageBloc.images));
                 },
                 text: 'ĐĂNG',
                 width: 80,
@@ -102,45 +101,13 @@ class _CreatePostPageState extends State<CreatePostPage> {
               ),
             ),
             StreamBuilder<List<XFile>>(
-              stream: imageBloc.image,
+              stream: _pickImageBloc.image,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   if (snapshot.data!.isEmpty) {
                     return const SizedBox();
                   }
                   return GridImageCreatePost(imagesXFile: snapshot.data ?? [],);
-                  // return GridView.builder(
-                  //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  //     crossAxisCount: 3,
-                  //     childAspectRatio: 0.75,
-                  //     crossAxisSpacing: 4,
-                  //     mainAxisSpacing: 4,
-                  //   ),
-                  //   padding: const EdgeInsets.only(bottom: 15),
-                  //   shrinkWrap: true,
-                  //   physics: const NeverScrollableScrollPhysics(),
-                  //   itemCount: snapshot.data?.length,
-                  //   itemBuilder: (context, index) {
-                  //     return Stack(
-                  //       children: [
-                  //         Image.file(
-                  //           File(snapshot.data?[index].path ?? ''),
-                  //           fit: BoxFit.cover,
-                  //         ),
-                  //         Positioned(
-                  //           right: 0,
-                  //           child: MyIconButton(
-                  //             onTap: () {
-                  //               print('Click close image');
-                  //               imageBloc.closeImage(index);
-                  //             },
-                  //             nameImage: AppAssetIcons.close,
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     );
-                  //   },
-                  // );
                 }
                 if (snapshot.hasError) {
                   return Text(snapshot.error.toString());
@@ -151,7 +118,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
             GestureDetector(
               onTap: () {
                 // BlocProvider.of<PostBloc>(context).add(AddImages());
-                imageBloc.onAddImages();
+                _pickImageBloc.onAddImages();
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 15),

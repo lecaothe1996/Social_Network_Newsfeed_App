@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ImageBloc {
+class PickImageBloc {
   final _image = StreamController<List<XFile>>();
 
   Stream<List<XFile>> get image => _image.stream;
