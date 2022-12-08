@@ -1,19 +1,16 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 import 'package:social_app/pages/home/blocs/pick_image_bloc.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
+import 'package:social_app/pages/home/widgets/grid_image.dart';
 import 'package:social_app/pages/home/widgets/grid_image_create_post.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
+import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/widgets/button_widget.dart';
 import 'package:social_app/widgets/dialogs/error_dialog.dart';
 import 'package:social_app/widgets/icon_button_widget.dart';
-
-import '../../../themes/app_text_styles.dart';
 
 class CreatePostPage extends StatefulWidget {
   const CreatePostPage({Key? key}) : super(key: key);
@@ -35,7 +32,6 @@ class _CreatePostPageState extends State<CreatePostPage> {
 
   @override
   Widget build(BuildContext context) {
-    // print('_image===${_images}');
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -107,7 +103,8 @@ class _CreatePostPageState extends State<CreatePostPage> {
                   if (snapshot.data!.isEmpty) {
                     return const SizedBox();
                   }
-                  return GridImageCreatePost(imagesXFile: snapshot.data ?? [],);
+                  return GridImage(imagesXFile: snapshot.data ?? [],);
+                  // return GridImageCreatePost(imagesXFile: snapshot.data ?? [],);
                 }
                 if (snapshot.hasError) {
                   return Text(snapshot.error.toString());

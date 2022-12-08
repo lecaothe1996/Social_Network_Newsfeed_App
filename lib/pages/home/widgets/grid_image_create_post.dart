@@ -56,6 +56,7 @@ class GridImageCreatePost extends StatelessWidget {
         child: Image.file(
           File(imageXFile.path),
           fit: BoxFit.cover,
+          cacheHeight: (deviceWidth * 1.5 * 3).toInt(),
         ),
       );
     }
@@ -66,6 +67,7 @@ class GridImageCreatePost extends StatelessWidget {
       child: Image.file(
         File(imageXFile.path),
         fit: BoxFit.cover,
+        cacheWidth: 360 * 2,
       ),
     );
   }
