@@ -137,6 +137,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                       ImageUtils.genImgIx(widget.post.photos?[index].image?.url, deviceWidth.toInt(), heightImage.toInt());
                   if (heightImage >= deviceWidth * 3) {
                     return Container(
+                      margin: const EdgeInsets.only(bottom: 15),
                       height: deviceWidth * 3,
                       width: deviceWidth,
                       color: AppColors.slate,
@@ -146,26 +147,15 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                       ),
                     );
                   }
-                  return Column(
-                    children: [
-                      Container(
-                        height: heightImage,
-                        width: deviceWidth,
-                        color: AppColors.slate,
-                        child: CachedNetworkImage(
-                          imageUrl: urlImage,
-                          fit: BoxFit.fitWidth,
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      // LikeCommentView(
-                      //   liked: post.photos?[index].liked ?? false,
-                      //   likeCounts: post.photos?[index].likeCounts ?? 0,
-                      //   commentCounts: post.photos?[index].commentCounts ?? 0,
-                      //   viewCounts: post.photos?[index].viewCounts ?? 0,
-                      // ),
-                      // const Divider(color: AppColors.slate),
-                    ],
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 15),
+                    height: heightImage,
+                    width: deviceWidth,
+                    color: AppColors.slate,
+                    child: CachedNetworkImage(
+                      imageUrl: urlImage,
+                      fit: BoxFit.fitWidth,
+                    ),
                   );
                 },
               ),

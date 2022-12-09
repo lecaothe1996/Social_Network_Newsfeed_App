@@ -9,9 +9,11 @@ import 'package:image_size_getter/file_input.dart';
 import 'package:image_size_getter/image_size_getter.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/home/models/post.dart';
+import 'package:social_app/pages/home/view/edit_image_xfile_screen.dart';
 import 'package:social_app/pages/home/view/post_detail_screen.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
+import 'package:social_app/utils/get_size_image_xfile.dart';
 import 'package:social_app/utils/image_utils.dart';
 
 class GridImage extends StatelessWidget {
@@ -28,18 +30,14 @@ class GridImage extends StatelessWidget {
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
     final dpr = MediaQuery.of(context).devicePixelRatio;
-    // print('deviceWidth==$deviceWidth');
-    // print('dpr==$dpr');
     if (imagesXFile != null) {
-      print('imagesXFile');
       return buildImageGridWithXFile(imagesXFile ?? [], deviceWidth, dpr, context);
     }
-    print('post');
     return buildImageGrid(post?.images ?? [], deviceWidth, dpr, context);
   }
 
   Widget buildImageGrid(List<Images> images, double deviceWidth, double dpr, BuildContext context) {
-    print('images==$images');
+    // print('images==$images');
     switch (images.length) {
       case 0:
         return const SizedBox();
@@ -79,13 +77,11 @@ class GridImage extends StatelessWidget {
   }
 
   Widget _buildOneImage(double deviceWidth, double dpr, BuildContext context, {Images? image, XFile? imageXFile}) {
-    print('images 111==$image');
-    print('imagesXFile 111==$imageXFile');
-    // final sizeImage = _getSize(imageXFile );
-
-    final heightView = ImageUtils.getHeightView(deviceWidth, image?.orgWidth ?? 1, image?.orgHeight ?? 1);
-    final urlOneImage = ImageUtils.genImgIx(image?.url, deviceWidth.toInt(), heightView.toInt());
-    // print('url One Image = $urlOneImage');
+    final heightView = ImageUtils.getHeightView(
+      deviceWidth,
+      image != null ? image.orgWidth ?? 1 : GetSizeImageXFile().getSize(imageXFile!).width,
+      image != null ? image.orgHeight ?? 1 : GetSizeImageXFile().getSize(imageXFile!).height,
+    );
 
     // view lớn hơn tỷ lệ 9/16
     if (heightView >= deviceWidth * 1.5) {
@@ -93,21 +89,44 @@ class GridImage extends StatelessWidget {
         height: deviceWidth * 1.5,
         width: deviceWidth,
         color: AppColors.slate,
-        child: CachedNetworkImage(
-          imageUrl: urlOneImage,
-          fit: BoxFit.cover,
-        ),
+        child: image != null
+            ? GestureDetector(
+                onTap: () => _navigateToPostDetailScreen([image], 0, context),
+                child: CachedNetworkImage(
+                  imageUrl: ImageUtils.genImgIx(image.url, deviceWidth.toInt(), heightView.toInt()),
+                  fit: BoxFit.cover,
+                ),
+              )
+            : GestureDetector(
+                onTap: () => _navigateToEditImageXFileScreen([imageXFile!], context),
+                child: Image.file(
+                  File(imageXFile?.path ?? ''),
+                  fit: BoxFit.cover,
+                  cacheHeight: (deviceWidth * 1.5 * dpr).toInt(),
+                ),
+              ),
       );
     }
-
     return Container(
       height: heightView,
       width: deviceWidth,
       color: AppColors.slate,
-      child: CachedNetworkImage(
-        imageUrl: urlOneImage,
-        fit: BoxFit.cover,
-      ),
+      child: image != null
+          ? GestureDetector(
+              onTap: () => _navigateToPostDetailScreen([image], 0, context),
+              child: CachedNetworkImage(
+                imageUrl: ImageUtils.genImgIx(image.url, deviceWidth.toInt(), heightView.toInt()),
+                fit: BoxFit.cover,
+              ),
+            )
+          : GestureDetector(
+              onTap: () => _navigateToEditImageXFileScreen([imageXFile!], context),
+              child: Image.file(
+                File(imageXFile?.path ?? ''),
+                fit: BoxFit.cover,
+                cacheWidth: (deviceWidth * dpr).toInt(),
+              ),
+            ),
     );
   }
 
@@ -841,17 +860,8 @@ class GridImage extends StatelessWidget {
     );
   }
 
-  Size _getSize(XFile imageXFile) {
-    File file = File(imageXFile.path);
-    final size = ImageSizeGetter.getSize(FileInput(file));
-    if (size.needRotate) {
-      final width = size.height;
-      final height = size.width;
-      // print('width = $width, height = $height');
-      return Size(width, height);
-    } else {
-      // print('width 1 = ${size.width}, height 1 = ${size.height}');
-      return Size(size.width, size.height);
-    }
+  void _navigateToEditImageXFileScreen(List<XFile> imagesXFile, BuildContext context) {
+
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const EditImageXFileScreen()));
   }
 }

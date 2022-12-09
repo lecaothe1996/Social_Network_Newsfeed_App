@@ -104,7 +104,6 @@ class _CreatePostPageState extends State<CreatePostPage> {
                     return const SizedBox();
                   }
                   return GridImage(imagesXFile: snapshot.data ?? [],);
-                  // return GridImageCreatePost(imagesXFile: snapshot.data ?? [],);
                 }
                 if (snapshot.hasError) {
                   return Text(snapshot.error.toString());
@@ -114,7 +113,6 @@ class _CreatePostPageState extends State<CreatePostPage> {
             ),
             GestureDetector(
               onTap: () {
-                // BlocProvider.of<PostBloc>(context).add(AddImages());
                 _pickImageBloc.onAddImages();
               },
               child: Container(
