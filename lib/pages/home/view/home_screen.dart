@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:social_app/my_app/blocs/app_state_bloc.dart';
+import 'package:social_app/my_app/app_state_bloc.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/home/repositorys/list_posts_repo.dart';
 import 'package:social_app/pages/home/view/create_post_screen.dart';
@@ -23,18 +23,18 @@ class _HomeScreenState extends State<HomeScreen> {
   final _scrollController = ScrollController();
   bool _isLoading = false;
 
-  AppStateBloc get appStateBloc => Provider.of<AppStateBloc>(context, listen: false);
+  AppStateBloc get _appStateBloc => Provider.of<AppStateBloc>(context, listen: false);
 
   @override
   void initState() {
     _scrollController.addListener(_scrollListener);
-    print('initState');
+    // print('initState');
     super.initState();
   }
 
   @override
   void didUpdateWidget(covariant HomeScreen oldWidget) {
-    print('Updateeeeeeeeeee');
+    // print('Updateeeeeeeeeee');
     _scrollToTop();
     super.didUpdateWidget(oldWidget);
   }

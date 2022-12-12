@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:social_app/pages/home/blocs/pick_image_bloc.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/home/widgets/grid_image.dart';
@@ -83,33 +84,38 @@ class _CreatePostPageState extends State<CreatePostPage> {
               // color: Colors.blueGrey,
               child: TextField(
                 controller: _descriptionCtl,
-                minLines: 5,
+                minLines: 2,
                 maxLines: null,
                 maxLength: 5000,
                 keyboardType: TextInputType.multiline,
                 style: AppTextStyles.body.copyWith(color: AppColors.white),
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: 'Bạn đang nghĩ gì?',
-                  hintStyle: AppTextStyles.body.copyWith(fontSize: 25, color: AppColors.blueGrey),
+                  hintText: 'Hãy nói gì đó về các bức ảnh này...',
+                  hintStyle: AppTextStyles.h5.copyWith(color: AppColors.blueGrey),
                   counter: const Offstage(),
                 ),
               ),
             ),
-            StreamBuilder<List<XFile>>(
-              stream: _pickImageBloc.image,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  if (snapshot.data!.isEmpty) {
-                    return const SizedBox();
+            Provider<PickImageBloc>(
+              create: (context) => _pickImageBloc,
+              child: StreamBuilder<List<XFile>>(
+                stream: _pickImageBloc.image,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    if (snapshot.data!.isEmpty) {
+                      return const SizedBox();
+                    }
+                    return GridImage(
+                      imagesXFile: snapshot.data ?? [],
+                    );
                   }
-                  return GridImage(imagesXFile: snapshot.data ?? [],);
-                }
-                if (snapshot.hasError) {
-                  return Text(snapshot.error.toString());
-                }
-                return const SizedBox();
-              },
+                  if (snapshot.hasError) {
+                    return Text(snapshot.error.toString());
+                  }
+                  return const SizedBox();
+                },
+              ),
             ),
             GestureDetector(
               onTap: () {

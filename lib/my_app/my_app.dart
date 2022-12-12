@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:social_app/my_app/blocs/app_state_bloc.dart';
+import 'package:social_app/my_app/app_state_bloc.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/pages.dart';
 import 'package:social_app/themes/app_color.dart';
@@ -17,11 +17,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _SplashPageState extends State<MyApp> {
-  final appStateBloc = AppStateBloc();
+  final _appStateBloc = AppStateBloc();
 
   @override
   void dispose() {
-    appStateBloc.dispose();
+    _appStateBloc.dispose();
     super.dispose();
   }
 
@@ -44,10 +44,10 @@ class _SplashPageState extends State<MyApp> {
         scaffoldBackgroundColor: AppColors.dark,
       ),
       home: Provider<AppStateBloc>(
-        create: (context) => appStateBloc,
+        create: (context) => _appStateBloc,
         child: StreamBuilder<AppState>(
-          stream: appStateBloc.appState,
-          initialData: appStateBloc.initState,
+          stream: _appStateBloc.appState,
+          initialData: _appStateBloc.initState,
           builder: (context, snapshot) {
             // print('⚡️ snapshot===${snapshot.data}');
             if (snapshot.data == AppState.loading) {

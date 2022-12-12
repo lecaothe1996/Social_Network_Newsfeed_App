@@ -7,6 +7,8 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_size_getter/file_input.dart';
 import 'package:image_size_getter/image_size_getter.dart';
+import 'package:provider/provider.dart';
+import 'package:social_app/pages/home/blocs/pick_image_bloc.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/home/models/post.dart';
 import 'package:social_app/pages/home/view/edit_image_xfile_screen.dart';
@@ -62,8 +64,8 @@ class GridImage extends StatelessWidget {
         return const SizedBox();
       case 1:
         return _buildOneImage(deviceWidth, dpr, context, imageXFile: imagesXFile[0]);
-      // case 2:
-      //   return _buildTwoImage(imagesXFile, deviceWidth, context);
+      case 2:
+        return _buildTwoImage(deviceWidth, dpr, context, imagesXFile: imagesXFile);
       // case 3:
       //   return _buildThreeImage(imagesXFile, deviceWidth, context);
       // case 4:
@@ -130,7 +132,7 @@ class GridImage extends StatelessWidget {
     );
   }
 
-  Widget _buildTwoImage(List<Images> images, double deviceWidth, BuildContext context) {
+  Widget _buildTwoImage(double deviceWidth, double dpr, BuildContext context, {List<Images>? images, List<XFile>? imagesXFile) {
     final urlVerticalImage1 =
         ImageUtils.genImgIx(images[0].url, (deviceWidth - 4) ~/ 2, deviceWidth ~/ 1.333, focusFace: true);
     final urlVerticalImage2 =
@@ -861,7 +863,14 @@ class GridImage extends StatelessWidget {
   }
 
   void _navigateToEditImageXFileScreen(List<XFile> imagesXFile, BuildContext context) {
-
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const EditImageXFileScreen()));
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => Provider.value(
+          value: Provider.of<PickImageBloc>(context),
+          child: const EditImageXFileScreen(),
+        ),
+      ),
+    );
   }
 }
