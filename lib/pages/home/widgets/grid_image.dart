@@ -1,50 +1,34 @@
-import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:image_size_getter/file_input.dart';
-import 'package:image_size_getter/image_size_getter.dart';
-import 'package:provider/provider.dart';
-import 'package:social_app/pages/home/blocs/pick_image_bloc.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/home/models/post.dart';
-import 'package:social_app/pages/home/view/edit_image_xfile_screen.dart';
 import 'package:social_app/pages/home/view/post_detail_screen.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
-import 'package:social_app/utils/get_size_image_xfile.dart';
 import 'package:social_app/utils/image_utils.dart';
 
 class GridImage extends StatelessWidget {
-  final Post? post;
-  final List<XFile>? imagesXFile;
+  final Post post;
 
   const GridImage({
     Key? key,
-    this.post,
-    this.imagesXFile,
+    required this.post,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
-    final dpr = MediaQuery.of(context).devicePixelRatio;
-    if (imagesXFile != null) {
-      return buildImageGridWithXFile(imagesXFile ?? [], deviceWidth, dpr, context);
-    }
-    return buildImageGrid(post?.images ?? [], deviceWidth, dpr, context);
+    return buildImageGrid(post.images ?? [], deviceWidth, context);
   }
 
-  Widget buildImageGrid(List<Images> images, double deviceWidth, double dpr, BuildContext context) {
-    // print('images==$images');
+  Widget buildImageGrid(List<Images> images, double deviceWidth, BuildContext context) {
     switch (images.length) {
       case 0:
         return const SizedBox();
       case 1:
-        return _buildOneImage(deviceWidth, dpr, context, image: images[0]);
+        return _buildOneImage(images[0], deviceWidth, context);
       case 2:
         return _buildTwoImage(images, deviceWidth, context);
       case 3:
@@ -58,81 +42,39 @@ class GridImage extends StatelessWidget {
     }
   }
 
-  Widget buildImageGridWithXFile(List<XFile> imagesXFile, double deviceWidth, double dpr, BuildContext context) {
-    switch (imagesXFile.length) {
-      case 0:
-        return const SizedBox();
-      case 1:
-        return _buildOneImage(deviceWidth, dpr, context, imageXFile: imagesXFile[0]);
-      case 2:
-        return _buildTwoImage(deviceWidth, dpr, context, imagesXFile: imagesXFile);
-      // case 3:
-      //   return _buildThreeImage(imagesXFile, deviceWidth, context);
-      // case 4:
-      //   return _buildFourImage(images, width, context);
-      // case 5:
-      //   return _buildFiveImage(images, width, context);
-      default:
-        // return _buildMoreImage(images, width, context);
-        return const SizedBox();
-    }
-  }
-
-  Widget _buildOneImage(double deviceWidth, double dpr, BuildContext context, {Images? image, XFile? imageXFile}) {
-    final heightView = ImageUtils.getHeightView(
-      deviceWidth,
-      image != null ? image.orgWidth ?? 1 : GetSizeImageXFile().getSize(imageXFile!).width,
-      image != null ? image.orgHeight ?? 1 : GetSizeImageXFile().getSize(imageXFile!).height,
-    );
-
+  Widget _buildOneImage(Images image, double deviceWidth, BuildContext context) {
+    final heightView = ImageUtils.getHeightView(deviceWidth, image.orgWidth ?? 1, image.orgHeight ?? 1);
+    final imageUrl = ImageUtils.genImgIx(image.url, deviceWidth.toInt(), heightView.toInt());
     // view lớn hơn tỷ lệ 9/16
     if (heightView >= deviceWidth * 1.5) {
       return Container(
         height: deviceWidth * 1.5,
         width: deviceWidth,
         color: AppColors.slate,
-        child: image != null
-            ? GestureDetector(
-                onTap: () => _navigateToPostDetailScreen([image], 0, context),
-                child: CachedNetworkImage(
-                  imageUrl: ImageUtils.genImgIx(image.url, deviceWidth.toInt(), heightView.toInt()),
-                  fit: BoxFit.cover,
-                ),
-              )
-            : GestureDetector(
-                onTap: () => _navigateToEditImageXFileScreen([imageXFile!], context),
-                child: Image.file(
-                  File(imageXFile?.path ?? ''),
-                  fit: BoxFit.cover,
-                  cacheHeight: (deviceWidth * 1.5 * dpr).toInt(),
-                ),
-              ),
+        child: GestureDetector(
+          onTap: () => _navigateToPostDetailScreen([image], 0, context),
+          child: CachedNetworkImage(
+            imageUrl: imageUrl,
+            fit: BoxFit.cover,
+          ),
+        ),
       );
     }
     return Container(
       height: heightView,
       width: deviceWidth,
       color: AppColors.slate,
-      child: image != null
-          ? GestureDetector(
-              onTap: () => _navigateToPostDetailScreen([image], 0, context),
-              child: CachedNetworkImage(
-                imageUrl: ImageUtils.genImgIx(image.url, deviceWidth.toInt(), heightView.toInt()),
-                fit: BoxFit.cover,
-              ),
-            )
-          : GestureDetector(
-              onTap: () => _navigateToEditImageXFileScreen([imageXFile!], context),
-              child: Image.file(
-                File(imageXFile?.path ?? ''),
-                fit: BoxFit.cover,
-                cacheWidth: (deviceWidth * dpr).toInt(),
-              ),
-            ),
+      child: GestureDetector(
+        onTap: () => _navigateToPostDetailScreen([image], 0, context),
+        child: CachedNetworkImage(
+          imageUrl: imageUrl,
+          fit: BoxFit.cover,
+        ),
+      ),
     );
   }
 
-  Widget _buildTwoImage(double deviceWidth, double dpr, BuildContext context, {List<Images>? images, List<XFile>? imagesXFile) {
+  Widget _buildTwoImage(List<Images> images, double deviceWidth, BuildContext context) {
     final urlVerticalImage1 =
         ImageUtils.genImgIx(images[0].url, (deviceWidth - 4) ~/ 2, deviceWidth ~/ 1.333, focusFace: true);
     final urlVerticalImage2 =
@@ -838,9 +780,8 @@ class GridImage extends StatelessWidget {
   }
 
   void _navigateToPostDetailScreen(List<Images> images, int index, BuildContext context) {
-    // print('⚡️ Chose image number ${index + 1}');
-    // print('⚡️ Photos number ${photos.length}');
-    final postsBloc = context.read<PostBloc>()..add(LoadDetailPost(id: post?.id ?? ''));
+    final postsBloc = context.read<PostBloc>()..add(LoadDetailPost(id: post.id ?? ''));
+
     postsBloc.stream.firstWhere(
       (element) {
         if (element is DetailPostLoaded) {
@@ -859,18 +800,6 @@ class GridImage extends StatelessWidget {
         }
         return false;
       },
-    );
-  }
-
-  void _navigateToEditImageXFileScreen(List<XFile> imagesXFile, BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => Provider.value(
-          value: Provider.of<PickImageBloc>(context),
-          child: const EditImageXFileScreen(),
-        ),
-      ),
     );
   }
 }
