@@ -64,7 +64,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
                 onPressed: () {
                   print('Click Post');
                   if (_pickImageBloc.images.isEmpty) {
-                    return ErrorDialog.showMsgDialog(context, 'Vui lòng chọn hình ảnh');
+                    return ErrorDialog.showMsgDialog(context, 'Vui lòng chọn thêm ảnh');
                   }
                   context.read<PostBloc>().add(CreatePost(description: _descriptionCtl.text, images: _pickImageBloc.images));
                 },
@@ -84,7 +84,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
               // color: Colors.blueGrey,
               child: TextField(
                 controller: _descriptionCtl,
-                minLines: 2,
+                minLines: 1,
                 maxLines: null,
                 maxLength: 5000,
                 keyboardType: TextInputType.multiline,
@@ -92,7 +92,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Hãy nói gì đó về các bức ảnh này...',
-                  hintStyle: AppTextStyles.h5.copyWith(color: AppColors.blueGrey),
+                  hintStyle: AppTextStyles.body.copyWith(color: AppColors.blueGrey),
                   counter: const Offstage(),
                 ),
               ),
@@ -115,19 +115,16 @@ class _CreatePostPageState extends State<CreatePostPage> {
                 },
               ),
             ),
-            GestureDetector(
-              onTap: () {
-                _pickImageBloc.onAddImages();
-              },
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 15),
-                width: 120,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: AppColors.slate,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Center(child: Text('Thêm hình ảnh')),
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: MyElevatedButton(
+                text: '+ Thêm ảnh',
+                onPressed: () {
+                  if (_pickImageBloc.images.length >= 10) {
+                    return ErrorDialog.showMsgDialog(context, 'Bạn chỉ được thêm tối đa 10 hình ảnh');
+                  }
+                  _pickImageBloc.onAddImages();
+                },
               ),
             ),
           ],

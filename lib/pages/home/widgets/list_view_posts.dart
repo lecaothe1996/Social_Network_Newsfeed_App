@@ -119,23 +119,6 @@ class ListViewPosts extends StatelessWidget {
                     ? const SizedBox()
                     : GridImage(
                   post: posts[index],
-                  // post: Post(
-                  //   createdAt: posts[index].createdAt,
-                  //   liked: posts[index].liked,
-                  //   likeCounts: posts[index].likeCounts,
-                  //   commentCounts: posts[index].commentCounts,
-                  //   viewCounts: posts[index].viewCounts,
-                  //   user: User(
-                  //     avatar: Images(
-                  //       url: urlAvatar,
-                  //     ),
-                  //     firstName: posts[index].user?.firstName ?? '',
-                  //     lastName: posts[index].user?.lastName ?? '',
-                  //   ),
-                  //   description: posts[index].description ?? '',
-                  //   images: posts[index].images ?? [],
-                  //   photos: posts[index].photos ?? [],
-                  // ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),

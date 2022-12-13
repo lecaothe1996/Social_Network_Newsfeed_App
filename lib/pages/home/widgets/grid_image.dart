@@ -586,9 +586,9 @@ class GridImage extends StatelessWidget {
 
   Widget _buildFiveImage(List<Images> images, double deviceWidth, BuildContext context) {
     final urlImage1 = ImageUtils.genImgIx(images[0].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 4) ~/ 2, focusFace: true);
-    final urlImage2 = ImageUtils.genImgIx(images[1].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 8) ~/ 3, focusFace: true);
+    final urlImage2 = ImageUtils.genImgIx(images[1].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 4) ~/ 2, focusFace: true);
     final urlImage3 = ImageUtils.genImgIx(images[2].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 8) ~/ 3, focusFace: true);
-    final urlImage4 = ImageUtils.genImgIx(images[3].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 4) ~/ 2, focusFace: true);
+    final urlImage4 = ImageUtils.genImgIx(images[3].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 8) ~/ 3, focusFace: true);
     final urlImage5 = ImageUtils.genImgIx(images[4].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 8) ~/ 3, focusFace: true);
     // print('url Image1 = $urlImage1');
     // print('url Image2 = $urlImage2');
@@ -620,9 +620,9 @@ class GridImage extends StatelessWidget {
           child: Container(
             color: AppColors.slate,
             child: GestureDetector(
-              onTap: () => _navigateToPostDetailScreen(images, 1, context),
+              onTap: () => _navigateToPostDetailScreen(images, 2, context),
               child: CachedNetworkImage(
-                imageUrl: urlImage2,
+                imageUrl: urlImage3,
                 fit: BoxFit.cover,
               ),
             ),
@@ -634,9 +634,9 @@ class GridImage extends StatelessWidget {
           child: Container(
             color: AppColors.slate,
             child: GestureDetector(
-              onTap: () => _navigateToPostDetailScreen(images, 2, context),
+              onTap: () => _navigateToPostDetailScreen(images, 3, context),
               child: CachedNetworkImage(
-                imageUrl: urlImage3,
+                imageUrl: urlImage4,
                 fit: BoxFit.cover,
               ),
             ),
@@ -648,9 +648,9 @@ class GridImage extends StatelessWidget {
           child: Container(
             color: AppColors.slate,
             child: GestureDetector(
-              onTap: () => _navigateToPostDetailScreen(images, 3, context),
+              onTap: () => _navigateToPostDetailScreen(images, 1, context),
               child: CachedNetworkImage(
-                imageUrl: urlImage4,
+                imageUrl: urlImage2,
                 fit: BoxFit.cover,
               ),
             ),
@@ -676,9 +676,9 @@ class GridImage extends StatelessWidget {
 
   Widget _buildMoreImage(List<Images> images, double deviceWidth, BuildContext context) {
     final urlImage1 = ImageUtils.genImgIx(images[0].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 4) ~/ 2, focusFace: true);
-    final urlImage2 = ImageUtils.genImgIx(images[1].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 8) ~/ 3, focusFace: true);
+    final urlImage2 = ImageUtils.genImgIx(images[1].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 4) ~/ 2, focusFace: true);
     final urlImage3 = ImageUtils.genImgIx(images[2].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 8) ~/ 3, focusFace: true);
-    final urlImage4 = ImageUtils.genImgIx(images[3].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 4) ~/ 2, focusFace: true);
+    final urlImage4 = ImageUtils.genImgIx(images[3].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 8) ~/ 3, focusFace: true);
     final urlImage5 = ImageUtils.genImgIx(images[4].url, (deviceWidth - 4) ~/ 2, (deviceWidth - 8) ~/ 3, focusFace: true);
     // print('url Image1 = $urlImage1');
     // print('url Image2 = $urlImage2');
@@ -710,9 +710,9 @@ class GridImage extends StatelessWidget {
           child: Container(
             color: AppColors.slate,
             child: GestureDetector(
-              onTap: () => _navigateToPostDetailScreen(images, 1, context),
+              onTap: () => _navigateToPostDetailScreen(images, 2, context),
               child: CachedNetworkImage(
-                imageUrl: urlImage2,
+                imageUrl: urlImage3,
                 fit: BoxFit.cover,
               ),
             ),
@@ -724,9 +724,9 @@ class GridImage extends StatelessWidget {
           child: Container(
             color: AppColors.slate,
             child: GestureDetector(
-              onTap: () => _navigateToPostDetailScreen(images, 2, context),
+              onTap: () => _navigateToPostDetailScreen(images, 3, context),
               child: CachedNetworkImage(
-                imageUrl: urlImage3,
+                imageUrl: urlImage4,
                 fit: BoxFit.cover,
               ),
             ),
@@ -738,9 +738,9 @@ class GridImage extends StatelessWidget {
           child: Container(
             color: AppColors.slate,
             child: GestureDetector(
-              onTap: () => _navigateToPostDetailScreen(images, 3, context),
+              onTap: () => _navigateToPostDetailScreen(images, 1, context),
               child: CachedNetworkImage(
-                imageUrl: urlImage4,
+                imageUrl: urlImage2,
                 fit: BoxFit.cover,
               ),
             ),
@@ -760,13 +760,11 @@ class GridImage extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                   Container(
-                    width: double.infinity,
-                    height: double.infinity,
                     color: AppColors.black.withOpacity(0.4),
                     child: Center(
                       child: Text(
                         '+${images.length - 4}',
-                        style: AppTextStyles.h2.copyWith(fontWeight: FontWeight.normal),
+                        style: AppTextStyles.h3.copyWith(fontWeight: FontWeight.normal),
                       ),
                     ),
                   ),
