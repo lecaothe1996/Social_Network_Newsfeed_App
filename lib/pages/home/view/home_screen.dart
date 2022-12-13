@@ -75,6 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () {
                     print('Click Search');
                     // ListPostsRepo().getDetailPost('5GSS8xFihDWibS9SNa');
+                    _appStateBloc.changeAppState(AppState.unAuthorized);
                   },
                   child: Container(
                     height: 36,

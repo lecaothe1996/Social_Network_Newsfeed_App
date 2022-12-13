@@ -6,7 +6,7 @@ import 'package:social_app/pages/home/blocs/pick_image_bloc.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/utils/get_size_image_xfile.dart';
-import 'package:social_app/utils/image_utils.dart';
+import 'package:social_app/utils/image_util.dart';
 import 'package:social_app/widgets/button_widget.dart';
 import 'package:social_app/widgets/icon_button_widget.dart';
 

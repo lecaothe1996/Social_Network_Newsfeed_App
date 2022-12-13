@@ -8,7 +8,7 @@ import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/utils/convert_to_time_ago.dart';
-import 'package:social_app/utils/image_utils.dart';
+import 'package:social_app/utils/image_util.dart';
 import 'package:social_app/widgets/icon_button_widget.dart';
 
 class ListViewPosts extends StatelessWidget {

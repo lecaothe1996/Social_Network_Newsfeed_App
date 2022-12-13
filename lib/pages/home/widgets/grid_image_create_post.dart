@@ -7,7 +7,7 @@ import 'package:social_app/pages/home/blocs/pick_image_bloc.dart';
 import 'package:social_app/pages/home/view/edit_image_xfile_screen.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/utils/get_size_image_xfile.dart';
-import 'package:social_app/utils/image_utils.dart';
+import 'package:social_app/utils/image_util.dart';
 
 class GridImageCreatePost extends StatelessWidget {
   final List<XFile> imagesXFile;

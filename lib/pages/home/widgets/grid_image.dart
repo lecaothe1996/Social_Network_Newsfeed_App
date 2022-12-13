@@ -7,7 +7,7 @@ import 'package:social_app/pages/home/models/post.dart';
 import 'package:social_app/pages/home/view/post_detail_screen.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
-import 'package:social_app/utils/image_utils.dart';
+import 'package:social_app/utils/image_util.dart';
 
 class GridImage extends StatelessWidget {
   final Post post;

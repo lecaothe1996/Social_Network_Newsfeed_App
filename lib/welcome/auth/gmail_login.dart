@@ -1,12 +1,12 @@
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:social_app/services/my_client.dart';
+import 'package:social_app/utils/dio_util.dart';
 import 'package:social_app/utils/my_exception.dart';
-
-import '../models/login_data.dart';
+import 'package:social_app/utils/preference_util.dart';
+import 'package:social_app/welcome/models/login_data.dart';
 
 class AuthGmail {
   final _googleSignIn = GoogleSignIn();
-  final _myClient = MyClient();
+  final _dioUtil = DioUtil();
 
   Future<LoginData> logIn() async {
     // Trigger the authentication flow
@@ -17,7 +17,7 @@ class AuthGmail {
     if (googleAuth?.accessToken == null) {
       throw MyException('Do not have access token!!!');
     } else {
-      final res = await _myClient.post(
+      final res = await _dioUtil.post(
         '/auth/gmail',
         data: {'gmail_token': googleAuth?.accessToken},
       );
@@ -28,6 +28,21 @@ class AuthGmail {
       final data = res.data['data'];
       return LoginData.fromJson(data);
     }
+  }
+
+  Future<void> refreshToken() async {
+    final refreshToken = PreferenceUtils.getString('refresh_token');
+    print('⚡️ refreshToken====${refreshToken}');
+    final res = await _dioUtil.post(
+      '/auth/refresh',
+      data: {'token': refreshToken},
+    );
+    print('statusCode====${res.statusCode}');
+    if (res.statusCode != 200) {
+      throw MyException('Refresh token fail!!!');
+    }
+    final data = res.data['data'];
+    LoginData.fromJson(data);
   }
 
   Future<void> logout() {

@@ -1,15 +1,16 @@
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_app/pages/home/models/post.dart';
-import 'package:social_app/services/my_client.dart';
+import 'package:social_app/utils/dio_util.dart';
 import 'package:social_app/utils/my_exception.dart';
+import 'package:social_app/utils/preference_util.dart';
 
 class ListPostsRepo {
-  final _myClient = MyClient();
+  final _dioUtil = DioUtil();
 
   Future<List<Post>> getPosts(int page) async {
     try {
-      final res = await _myClient.get(
+      final res = await _dioUtil.get(
         '/posts',
         queryParameters: {'page': page},
       );
@@ -38,12 +39,12 @@ class ListPostsRepo {
             filename: image.name,
           )
         });
-        final res = await _myClient.post('/upload', data: formData);
+        final res = await _dioUtil.post('/upload', data: formData);
         String id = res.data['data']['id'];
         ids.add(id);
       }
       // Create post
-      final resCreatePost = await _myClient.post('/posts', data: {
+      final resCreatePost = await _dioUtil.post('/posts', data: {
         "description": description,
         "img_upload_ids": ids,
       });
@@ -62,7 +63,7 @@ class ListPostsRepo {
 
   Future<Post> getDetailPost(String id) async {
     try {
-      final res = await _myClient.get('/posts/$id');
+      final res = await _dioUtil.get('/posts/$id');
       Map<String, dynamic> data = res.data['data'];
       final post = Post.fromJson(data);
       return post;

@@ -2,9 +2,10 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:social_app/utils/my_exception.dart';
-import 'package:social_app/utils/preference_utils.dart';
+import 'package:social_app/utils/preference_util.dart';
+import 'package:social_app/welcome/auth/gmail_login.dart';
 
-class MyClient {
+class DioUtil {
   late Dio _dio;
 
   String get _accessToken {
@@ -12,13 +13,13 @@ class MyClient {
   }
 
   // Singleton
-  static final MyClient _instance = MyClient._internal();
+  static final DioUtil _instance = DioUtil._internal();
 
-  factory MyClient() {
+  factory DioUtil() {
     return _instance;
   }
 
-  MyClient._internal() {
+  DioUtil._internal() {
     final baseOptions = BaseOptions(baseUrl: 'https://api.dofhunt.200lab.io/v1');
     _dio = Dio(baseOptions);
     setupInterceptors();
@@ -31,16 +32,6 @@ class MyClient {
       InterceptorsWrapper(
         onRequest: (RequestOptions options, RequestInterceptorHandler handler) async {
           print('⚡️ MyClient [${options.method}] - ${options.uri}');
-          // print('⚡️ _accessToken: ${_accessToken}');
-          // if (_accessToken.isEmpty) {
-          //   _dio.lock();
-          //   return SharedPreferences.getInstance().then((sharedPreferences) {
-          //     TokenManager().load();
-          //     options.headers['Authorization'] = 'Bearer $_accessToken';
-          //     _dio.unlock();
-          //     return handler.next(options);
-          //   });
-          // }
           options.headers['Authorization'] = 'Bearer $_accessToken';
           return handler.next(options);
         },
@@ -50,7 +41,12 @@ class MyClient {
         },
         onError: (DioError e, ErrorInterceptorHandler handler) async {
           print('ERROR[${e.response?.statusCode}] => PATH: ${e.requestOptions.path}');
-          print('⚡️ _accessToken ${_accessToken}');
+          print('⚡️ _accessToken $_accessToken');
+
+          if (e.response?.statusCode == 401) {
+            await AuthGmail().refreshToken();
+          }
+
           // TODO: refresh token && handle error
           return handler.next(e);
         },
