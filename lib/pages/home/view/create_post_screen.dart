@@ -112,40 +112,45 @@ class _CreatePostPageState extends State<CreatePostPage> {
           ],
         ),
       ),
-      bottomNavigationBar: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Expanded(
-            flex: 1,
-            child: Material(
-              color: AppColors.transparent,
-              child: MyElevatedButton(
-                text: 'Ảnh',
-                onPressed: () {
-                  _pickImageBloc.onAddImages();
-                },
-                borderRadius: 0,
-                icon: Image.asset(AppAssetIcons.picture, color: AppColors.white),
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          border: Border(bottom: BorderSide(color: AppColors.slate, width: 1)),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Expanded(
+              flex: 1,
+              child: Material(
+                color: AppColors.transparent,
+                child: MyElevatedButton(
+                  text: 'Ảnh',
+                  onPressed: () {
+                    _pickImageBloc.onAddImages();
+                  },
+                  borderRadius: BorderRadius.circular(0),
+                  icon: Image.asset(AppAssetIcons.picture, color: AppColors.white),
+                ),
               ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Material(
-              color: AppColors.transparent,
-              child: MyElevatedButton(
-                text: 'Camera',
-                onPressed: () {
-                  _pickImageBloc.onAddImageFromCamera();
-                },
-                borderRadius: 0,
-                primary: AppColors.white,
-                textColor: AppColors.redMedium,
-                icon: Image.asset(AppAssetIcons.camera, color: AppColors.blue),
+            Expanded(
+              flex: 1,
+              child: Material(
+                color: AppColors.transparent,
+                child: MyElevatedButton(
+                  text: 'Camera',
+                  onPressed: () {
+                    _pickImageBloc.onAddImageFromCamera();
+                  },
+                  borderRadius: BorderRadius.circular(0),
+                  primary: AppColors.white,
+                  textColor: AppColors.redMedium,
+                  icon: Image.asset(AppAssetIcons.camera, color: AppColors.blue),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

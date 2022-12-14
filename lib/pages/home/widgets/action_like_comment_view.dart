@@ -88,7 +88,10 @@ class _LikeCommentViewState extends State<LikeCommentView> {
               style: AppTextStyles.h6,
             ),
           ),
-          Image.asset(AppAssetIcons.comment),
+          GestureDetector(
+            onTap: () => _showModalBottomSheet(context),
+            child: Image.asset(AppAssetIcons.comment),
+          ),
           Text(
             widget.post.commentCounts.toString(),
             overflow: TextOverflow.ellipsis,
@@ -102,6 +105,46 @@ class _LikeCommentViewState extends State<LikeCommentView> {
           ),
         ],
       ),
+    );
+  }
+
+  Future _showModalBottomSheet(BuildContext context) {
+    return showModalBottomSheet(
+      context: context,
+      backgroundColor: AppColors.dark,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(15),
+        ),
+      ),
+      builder: (context) {
+        return FractionallySizedBox(
+          heightFactor: 0.9,
+          child: Column(
+            children: [
+              Container(
+                height: 50,
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: 10,
+                  itemBuilder: (context, index) {
+                  return Container(
+                    margin: EdgeInsets.symmetric(vertical: 15),
+                    height: 300,
+                    color: Colors.grey,
+                  );
+                },),
+              ),
+              Container(
+                height: 50,
+                color: Colors.blueGrey,
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

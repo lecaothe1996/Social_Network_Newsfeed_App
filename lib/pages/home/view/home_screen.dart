@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
             slivers: [
               SliverAppBar(
                 centerTitle: false,
-                // floating: true,
+                floating: true,
                 // forceElevated: true,
                 // elevation: 1,
                 systemOverlayStyle: const SystemUiOverlayStyle(

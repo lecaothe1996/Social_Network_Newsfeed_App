@@ -32,112 +32,127 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final urlAvatar = ImageUtils.genImgIx(widget.post.user?.avatar?.url, 40, 40);
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: AppColors.dark,
-        body: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CircleAvatar(
-                              backgroundColor: AppColors.slate,
-                              child: ClipOval(
-                                child: CachedNetworkImage(
-                                  imageUrl: urlAvatar,
-                                  errorWidget: (_, __, ___) => Image.asset(
-                                    AppAssetIcons.avatar,
-                                    color: AppColors.blueGrey,
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: const SystemUiOverlayStyle(
+        statusBarColor: AppColors.slate,
+      ),
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: AppColors.dark,
+          body: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: AppColors.slate,
+                                child: ClipOval(
+                                  child: CachedNetworkImage(
+                                    imageUrl: urlAvatar,
+                                    errorWidget: (_, __, ___) => Image.asset(
+                                      AppAssetIcons.avatar,
+                                      color: AppColors.blueGrey,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            '${widget.post.user?.firstName ?? ''} ${widget.post.user?.lastName ?? 'Người dùng'}',
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: AppTextStyles.body.copyWith(fontWeight: FontWeight.bold),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              '${widget.post.user?.firstName ?? ''} ${widget.post.user?.lastName ?? 'Người dùng'}',
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: AppTextStyles.body.copyWith(fontWeight: FontWeight.bold),
+                                            ),
                                           ),
-                                        ),
-                                        MyIconButton(
-                                          nameImage: AppAssetIcons.close,
-                                          colorImage: AppColors.blueGrey,
-                                          width: 20,
-                                          height: 20,
-                                          onTap: () {
-                                            print('Click Close');
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 2),
-                                    Text(
-                                      ConvertToTimeAgo().timeAgo(widget.post.createdAt ?? DateTime.now()),
-                                      overflow: TextOverflow.ellipsis,
-                                      style: AppTextStyles.h6.copyWith(color: AppColors.blueGrey),
-                                    ),
-                                  ],
+                                          MyIconButton(
+                                            nameImage: AppAssetIcons.close,
+                                            colorImage: AppColors.blueGrey,
+                                            width: 20,
+                                            height: 20,
+                                            onTap: () {
+                                              print('Click Close');
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        ConvertToTimeAgo().timeAgo(widget.post.createdAt ?? DateTime.now()),
+                                        overflow: TextOverflow.ellipsis,
+                                        style: AppTextStyles.h6.copyWith(color: AppColors.blueGrey),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 15),
-                        widget.post.description!.isEmpty || widget.post.description == null
-                            ? const SizedBox()
-                            : ReadMoreText(
-                                widget.post.description ?? '',
-                                trimLines: 8,
-                                colorClickableText: AppColors.blueGrey,
-                                trimMode: TrimMode.Line,
-                                trimCollapsedText: 'Show more',
-                                trimExpandedText: '',
-                                style: AppTextStyles.body,
-                              ),
-                      ],
+                            ],
+                          ),
+                          const SizedBox(height: 15),
+                          widget.post.description!.isEmpty || widget.post.description == null
+                              ? const SizedBox()
+                              : ReadMoreText(
+                                  widget.post.description ?? '',
+                                  trimLines: 8,
+                                  colorClickableText: AppColors.blueGrey,
+                                  trimMode: TrimMode.Line,
+                                  trimCollapsedText: 'Show more',
+                                  trimExpandedText: '',
+                                  style: AppTextStyles.body,
+                                ),
+                        ],
+                      ),
                     ),
-                  ),
-                  LikeCommentView(
-                    post: widget.post,
-                  ),
-                  const Divider(color: AppColors.slate),
-                ],
+                    LikeCommentView(
+                      post: widget.post,
+                    ),
+                    const Divider(color: AppColors.slate),
+                  ],
+                ),
               ),
-            ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                childCount: widget.post.photos?.length,
-                (context, index) {
-                  final deviceWidth = MediaQuery.of(context).size.width;
-                  final heightImage = ImageUtils.getHeightView(deviceWidth,
-                      widget.post.photos?[index].image?.orgWidth ?? 1, widget.post.photos?[index].image?.orgHeight ?? 1);
-                  final urlImage =
-                      ImageUtils.genImgIx(widget.post.photos?[index].image?.url, deviceWidth.toInt(), heightImage.toInt());
-                  if (heightImage >= deviceWidth * 3) {
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  childCount: widget.post.photos?.length,
+                  (context, index) {
+                    final deviceWidth = MediaQuery.of(context).size.width;
+                    final heightImage = ImageUtils.getHeightView(deviceWidth,
+                        widget.post.photos?[index].image?.orgWidth ?? 1, widget.post.photos?[index].image?.orgHeight ?? 1);
+                    final urlImage =
+                        ImageUtils.genImgIx(widget.post.photos?[index].image?.url, deviceWidth.toInt(), heightImage.toInt());
+                    if (heightImage >= deviceWidth * 3) {
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 15),
+                        height: deviceWidth * 3,
+                        width: deviceWidth,
+                        color: AppColors.slate,
+                        child: CachedNetworkImage(
+                          imageUrl: urlImage,
+                          fit: BoxFit.fitWidth,
+                        ),
+                      );
+                    }
                     return Container(
                       margin: const EdgeInsets.only(bottom: 15),
-                      height: deviceWidth * 3,
+                      height: heightImage,
                       width: deviceWidth,
                       color: AppColors.slate,
                       child: CachedNetworkImage(
@@ -145,21 +160,11 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                         fit: BoxFit.fitWidth,
                       ),
                     );
-                  }
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 15),
-                    height: heightImage,
-                    width: deviceWidth,
-                    color: AppColors.slate,
-                    child: CachedNetworkImage(
-                      imageUrl: urlImage,
-                      fit: BoxFit.fitWidth,
-                    ),
-                  );
-                },
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

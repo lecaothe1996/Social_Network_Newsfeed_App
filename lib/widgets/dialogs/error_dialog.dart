@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:social_app/themes/app_color.dart';
-import 'package:social_app/themes/app_text_styles.dart';
+import 'package:social_app/widgets/button_widget.dart';
 
 class ErrorDialog {
   static void showMsgDialog(BuildContext context, String msg) {
@@ -20,18 +20,19 @@ class ErrorDialog {
           textAlign: TextAlign.center,
         ),
         actionsAlignment: MainAxisAlignment.start,
+        actionsPadding: const EdgeInsets.all(0),
         actions: [
-          const Divider(),
-          SizedBox(
-            width: double.infinity,
-            child: TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(ErrorDialog);
-              },
-              child: Text(
-                'Xác nhận',
-                textAlign: TextAlign.center,
-                style: AppTextStyles.h5.copyWith(color: AppColors.redMedium, fontWeight: FontWeight.bold),
+          Container(
+            decoration: const BoxDecoration(
+              border: Border(top: BorderSide(color: AppColors.blueGrey, width: 1)),
+            ),
+            child: MyElevatedButton(
+              onPressed: () => Navigator.of(context).pop(ErrorDialog),
+              text: 'Xác nhận',
+              textColor: AppColors.redMedium,
+              primary: AppColors.white,
+              borderRadius: const BorderRadius.vertical(
+                bottom: Radius.circular(15),
               ),
             ),
           ),

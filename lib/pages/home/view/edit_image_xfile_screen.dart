@@ -156,7 +156,7 @@ class _EditImageXFileScreenState extends State<EditImageXFileScreen> {
                 onPressed: () {
                   _pickImageBloc.onAddImages();
                 },
-                borderRadius: 0,
+                borderRadius: BorderRadius.circular(0),
                 primary: AppColors.white,
                 textColor: AppColors.redMedium,
                 icon: Image.asset(AppAssetIcons.plus, color: AppColors.blue),
