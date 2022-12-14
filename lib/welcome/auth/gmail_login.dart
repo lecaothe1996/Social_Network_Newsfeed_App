@@ -42,6 +42,7 @@ class AuthGmail {
       throw MyException('Refresh token fail!!!');
     }
     final data = res.data['data'];
+    print('⚡️ data====${data}');
     LoginData.fromJson(data);
   }
 

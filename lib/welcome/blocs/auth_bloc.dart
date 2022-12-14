@@ -14,6 +14,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   FutureOr<void> _onLogInGmail(LogInGmail event, Emitter<AuthState> emit) async {
     try {
       final data = await AuthGmail().logIn();
+      print('⚡️ accessToken=${data.accessToken}');
       print('⚡️ refreshToken=${data.refreshToken}');
       PreferenceUtils.setString('access_token', data.accessToken ?? '');
       PreferenceUtils.setString('refresh_token', data.refreshToken ?? '');

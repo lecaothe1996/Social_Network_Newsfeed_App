@@ -93,8 +93,9 @@ class _LikeCommentViewState extends State<LikeCommentView> {
             widget.post.commentCounts.toString(),
             overflow: TextOverflow.ellipsis,
           ),
-          const SizedBox(width: 15),
-          Image.asset(AppAssetIcons.share),
+          const SizedBox(width: 25),
+          Image.asset(AppAssetIcons.view),
+          const SizedBox(width: 2),
           Text(
             widget.post.viewCounts.toString(),
             overflow: TextOverflow.ellipsis,

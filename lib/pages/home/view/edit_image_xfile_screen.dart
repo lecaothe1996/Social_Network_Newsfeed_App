@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -8,7 +9,6 @@ import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/utils/get_size_image_xfile.dart';
 import 'package:social_app/utils/image_util.dart';
 import 'package:social_app/widgets/button_widget.dart';
-import 'package:social_app/widgets/dialogs/error_dialog.dart';
 import 'package:social_app/widgets/icon_button_widget.dart';
 
 class EditImageXFileScreen extends StatefulWidget {
@@ -92,7 +92,7 @@ class _EditImageXFileScreenState extends State<EditImageXFileScreen> {
                               child: MyIconButton(
                                 onTap: () {
                                   print('Click close');
-                                  _pickImageBloc.closeImage(index);
+                                  _pickImageBloc.deleteImage(index);
                                 },
                                 nameImage: AppAssetIcons.close,
                               ),
@@ -113,13 +113,26 @@ class _EditImageXFileScreenState extends State<EditImageXFileScreen> {
                               cacheWidth: (deviceWidth * dpr).toInt(),
                             ),
                           ),
+                          // Shadow icon close
+                          Positioned(
+                            top: 10,
+                            right: 10,
+                            child: ImageFiltered(
+                              imageFilter: ImageFilter.blur(sigmaY: 1.5, sigmaX: 1.5, tileMode: TileMode.decal),
+                              child: ColorFiltered(
+                                colorFilter: const ColorFilter.mode(AppColors.black, BlendMode.srcATop),
+                                child: Image.asset(AppAssetIcons.close),
+                              ),
+                            ),
+                          ),
+                          // Icon close
                           Positioned(
                             top: 10,
                             right: 10,
                             child: MyIconButton(
                               onTap: () {
                                 print('Click close');
-                                _pickImageBloc.closeImage(index);
+                                _pickImageBloc.deleteImage(index);
                               },
                               nameImage: AppAssetIcons.close,
                             ),
@@ -139,13 +152,14 @@ class _EditImageXFileScreenState extends State<EditImageXFileScreen> {
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: MyElevatedButton(
-                text: '+ Thêm ảnh',
+                text: 'Thêm ảnh',
                 onPressed: () {
-                  if (_pickImageBloc.images.length >= 10) {
-                    return ErrorDialog.showMsgDialog(context, 'Bạn chỉ được thêm tối đa 10 hình ảnh');
-                  }
                   _pickImageBloc.onAddImages();
                 },
+                borderRadius: 0,
+                primary: AppColors.white,
+                textColor: AppColors.redMedium,
+                icon: Image.asset(AppAssetIcons.plus, color: AppColors.blue),
               ),
             ),
           ),

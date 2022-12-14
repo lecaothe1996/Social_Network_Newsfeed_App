@@ -4,7 +4,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/pages/home/blocs/pick_image_bloc.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
-import 'package:social_app/pages/home/widgets/grid_image.dart';
 import 'package:social_app/pages/home/widgets/grid_image_create_post.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
@@ -61,13 +60,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
                 }
               },
               child: MyElevatedButton(
-                onPressed: () {
-                  print('Click Post');
-                  if (_pickImageBloc.images.isEmpty) {
-                    return ErrorDialog.showMsgDialog(context, 'Vui lòng chọn thêm ảnh');
-                  }
-                  context.read<PostBloc>().add(CreatePost(description: _descriptionCtl.text, images: _pickImageBloc.images));
-                },
+                onPressed: () => _createPost(),
                 text: 'ĐĂNG',
                 width: 80,
               ),
@@ -115,21 +108,56 @@ class _CreatePostPageState extends State<CreatePostPage> {
                 },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(15),
-              child: MyElevatedButton(
-                text: '+ Thêm ảnh',
-                onPressed: () {
-                  if (_pickImageBloc.images.length >= 10) {
-                    return ErrorDialog.showMsgDialog(context, 'Bạn chỉ được thêm tối đa 10 hình ảnh');
-                  }
-                  _pickImageBloc.onAddImages();
-                },
-              ),
-            ),
+            const SizedBox(height: 5),
           ],
         ),
       ),
+      bottomNavigationBar: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Expanded(
+            flex: 1,
+            child: Material(
+              color: AppColors.transparent,
+              child: MyElevatedButton(
+                text: 'Ảnh',
+                onPressed: () {
+                  _pickImageBloc.onAddImages();
+                },
+                borderRadius: 0,
+                icon: Image.asset(AppAssetIcons.picture, color: AppColors.white),
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Material(
+              color: AppColors.transparent,
+              child: MyElevatedButton(
+                text: 'Camera',
+                onPressed: () {
+                  _pickImageBloc.onAddImageFromCamera();
+                },
+                borderRadius: 0,
+                primary: AppColors.white,
+                textColor: AppColors.redMedium,
+                icon: Image.asset(AppAssetIcons.camera, color: AppColors.blue),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
+  }
+
+  void _createPost() {
+    print('Click Create Post');
+    if (_pickImageBloc.images.isEmpty) {
+      return ErrorDialog.showMsgDialog(context, 'Vui lòng chọn ảnh');
+    }
+    if (_pickImageBloc.images.length > 10) {
+      return ErrorDialog.showMsgDialog(context, 'Bạn chỉ được đăng tối đa 10 ảnh');
+    }
+    context.read<PostBloc>().add(CreatePost(description: _descriptionCtl.text, images: _pickImageBloc.images));
   }
 }

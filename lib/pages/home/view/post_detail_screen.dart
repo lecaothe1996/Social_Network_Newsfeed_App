@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/services.dart';
 import 'package:readmore/readmore.dart';
 import 'package:social_app/pages/home/models/post.dart';
 import 'package:social_app/pages/home/widgets/action_like_comment_view.dart';
@@ -26,7 +26,6 @@ class PostDetailScreen extends StatefulWidget {
 class _PostDetailScreenState extends State<PostDetailScreen> {
   @override
   void initState() {
-    // BlocProvider.of<PostBloc>(context).add(LoadDetailPost(id: widget.post.id ?? ''));
     super.initState();
   }
 
@@ -131,8 +130,8 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                 childCount: widget.post.photos?.length,
                 (context, index) {
                   final deviceWidth = MediaQuery.of(context).size.width;
-                  final heightImage = ImageUtils.getHeightView(deviceWidth, widget.post.photos?[index].image?.orgWidth ?? 1,
-                      widget.post.photos?[index].image?.orgHeight ?? 1);
+                  final heightImage = ImageUtils.getHeightView(deviceWidth,
+                      widget.post.photos?[index].image?.orgWidth ?? 1, widget.post.photos?[index].image?.orgHeight ?? 1);
                   final urlImage =
                       ImageUtils.genImgIx(widget.post.photos?[index].image?.url, deviceWidth.toInt(), heightImage.toInt());
                   if (heightImage >= deviceWidth * 3) {

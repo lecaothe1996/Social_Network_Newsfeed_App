@@ -23,6 +23,9 @@ class AppAssetIcons {
   static const String close = '${imagePath}ic_close.png';
   static const String like = '${imagePath}ic_like.png';
   static const String comment = '${imagePath}ic_comment.png';
+  static const String view = '${imagePath}ic_view.png';
   static const String share = '${imagePath}ic_share.png';
   static const String avatar = '${imagePath}ic_avatar.png';
+  static const String picture = '${imagePath}ic_picture.png';
+  static const String camera = '${imagePath}ic_camera.png';
 }

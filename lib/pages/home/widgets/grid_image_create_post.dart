@@ -22,7 +22,6 @@ class GridImageCreatePost extends StatelessWidget {
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
     final dpr = MediaQuery.of(context).devicePixelRatio;
-    print('deviceWidth==$deviceWidth');
     return buildImageGrid(imagesXFile, deviceWidth, dpr, context);
   }
 

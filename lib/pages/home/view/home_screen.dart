@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/my_app/app_state_bloc.dart';
@@ -33,13 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  void didUpdateWidget(covariant HomeScreen oldWidget) {
-    // print('Updateeeeeeeeeee');
-    _scrollToTop();
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
   void dispose() {
     _scrollController.dispose();
     super.dispose();
@@ -68,14 +62,16 @@ class _HomeScreenState extends State<HomeScreen> {
             slivers: [
               SliverAppBar(
                 centerTitle: false,
-                floating: true,
+                // floating: true,
                 // forceElevated: true,
                 // elevation: 1,
+                systemOverlayStyle: const SystemUiOverlayStyle(
+                  statusBarColor: AppColors.dark,
+                ),
                 title: GestureDetector(
                   onTap: () {
                     print('Click Search');
-                    // ListPostsRepo().getDetailPost('5GSS8xFihDWibS9SNa');
-                    _appStateBloc.changeAppState(AppState.unAuthorized);
+                    // _appStateBloc.changeAppState(AppState.unAuthorized);
                   },
                   child: Container(
                     height: 36,
