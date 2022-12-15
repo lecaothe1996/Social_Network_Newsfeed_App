@@ -15,19 +15,19 @@ class BottomSheetComment {
       backgroundColor: AppColors.dark,
       expand: true,
       builder: (context) => Padding(
-        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom, left: 15, right: 15),
+        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Column(
           children: [
             Container(
               height: 50,
-              color: Colors.deepOrange,
+              // color: Colors.deepOrange,
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: 4,
+                itemCount: 10,
                 itemBuilder: (context, index) => Container(
                   // height: 300,
-                  margin: EdgeInsets.only(bottom: 15),
+                  margin: const EdgeInsets.fromLTRB(15, 15, 15, 0),
                   // color: Colors.blueGrey,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,47 +39,72 @@ class BottomSheetComment {
                         child: ClipOval(
                           child: CachedNetworkImage(
                             imageUrl: 'https://meliawedding.com.vn/wp-content/uploads/2022/03/avatar-gai-xinh-5.jpg',
-                            errorWidget: (_, __, ___) =>
-                                Image.asset(
-                                  AppAssetIcons.avatar,
-                                  color: AppColors.blueGrey,
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
-                                ),
+                            errorWidget: (_, __, ___) => Image.asset(
+                              AppAssetIcons.avatar,
+                              color: AppColors.blueGrey,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
                       Flexible(
-                        child: Card(
-                          margin: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                          color: AppColors.slate,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(15))
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Lê Minh Thư',
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: AppTextStyles.body.copyWith(fontWeight: FontWeight.bold),
+                        child: Column(
+                          children: [
+                            Card(
+                              margin: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                              color: AppColors.slate.withOpacity(0.5),
+                              elevation: 0,
+                              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(10, 5, 10, 7),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Lê Minh Thư',
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: AppTextStyles.body.copyWith(fontWeight: FontWeight.bold),
+                                    ),
+                                    const ReadMoreText(
+                                      'Tôi đề nghị không thể tuyệt Tôi đề nghị không thể tuyệt Tôi đề nghị không thể tuyệt /n Tôi đề nghị không thể tuyệt',
+                                      trimLines: 5,
+                                      colorClickableText: AppColors.blueGrey,
+                                      trimMode: TrimMode.Line,
+                                      trimCollapsedText: 'Show more',
+                                      trimExpandedText: '',
+                                      style: AppTextStyles.body,
+                                    ),
+                                  ],
                                 ),
-                                const ReadMoreText(
-                                  'Tôi đề nghị không thể tuyệt Tôi đề nghị không thể tuyệt Tôi đề nghị không thể tuyệt /n Tôi đề nghị không thể tuyệt',
-                                  trimLines: 5,
-                                  colorClickableText: AppColors.blueGrey,
-                                  trimMode: TrimMode.Line,
-                                  trimCollapsedText: 'Show more',
-                                  trimExpandedText: '',
-                                  style: AppTextStyles.body,
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(15,5,0,5),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    '2 giờ',
+                                    style: AppTextStyles.body.copyWith(color: AppColors.blueGrey),
+                                  ),
+                                  const SizedBox(width: 15),
+                                  Text(
+                                    'Thích',
+                                    style: AppTextStyles.body.copyWith(color: AppColors.blueGrey),
+                                  ),
+                                  const SizedBox(width: 15),
+                                  Expanded(
+                                    child: Text(
+                                      'Phản hồi',
+                                      overflow: TextOverflow.ellipsis,
+                                      style: AppTextStyles.body.copyWith(color: AppColors.blueGrey),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -88,9 +113,10 @@ class BottomSheetComment {
               ),
             ),
             Container(
-              height: 55,
+              // height: 55,
+              padding: const EdgeInsets.fromLTRB(15, 5, 15, 6),
               decoration: const BoxDecoration(
-                // color: Colors.grey,
+                  // color: Colors.grey,
                   border: Border(top: BorderSide(color: AppColors.slate, width: 1))),
               child: Row(
                 children: [
