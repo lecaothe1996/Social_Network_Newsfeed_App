@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:social_app/pages/home/blocs/like_bloc/like_cubit.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/home/models/post.dart';
@@ -7,6 +8,9 @@ import 'package:social_app/pages/home/widgets/toggle.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
+import 'package:social_app/widgets/bottom_sheet_comment.dart';
+import 'package:social_app/widgets/icon_button_widget.dart';
+import 'package:social_app/widgets/text_field_widget.dart';
 
 class LikeCommentView extends StatefulWidget {
   final Post post;
@@ -89,7 +93,7 @@ class _LikeCommentViewState extends State<LikeCommentView> {
             ),
           ),
           GestureDetector(
-            onTap: () => _showModalBottomSheet(context),
+            onTap: () => BottomSheetComment().showBottomSheet(context),
             child: Image.asset(AppAssetIcons.comment),
           ),
           Text(
@@ -105,46 +109,6 @@ class _LikeCommentViewState extends State<LikeCommentView> {
           ),
         ],
       ),
-    );
-  }
-
-  Future _showModalBottomSheet(BuildContext context) {
-    return showModalBottomSheet(
-      context: context,
-      backgroundColor: AppColors.dark,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(15),
-        ),
-      ),
-      builder: (context) {
-        return FractionallySizedBox(
-          heightFactor: 0.9,
-          child: Column(
-            children: [
-              Container(
-                height: 50,
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                  return Container(
-                    margin: EdgeInsets.symmetric(vertical: 15),
-                    height: 300,
-                    color: Colors.grey,
-                  );
-                },),
-              ),
-              Container(
-                height: 50,
-                color: Colors.blueGrey,
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }

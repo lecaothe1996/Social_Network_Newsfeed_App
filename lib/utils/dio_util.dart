@@ -37,6 +37,7 @@ class DioUtil {
         },
         onResponse: (response, handler) {
           print('RESPONSE[${response.statusCode}] => PATH: ${response.requestOptions.path}');
+          // print('⚡️ _accessToken $_accessToken');
           return handler.next(response);
         },
         onError: (DioError e, ErrorInterceptorHandler handler) async {
