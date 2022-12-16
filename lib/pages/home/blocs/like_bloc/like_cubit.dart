@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
-import 'package:social_app/pages/home/repositorys/like_repo.dart';
+import 'package:social_app/pages/home/repositories/like_repo.dart';
 import 'package:social_app/utils/my_exception.dart';
 
 part 'like_state.dart';

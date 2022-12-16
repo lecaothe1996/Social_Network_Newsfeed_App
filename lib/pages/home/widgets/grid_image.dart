@@ -788,7 +788,7 @@ class GridImage extends StatelessWidget {
             MaterialPageRoute(
               builder: (_) => BlocProvider.value(
                 value: BlocProvider.of<PostBloc>(context),
-                child: PostDetailScreen(post: post ?? Post()),
+                child: PostDetailScreen(post: post),
               ),
             ),
           );

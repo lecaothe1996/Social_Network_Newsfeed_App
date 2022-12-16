@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/my_app/app_state_bloc.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
-import 'package:social_app/pages/home/repositorys/list_posts_repo.dart';
 import 'package:social_app/pages/home/view/create_post_screen.dart';
 import 'package:social_app/pages/home/widgets/list_view_posts.dart';
 import 'package:social_app/pages/home/widgets/list_view_stories.dart';
@@ -72,6 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () {
                     print('Click Search');
                     // _appStateBloc.changeAppState(AppState.unAuthorized);
+                    // CommentRepo().getComment("5GSRtgYcJZzwoN2MUC");
                   },
                   child: Container(
                     height: 36,

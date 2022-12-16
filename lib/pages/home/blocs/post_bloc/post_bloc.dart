@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_app/pages/home/models/post.dart';
-import 'package:social_app/pages/home/repositorys/list_posts_repo.dart';
+import 'package:social_app/pages/home/repositories/post_repo.dart';
 
 part 'post_event.dart';
 
 part 'post_state.dart';
 
 class PostBloc extends Bloc<PostEvent, PostState> {
-  final _listPostsRepo = ListPostsRepo();
+  final _postRepo = PostRepo();
 
   List<Post> _posts = [];
 
@@ -27,7 +27,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
   FutureOr<void> _onLoadPosts(LoadPosts event, Emitter<PostState> emit) async {
     try {
-      final posts = await _listPostsRepo.getPosts(_page);
+      final posts = await _postRepo.getPosts(_page);
       _posts = List.from(posts)..shuffle();
       emit(PostsLoaded(data: _posts));
     } catch (e) {
@@ -38,7 +38,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
   FutureOr<void> _onLoadDetailPost(LoadDetailPost event, Emitter<PostState> emit) async {
     try {
-      final post = await _listPostsRepo.getDetailPost(event.id);
+      final post = await _postRepo.getDetailPost(event.id);
       emit(DetailPostLoaded(data: post));
     } catch (e) {
       print('⚡️ Error Load Detail Post: $e');
@@ -49,7 +49,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   FutureOr<void> _onLoadMorePosts(LoadMorePosts event, Emitter<PostState> emit) async {
     try {
       _page = _page + 1;
-      final posts = await _listPostsRepo.getPosts(_page);
+      final posts = await _postRepo.getPosts(_page);
       List<Post> shuffle = List.from(posts)..shuffle();
       _posts = List.from(_posts)..addAll(shuffle);
       emit(PostsLoaded(data: _posts));
@@ -64,7 +64,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       emit(PostsRefresh());
       _posts = [];
       _page = 1;
-      final posts = await _listPostsRepo.getPosts(event.page);
+      final posts = await _postRepo.getPosts(event.page);
       List<Post> shuffle = List.from(posts)..shuffle();
       _posts = List.from(_posts)..addAll(shuffle);
       emit(PostsLoaded(data: _posts));
@@ -76,7 +76,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
   FutureOr<void> _onCreatePost(CreatePost event, Emitter<PostState> emit) async {
     try {
-      final post = await _listPostsRepo.createPosts(event.description, event.images);
+      final post = await _postRepo.createPosts(event.description, event.images);
       _posts = List.from(_posts)..insert(0, post);
       emit(PostsLoaded(
         data: _posts,

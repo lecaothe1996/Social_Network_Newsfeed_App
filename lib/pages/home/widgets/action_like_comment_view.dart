@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:social_app/pages/home/blocs/comment_bloc/comment_bloc.dart';
 import 'package:social_app/pages/home/blocs/like_bloc/like_cubit.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/home/models/post.dart';
@@ -93,7 +94,7 @@ class _LikeCommentViewState extends State<LikeCommentView> {
             ),
           ),
           GestureDetector(
-            onTap: () => BottomSheetComment().showBottomSheet(context),
+            onTap: () => _tapComment(context),
             child: Image.asset(AppAssetIcons.comment),
           ),
           Text(
@@ -110,5 +111,9 @@ class _LikeCommentViewState extends State<LikeCommentView> {
         ],
       ),
     );
+  }
+
+  Future _tapComment(BuildContext context) {
+    return BottomSheetComment.showBottomSheet(widget.post.id ?? '', context);
   }
 }

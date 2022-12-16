@@ -5,7 +5,7 @@ import 'package:social_app/utils/dio_util.dart';
 import 'package:social_app/utils/my_exception.dart';
 import 'package:social_app/utils/preference_util.dart';
 
-class ListPostsRepo {
+class PostRepo {
   final _dioUtil = DioUtil();
 
   Future<List<Post>> getPosts(int page) async {
