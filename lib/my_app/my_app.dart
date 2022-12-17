@@ -13,10 +13,10 @@ class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  State<MyApp> createState() => _SplashPageState();
+  State<MyApp> createState() => _MyAppState();
 }
 
-class _SplashPageState extends State<MyApp> {
+class _MyAppState extends State<MyApp> {
   final _appStateBloc = AppStateBloc();
 
   @override

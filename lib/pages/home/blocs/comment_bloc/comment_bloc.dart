@@ -14,6 +14,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
 
   CommentBloc() : super(CommentsLoading()) {
     on<LoadComments>(_onLoadComments);
+    on<CreateComment>(_onCreateComment);
   }
 
   FutureOr<void> _onLoadComments(LoadComments event, Emitter<CommentState> emit) async {
@@ -25,5 +26,9 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
       print('⚡️ Error Load Comments: $e');
       emit(CommentError(error: e.toString()));
     }
+  }
+
+  FutureOr<void> _onCreateComment(CreateComment event, Emitter<CommentState> emit) async {
+    final comment = await _commentRepo.createComment(event.id, event.content);
   }
 }

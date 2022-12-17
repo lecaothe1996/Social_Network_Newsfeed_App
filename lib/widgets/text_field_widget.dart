@@ -3,11 +3,13 @@ import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
 
 class MyTextField extends StatefulWidget {
+  final TextEditingController controller;
   final String hintText;
   final double height;
 
   const MyTextField({
     Key? key,
+    required this.controller,
     required this.hintText,
     this.height = 44,
   }) : super(key: key);
@@ -29,6 +31,7 @@ class _MyTextFieldState extends State<MyTextField> {
         borderRadius: BorderRadius.circular(100),
       ),
       child: TextField(
+        controller: widget.controller,
         style: AppTextStyles.h5.copyWith(color: AppColors.white),
         obscureText: widget.hintText == 'Password' ? _obscureText : false,
         decoration: InputDecoration(

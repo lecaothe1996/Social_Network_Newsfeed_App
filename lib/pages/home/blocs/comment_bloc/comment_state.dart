@@ -1,7 +1,7 @@
 part of 'comment_bloc.dart';
 
 enum StateName {
-  createPost,
+  createComment,
 }
 
 @immutable

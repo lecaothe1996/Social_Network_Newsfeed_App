@@ -65,13 +65,7 @@ class _LikeCommentViewState extends State<LikeCommentView> {
         children: [
           Toggle(
             isActivated: _isLiked,
-            onTrigger: (isLiked) {
-              isLiked
-                  ? context.read<PostBloc>().add(LikeAndUnLike(post: widget.post, eventLike: EventLike.likePost))
-                  : context.read<PostBloc>().add(LikeAndUnLike(post: widget.post, eventLike: EventLike.unLikePost));
-              // print('Call API like');
-              _likeCubit.likeAndUnLike(widget.post.id ?? '', isLiked ? EventLike.likePost : EventLike.unLikePost);
-            },
+            onTrigger: (isLiked) => _handleLikePost(isLiked),
             onTap: (isOn) {
               setState(() {
                 _likeCount = isOn ? _likeCount + 1 : _likeCount - 1;
@@ -86,22 +80,22 @@ class _LikeCommentViewState extends State<LikeCommentView> {
               AppAssetIcons.like,
             ),
           ),
-          Expanded(
-            child: Text(
-              _likeCount.toString(),
-              overflow: TextOverflow.ellipsis,
-              style: AppTextStyles.h6,
-            ),
+          Text(
+            _likeCount.toString(),
+            overflow: TextOverflow.ellipsis,
+            style: AppTextStyles.h6,
           ),
+          const SizedBox(width: 25),
           GestureDetector(
             onTap: () => _tapComment(context),
             child: Image.asset(AppAssetIcons.comment),
           ),
-          Text(
-            widget.post.commentCounts.toString(),
-            overflow: TextOverflow.ellipsis,
+          Expanded(
+            child: Text(
+              widget.post.commentCounts.toString(),
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
-          const SizedBox(width: 25),
           Image.asset(AppAssetIcons.view),
           const SizedBox(width: 2),
           Text(
@@ -113,7 +107,15 @@ class _LikeCommentViewState extends State<LikeCommentView> {
     );
   }
 
+  void _handleLikePost (bool isLiked) {
+    isLiked
+        ? context.read<PostBloc>().add(LikeAndUnLike(post: widget.post, eventLike: EventLike.likePost))
+        : context.read<PostBloc>().add(LikeAndUnLike(post: widget.post, eventLike: EventLike.unLikePost));
+    // Call API
+    _likeCubit.likeAndUnLike(widget.post.id ?? '', isLiked ? EventLike.likePost : EventLike.unLikePost);
+  }
+
   Future _tapComment(BuildContext context) {
-    return BottomSheetComment.showBottomSheet(widget.post.id ?? '', context);
+    return BottomSheetComment().showBottomSheet(widget.post.id ?? '', context);
   }
 }

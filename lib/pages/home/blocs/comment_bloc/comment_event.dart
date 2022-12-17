@@ -8,3 +8,10 @@ class LoadComments extends CommentEvent {
 
   LoadComments({required this.id});
 }
+
+class CreateComment extends CommentEvent {
+  final String id;
+  final String content;
+
+  CreateComment({required this.id, required this.content});
+}

@@ -11,6 +11,9 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final emailCtl = TextEditingController();
+    final passCtl = TextEditingController();
+
     return Stack(
       children: [
         Container(
@@ -59,10 +62,16 @@ class LoginPage extends StatelessWidget {
                           style: AppTextStyles.h5,
                         ),
                       ),
-                      const MyTextField(hintText: 'Email'),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 10, bottom: 40),
-                        child: MyTextField(hintText: 'Password'),
+                      MyTextField(
+                        controller: emailCtl,
+                        hintText: 'Email',
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10, bottom: 40),
+                        child: MyTextField(
+                          controller: passCtl,
+                          hintText: 'Password',
+                        ),
                       ),
                       MyElevatedButton(
                         width: double.infinity,
