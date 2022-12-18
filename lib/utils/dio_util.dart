@@ -1,7 +1,5 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
-import 'package:social_app/utils/my_exception.dart';
 import 'package:social_app/utils/preference_util.dart';
 import 'package:social_app/welcome/auth/gmail_login.dart';
 

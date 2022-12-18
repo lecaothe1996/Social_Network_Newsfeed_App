@@ -97,7 +97,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                       ),
                                       const SizedBox(height: 2),
                                       Text(
-                                        ConvertToTimeAgo().timeAgo(widget.post.createdAt ?? DateTime.now()),
+                                        ConvertToTimeAgo.timeAgo(widget.post.createdAt ?? DateTime.now()),
                                         overflow: TextOverflow.ellipsis,
                                         style: AppTextStyles.h6.copyWith(color: AppColors.blueGrey),
                                       ),

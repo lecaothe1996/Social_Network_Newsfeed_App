@@ -1,12 +1,5 @@
 class ConvertToTimeAgo {
-  // Singleton
-  static final ConvertToTimeAgo _instance = ConvertToTimeAgo._internal();
-
-  factory ConvertToTimeAgo() => _instance;
-
-  ConvertToTimeAgo._internal();
-
-  String timeAgo(DateTime d) {
+  static String timeAgo(DateTime d) {
     Duration diff = DateTime.now().difference(d);
     if (diff.inDays > 365) {
       return "${(diff.inDays / 365).floor()} ${(diff.inDays / 365).floor() == 1 ? "year" : "years"} ago";

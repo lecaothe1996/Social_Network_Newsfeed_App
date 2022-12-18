@@ -67,7 +67,7 @@ class _EditImageXFileScreenState extends State<EditImageXFileScreen> {
                   delegate: SliverChildBuilderDelegate(
                     childCount: snapshot.data?.length,
                     (context, index) {
-                      final size = GetSizeImageXFile().getSize(snapshot.data![index]);
+                      final size = GetSizeImageXFile.getSize(snapshot.data![index]);
                       final deviceWidth = MediaQuery.of(context).size.width;
                       final dpr = MediaQuery.of(context).devicePixelRatio;
                       final heightView = ImageUtils.getHeightView(deviceWidth, size.width, size.height);

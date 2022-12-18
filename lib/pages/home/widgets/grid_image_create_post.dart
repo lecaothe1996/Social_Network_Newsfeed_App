@@ -45,7 +45,7 @@ class GridImageCreatePost extends StatelessWidget {
   }
 
   Widget _buildOneImage(XFile imageXFile, double deviceWidth, double dpr, BuildContext context) {
-    final sizeImage = GetSizeImageXFile().getSize(imageXFile);
+    final sizeImage = GetSizeImageXFile.getSize(imageXFile);
     final heightView = ImageUtils.getHeightView(deviceWidth, sizeImage.width, sizeImage.height);
     // print('width = $deviceWidth, height = $heightView');
 
@@ -81,7 +81,7 @@ class GridImageCreatePost extends StatelessWidget {
   }
 
   Widget _buildTwoImage(List<XFile> imagesXFile, double deviceWidth, double dpr, BuildContext context) {
-    final sizeImage = GetSizeImageXFile().getSize(imagesXFile[0]);
+    final sizeImage = GetSizeImageXFile.getSize(imagesXFile[0]);
     // Tỉ lệ khung hình
     final ratio = sizeImage.width / sizeImage.height;
     // print('ratio=== $ratio');
@@ -207,7 +207,7 @@ class GridImageCreatePost extends StatelessWidget {
   }
 
   Widget _buildThreeImage(List<XFile> imagesXFile, double deviceWidth, double dpr, BuildContext context) {
-    final sizeImage = GetSizeImageXFile().getSize(imagesXFile[0]);
+    final sizeImage = GetSizeImageXFile.getSize(imagesXFile[0]);
 
     if (sizeImage.width < sizeImage.height) {
       // print('Hinh Docccccccccccccccccccccc');
@@ -320,7 +320,7 @@ class GridImageCreatePost extends StatelessWidget {
   }
 
   Widget _buildFourImage(List<XFile> imagesXFile, double deviceWidth, double dpr, BuildContext context) {
-    final sizeImage = GetSizeImageXFile().getSize(imagesXFile[0]);
+    final sizeImage = GetSizeImageXFile.getSize(imagesXFile[0]);
 
     // Tỉ lệ khung hình
     final ratio = sizeImage.width / sizeImage.height;

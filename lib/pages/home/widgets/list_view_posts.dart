@@ -89,7 +89,7 @@ class ListViewPosts extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 2),
                                   Text(
-                                    ConvertToTimeAgo().timeAgo(posts[index].createdAt ?? DateTime.now()),
+                                    ConvertToTimeAgo.timeAgo(posts[index].createdAt ?? DateTime.now()),
                                     overflow: TextOverflow.ellipsis,
                                     style: AppTextStyles.h6.copyWith(color: AppColors.blueGrey),
                                   ),
