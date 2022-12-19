@@ -6,12 +6,14 @@ class MyTextField extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;
   final double height;
+  final Function(String)? onChanged;
 
   const MyTextField({
     Key? key,
     required this.controller,
     required this.hintText,
     this.height = 44,
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -32,6 +34,7 @@ class _MyTextFieldState extends State<MyTextField> {
       ),
       child: TextField(
         controller: widget.controller,
+        onChanged: widget.onChanged,
         style: AppTextStyles.h5.copyWith(color: AppColors.white),
         obscureText: widget.hintText == 'Password' ? _obscureText : false,
         decoration: InputDecoration(

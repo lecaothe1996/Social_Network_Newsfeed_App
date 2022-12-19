@@ -9,31 +9,23 @@ import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/utils/convert_to_time_ago.dart';
 import 'package:social_app/utils/image_util.dart';
+import 'package:social_app/widgets/dialogs/error_dialog.dart';
 import 'package:social_app/widgets/icon_button_widget.dart';
 import 'package:social_app/widgets/text_field_widget.dart';
 
 class BottomSheetComment {
-  static Future showBottomSheet(String id, BuildContext context) {
-
-
+  static Future showBottomSheet(String idPost, BuildContext context) {
+    bool isButtonActive = false;
+    final commentCtl = TextEditingController();
     return showBarModalBottomSheet(
       context: context,
       backgroundColor: AppColors.dark,
       expand: true,
       builder: (context) {
         return BlocProvider(
-          create: (context) => CommentBloc()..add(LoadComments(id: id)),
+          create: (context) => CommentBloc()..add(LoadComments(id: idPost)),
           child: StatefulBuilder(
             builder: (context, setState) {
-
-              bool isButtonActive = false;
-              final commentCtl = TextEditingController();
-              commentCtl.addListener(() {
-                print('addListener');
-                print('addListener isButtonActive ==$isButtonActive');
-                setState(() => isButtonActive = commentCtl.text.isNotEmpty);
-                print('addListener isButtonActive 1111 ==$isButtonActive');
-              });
               return Padding(
                 padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
                 child: Column(
@@ -43,7 +35,24 @@ class BottomSheetComment {
                       child: Center(child: Text('likeeeeeeeeeee')),
                     ),
                     Expanded(
-                      child: BlocBuilder<CommentBloc, CommentState>(
+                      child: BlocConsumer<CommentBloc, CommentState>(
+                        listener: (context, state) {
+                          if (state is CommentError) {
+                            switch (state.stateName) {
+                              case StateName.createComment:
+                                ErrorDialog.showMsgDialog(context, state.error);
+                                break;
+                              default:
+                                ErrorDialog.showMsgDialog(context, '');
+                            }
+                          }
+                        },
+                        buildWhen: (previous, current) {
+                          if (current is CommentError) {
+                            return false;
+                          }
+                          return true;
+                        },
                         builder: (context, state) {
                           if (state is CommentsLoading) {
                             // print('Loading Comment!!!!!!!!!!!!!!!!');
@@ -166,14 +175,19 @@ class BottomSheetComment {
                               controller: commentCtl,
                               hintText: 'Viết bình luận...',
                               height: 40,
+                              onChanged: (value) {
+                                setState(() => isButtonActive = value.isNotEmpty ? true : false);
+                              },
                             ),
                           ),
                           const SizedBox(width: 11),
                           MyIconButton(
-                            onTap: isButtonActive ? () {
-                              // setState (() => isButtonActive = false);
-                              context.read<CommentBloc>().add(CreateComment(id: id, content: commentCtl.text));
-                            } : null,
+                            onTap: isButtonActive
+                                ? () {
+                                    context.read<CommentBloc>().add(CreateComment(id: idPost, content: commentCtl.text));
+                                    commentCtl.clear();
+                                  }
+                                : null,
                             nameImage: AppAssetIcons.plane,
                             colorImage: !isButtonActive ? AppColors.blueGrey : AppColors.redMedium,
                           ),
