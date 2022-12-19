@@ -134,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
               BlocConsumer<PostBloc, PostState>(
                 listener: (context, state) {
                   if (state is PostError) {
-                    if (state.stateName != StateName.createPost) {
+                    if (state.stateName != StatePost.createPost) {
                       ErrorDialog.showMsgDialog(context, state.error);
                     }
                   }

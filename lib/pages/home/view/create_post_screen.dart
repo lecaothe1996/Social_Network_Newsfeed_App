@@ -50,11 +50,11 @@ class _CreatePostPageState extends State<CreatePostPage> {
             child: BlocListener<PostBloc, PostState>(
               listener: (context, state) {
                 if (state is PostError) {
-                  if (state.stateName == StateName.createPost) {
+                  if (state.stateName == StatePost.createPost) {
                     ErrorDialog.showMsgDialog(context, state.error);
                   }
                 } else if (state is PostsLoaded) {
-                  if (state.stateName == StateName.createPost) {
+                  if (state.stateName == StatePost.createPost) {
                     Navigator.pop(context);
                   }
                 }

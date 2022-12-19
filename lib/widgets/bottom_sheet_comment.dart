@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readmore/readmore.dart';
 import 'package:social_app/pages/home/blocs/comment_bloc/comment_bloc.dart';
+import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
@@ -30,7 +31,7 @@ class BottomSheetComment {
                 padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
                 child: Column(
                   children: [
-                    Container(
+                    const SizedBox(
                       height: 50,
                       child: Center(child: Text('likeeeeeeeeeee')),
                     ),
@@ -39,7 +40,7 @@ class BottomSheetComment {
                         listener: (context, state) {
                           if (state is CommentError) {
                             switch (state.stateName) {
-                              case StateName.createComment:
+                              case StateComment.createComment:
                                 ErrorDialog.showMsgDialog(context, state.error);
                                 break;
                               default:
@@ -171,6 +172,21 @@ class BottomSheetComment {
                       child: Row(
                         children: [
                           Expanded(
+                            // child: TextField(
+                            //   controller: commentCtl,
+                            //   minLines: 1,
+                            //   maxLines: 4,
+                            //   maxLength: 5000,
+                            //   scrollController: ModalScrollController.of(context),
+                            //   keyboardType: TextInputType.multiline,
+                            //   style: AppTextStyles.body.copyWith(color: AppColors.white),
+                            //   decoration: InputDecoration(
+                            //     border: InputBorder.none,
+                            //     hintText: 'viet binh luan...',
+                            //     hintStyle: AppTextStyles.body.copyWith(color: AppColors.blueGrey),
+                            //     counter: const Offstage(),
+                            //   ),
+                            // ),
                             child: MyTextField(
                               controller: commentCtl,
                               hintText: 'Viết bình luận...',
@@ -184,6 +200,7 @@ class BottomSheetComment {
                           MyIconButton(
                             onTap: isButtonActive
                                 ? () {
+                                    context.read<PostBloc>().add(CommentCounts(idPost: idPost));
                                     context.read<CommentBloc>().add(CreateComment(id: idPost, content: commentCtl.text));
                                     commentCtl.clear();
                                   }

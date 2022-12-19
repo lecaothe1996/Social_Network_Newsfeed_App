@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readmore/readmore.dart';
+import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/home/models/post.dart';
 import 'package:social_app/widgets/action_like_comment_view.dart';
 import 'package:social_app/themes/app_assets.dart';
@@ -122,8 +124,12 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                         ],
                       ),
                     ),
-                    LikeCommentView(
-                      post: widget.post,
+                    BlocBuilder<PostBloc, PostState>(
+                      builder: (context, state) {
+                        return LikeCommentView(
+                          post: widget.post,
+                        );
+                      },
                     ),
                     const Divider(color: AppColors.slate),
                   ],

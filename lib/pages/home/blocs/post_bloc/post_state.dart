@@ -1,6 +1,6 @@
 part of 'post_bloc.dart';
 
-enum StateName {
+enum StatePost {
   createPost,
 }
 
@@ -11,7 +11,7 @@ class PostsLoading extends PostState {}
 
 class PostsLoaded extends PostState {
   final List<Post> data;
-  final StateName? stateName;
+  final StatePost? stateName;
 
   PostsLoaded({required this.data, this.stateName});
 }
@@ -26,7 +26,7 @@ class PostsRefresh extends PostState {}
 
 class PostError extends PostState {
   final String error;
-  final StateName? stateName;
+  final StatePost? stateName;
 
   PostError({required this.error, this.stateName});
 }

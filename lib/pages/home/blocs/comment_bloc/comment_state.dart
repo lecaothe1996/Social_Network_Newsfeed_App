@@ -1,6 +1,6 @@
 part of 'comment_bloc.dart';
 
-enum StateName {
+enum StateComment {
   createComment,
 }
 
@@ -17,7 +17,7 @@ class CommentsLoaded extends CommentState {
 
 class CommentError extends CommentState {
   final String error;
-  final StateName? stateName;
+  final StateComment? stateName;
 
   CommentError({required this.error, this.stateName});
 }

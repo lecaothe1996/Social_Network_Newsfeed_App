@@ -27,20 +27,25 @@ class _LikeCommentViewState extends State<LikeCommentView> {
 
   int _likeCount = 0;
   bool _isLiked = false;
+  int _commentCounts = 0;
 
   @override
   void initState() {
     _likeCount = widget.post.likeCounts ?? 0;
     _isLiked = widget.post.liked ?? false;
-    // print('initState');
+    _commentCounts = widget.post.commentCounts ?? 0;
+    print('initState');
     super.initState();
   }
 
   @override
   void didUpdateWidget(covariant LikeCommentView oldWidget) {
-    // print('didUpdateWidget');
+    print('didUpdateWidget');
     _likeCount = widget.post.likeCounts ?? 0;
     _isLiked = widget.post.liked ?? false;
+
+    _commentCounts = widget.post.commentCounts ?? 0;
+    // print('_commentCounts==$_commentCounts');
     super.didUpdateWidget(oldWidget);
   }
 
@@ -75,7 +80,6 @@ class _LikeCommentViewState extends State<LikeCommentView> {
           Text(
             _likeCount.toString(),
             overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.h6,
           ),
           const SizedBox(width: 25),
           GestureDetector(
@@ -84,7 +88,7 @@ class _LikeCommentViewState extends State<LikeCommentView> {
           ),
           Expanded(
             child: Text(
-              widget.post.commentCounts.toString(),
+              _commentCounts.toString(),
               overflow: TextOverflow.ellipsis,
             ),
           ),

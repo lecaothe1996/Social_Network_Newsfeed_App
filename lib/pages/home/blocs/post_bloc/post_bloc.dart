@@ -81,13 +81,13 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       _posts = List.from(_posts)..insert(0, post);
       emit(PostsLoaded(
         data: _posts,
-        stateName: StateName.createPost,
+        stateName: StatePost.createPost,
       ));
     } catch (e) {
       print('⚡️ Error Create Post: $e');
       emit(PostError(
         error: e.toString(),
-        stateName: StateName.createPost,
+        stateName: StatePost.createPost,
       ));
     }
   }

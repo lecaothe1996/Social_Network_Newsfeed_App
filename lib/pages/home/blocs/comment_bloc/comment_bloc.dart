@@ -28,7 +28,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
       print('⚡️ Error Load Comments: $e');
       emit(CommentError(
         error: e.toString(),
-        stateName: StateName.createComment,
+        stateName: StateComment.createComment,
       ));
     }
   }
@@ -37,15 +37,12 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
     try {
       final comment = await _commentRepo.createComment(event.id, event.content);
       _comments = List.from(_comments)..add(comment);
-
-      PostBloc().add(CommentCounts(idPost: event.id));
-
       emit(CommentsLoaded(data: _comments));
     } catch (e) {
       print('⚡️ Error Create Comments: $e');
       emit(CommentError(
         error: e.toString(),
-        stateName: StateName.createComment,
+        stateName: StateComment.createComment,
       ));
     }
   }
