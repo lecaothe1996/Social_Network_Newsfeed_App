@@ -29,7 +29,7 @@ class Post {
   final DateTime? updatedAt;
   final String? title;
   final String? description;
-  final int? commentCounts;
+  int? commentCounts;
   final List<Images>? images;
   int? likeCounts;
   final int? viewCounts;

@@ -23,6 +23,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     on<RefreshPosts>(_onRefreshPosts);
     on<CreatePost>(_onCreatePost);
     on<LikeAndUnLike>(_onLikeAndUnLike);
+    on<CommentCounts>(_onCommentCounts);
   }
 
   FutureOr<void> _onLoadPosts(LoadPosts event, Emitter<PostState> emit) async {
@@ -92,27 +93,6 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   }
 
   void _onLikeAndUnLike(LikeAndUnLike event, Emitter<PostState> emit) {
-    // print('Post===${event.post.id}');
-    // print('eventLike===${event.eventLike}');
-    // List<Post> posts = _posts.map((post) {
-    //   if (post.id == event.post.id) {
-    //     // print('id===${event.post.id}');
-    //     if (event.eventLike == EventLike.likePost) {
-    //       post..likeCounts = event.post.likeCounts! + 1..liked = true;
-    //       print('likeCounts===${post.likeCounts}');
-    //       return post;
-    //     }
-    //     post..likeCounts = event.post.likeCounts! - 1..liked = false;
-    //     print('likeCounts===${post.likeCounts}');
-    //     return post;
-    //   }
-    //   print('No idddddd');
-    //   return post;
-    // }).toList();
-    //
-    // _posts = posts;
-    // emit(PostsLoaded(data: _posts));
-
     final oldPosts = _posts;
 
     final index = oldPosts.indexWhere((post) => post.id == event.post.id);
@@ -128,6 +108,22 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
     oldPosts[index] = post;
     // print('No idddddd');
+    emit(PostsLoaded(data: oldPosts));
+  }
+
+  FutureOr<void> _onCommentCounts(CommentCounts event, Emitter<PostState> emit) {
+    final oldPosts = _posts;
+
+    final index = oldPosts.indexWhere((post) => post.id == event.idPost);
+
+    final post = oldPosts[index];
+
+    final commentCounts = post.commentCounts! + 1;
+
+    post.commentCounts = commentCounts;
+
+    oldPosts[index] = post;
+
     emit(PostsLoaded(data: oldPosts));
   }
 }

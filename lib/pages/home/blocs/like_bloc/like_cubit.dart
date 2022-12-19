@@ -11,8 +11,8 @@ class LikeCubit extends Cubit<LikeState> {
 
   LikeCubit() : super(LikeInitial());
 
-  void likeAndUnLike(String id, EventLike eventLike) async {
-    final likeAndUnLike = await _likeRepo.likeAndUnLike(id, eventLike);
+  void likeAndUnLike(String idPost, EventLike eventLike) async {
+    final likeAndUnLike = await _likeRepo.likeAndUnLike(idPost, eventLike);
     if (likeAndUnLike == false) {
       throw MyException('Like And UnLike Fail');
     }

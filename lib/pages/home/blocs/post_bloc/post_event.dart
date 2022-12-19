@@ -37,3 +37,9 @@ class LikeAndUnLike extends PostEvent {
 
   LikeAndUnLike({required this.post, required this.eventLike});
 }
+
+class CommentCounts extends PostEvent {
+  final String idPost;
+
+  CommentCounts({required this.idPost});
+}

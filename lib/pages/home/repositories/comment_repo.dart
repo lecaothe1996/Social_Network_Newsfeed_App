@@ -24,11 +24,19 @@ class CommentRepo {
     }
   }
 
-  Future<bool> createComment(String id, String content) async {
+  Future<Comment> createComment(String idPost, String content) async {
     try {
-      final res = await _dioUtil.post('/posts/$id/comments', data: {"content": content});
-      print('res comments==${res}');
-      return res.statusCode == 200;
+      final res = await _dioUtil.post('/posts/$idPost/comments', data: {"content": content});
+      // print('res comments==${res}');
+      final idComment = res.data['data']['id'];
+      // print('idComment==${idComment}');
+      final resComment = await _dioUtil.get('/posts/$idPost/comments/$idComment');
+      // print('resComment==${resComment}');
+
+      Map<String, dynamic> data = resComment.data['data'];
+      final comment = Comment.fromJson(data);
+      // print('comment==${comment}');
+      return comment;
     } on DioError catch (e) {
       if (e.response?.statusCode == 400) {
         throw MyException('Lỗi tạo bình luận, xin vui lòng thử lại');
