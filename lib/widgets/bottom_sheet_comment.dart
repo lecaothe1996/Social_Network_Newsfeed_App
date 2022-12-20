@@ -10,6 +10,7 @@ import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/utils/convert_to_time_ago.dart';
 import 'package:social_app/utils/image_util.dart';
+import 'package:social_app/widgets/bottom_sheet_option.dart';
 import 'package:social_app/widgets/dialogs/error_dialog.dart';
 import 'package:social_app/widgets/icon_button_widget.dart';
 import 'package:social_app/widgets/text_field_widget.dart';
@@ -20,7 +21,7 @@ class BottomSheetComment {
     final commentCtl = TextEditingController();
     return showBarModalBottomSheet(
       context: context,
-      // enableDrag: false,
+      enableDrag: false,
       backgroundColor: AppColors.dark,
       // expand: true,
       builder: (context) {
@@ -32,9 +33,23 @@ class BottomSheetComment {
                 padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
                 child: Column(
                   children: [
-                    const SizedBox(
+                    SizedBox(
                       height: 50,
-                      child: Center(child: Text('likeeeeeeeeeee')),
+                      child: Row(
+                        children: [
+                          const Expanded(child: Center(child: Text('likeeeeeeeeeee'))),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 15),
+                            child: MyIconButton(
+                              onTap: () {
+                                print('Click close');
+                                Navigator.pop(context);
+                              },
+                              nameImage: AppAssetIcons.close,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     Expanded(
                       child: BlocConsumer<CommentBloc, CommentState>(
@@ -71,6 +86,7 @@ class BottomSheetComment {
                               );
                             }
                             return ListView.builder(
+                              controller: ModalScrollController.of(context),
                               itemCount: state.data.length,
                               physics: const BouncingScrollPhysics(),
                               itemBuilder: (context, index) {
@@ -101,8 +117,9 @@ class BottomSheetComment {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             GestureDetector(
-                                              onTap: () {
+                                              onLongPress: () {
                                                 print('Click Card');
+                                                BottomSheetOption.showBottomSheet(idPost, context);
                                               },
                                               child: Card(
                                                 margin: const EdgeInsets.fromLTRB(5, 0, 0, 0),
