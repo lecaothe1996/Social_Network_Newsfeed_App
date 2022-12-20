@@ -20,8 +20,9 @@ class BottomSheetComment {
     final commentCtl = TextEditingController();
     return showBarModalBottomSheet(
       context: context,
+      // enableDrag: false,
       backgroundColor: AppColors.dark,
-      expand: true,
+      // expand: true,
       builder: (context) {
         return BlocProvider(
           create: (context) => CommentBloc()..add(LoadComments(id: idPost)),
@@ -125,7 +126,7 @@ class BottomSheetComment {
                                                           ? const SizedBox()
                                                           : ReadMoreText(
                                                               state.data[index].content ?? '',
-                                                              trimLines: 3,
+                                                              trimLines: 4,
                                                               colorClickableText: AppColors.blueGrey,
                                                               trimMode: TrimMode.Line,
                                                               trimCollapsedText: 'Show more',
@@ -172,28 +173,20 @@ class BottomSheetComment {
                       child: Row(
                         children: [
                           Expanded(
-                            // child: TextField(
-                            //   controller: commentCtl,
-                            //   minLines: 1,
-                            //   maxLines: 4,
-                            //   maxLength: 5000,
-                            //   scrollController: ModalScrollController.of(context),
-                            //   keyboardType: TextInputType.multiline,
-                            //   style: AppTextStyles.body.copyWith(color: AppColors.white),
-                            //   decoration: InputDecoration(
-                            //     border: InputBorder.none,
-                            //     hintText: 'viet binh luan...',
-                            //     hintStyle: AppTextStyles.body.copyWith(color: AppColors.blueGrey),
-                            //     counter: const Offstage(),
-                            //   ),
-                            // ),
-                            child: MyTextField(
-                              controller: commentCtl,
-                              hintText: 'Viết bình luận...',
-                              height: 40,
-                              onChanged: (value) {
-                                setState(() => isButtonActive = value.isNotEmpty ? true : false);
-                              },
+                            child: Scrollbar(
+                              child: MyTextField(
+                                controller: commentCtl,
+                                hintText: 'Viết bình luận...',
+                                border: 15,
+                                minLines: 1,
+                                maxLines: 4,
+                                maxLength: 5000,
+                                keyboardType: TextInputType.multiline,
+                                // scrollController: ModalScrollController.of(context),
+                                onChanged: (value) {
+                                  setState(() => isButtonActive = value.isNotEmpty ? true : false);
+                                },
+                              ),
                             ),
                           ),
                           const SizedBox(width: 11),
