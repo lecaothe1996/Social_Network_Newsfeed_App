@@ -1,5 +1,5 @@
-class Comment {
-  Comment({
+class PostComment {
+  PostComment({
     this.id,
     this.status,
     this.createdAt,
@@ -23,7 +23,7 @@ class Comment {
   final bool? liked;
   final dynamic replyComments;
 
-  factory Comment.fromJson(Map<String, dynamic> json) => Comment(
+  factory PostComment.fromJson(Map<String, dynamic> json) => PostComment(
     id: json["id"] == null ? null : json["id"],
     status: json["status"] == null ? null : json["status"],
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),

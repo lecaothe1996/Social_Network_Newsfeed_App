@@ -2,6 +2,7 @@ part of 'comment_bloc.dart';
 
 enum StateComment {
   createComment,
+  deleteComment,
 }
 
 @immutable
@@ -10,9 +11,10 @@ abstract class CommentState {}
 class CommentsLoading extends CommentState {}
 
 class CommentsLoaded extends CommentState {
-  final List<Comment> data;
+  final List<PostComment> data;
+  final StateComment? stateName;
 
-  CommentsLoaded({required this.data});
+  CommentsLoaded({required this.data, this.stateName});
 }
 
 class CommentError extends CommentState {

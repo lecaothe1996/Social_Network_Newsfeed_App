@@ -1,8 +1,10 @@
 part of 'post_bloc.dart';
 
-enum EventLike {
+enum EventAction {
   likePost,
   unLikePost,
+  createComment,
+  deleteComment,
 }
 
 @immutable
@@ -33,13 +35,14 @@ class CreatePost extends PostEvent {
 
 class LikeAndUnLike extends PostEvent {
   final Post post;
-  final EventLike eventLike;
+  final EventAction eventAction;
 
-  LikeAndUnLike({required this.post, required this.eventLike});
+  LikeAndUnLike({required this.post, required this.eventAction});
 }
 
 class CommentCounts extends PostEvent {
   final String idPost;
+  final EventAction eventAction;
 
-  CommentCounts({required this.idPost});
+  CommentCounts({required this.idPost, required this.eventAction});
 }

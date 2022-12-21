@@ -11,6 +11,7 @@ import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/widgets/dialogs/error_dialog.dart';
+import 'package:social_app/widgets/dialogs/loading_dialog.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -72,6 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     print('Click Search');
                     // _appStateBloc.changeAppState(AppState.unAuthorized);
                     // CommentRepo().getComment("5GSRtgYcJZzwoN2MUC");
+                    // LoadingDialog.showLoadingDialog(context);
                   },
                   child: Container(
                     height: 36,

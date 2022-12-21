@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:social_app/utils/preference_util.dart';
+import 'package:social_app/utils/shared_preference_util.dart';
 import 'package:social_app/welcome/auth/gmail_login.dart';
 
 enum AppState { loading, unAuthorized, authorized }
@@ -16,7 +16,7 @@ class AppStateBloc {
   }
 
   Future<void> launchApp() async {
-    final authorLevel = PreferenceUtils.getInt('author_level');
+    final authorLevel = SharedPreferenceUtil.getInt('author_level');
     print('⚡️ authorLevel $authorLevel');
 
     switch (authorLevel) {
@@ -29,13 +29,13 @@ class AppStateBloc {
   }
 
   Future<void> changeAppState(AppState state) async {
-    PreferenceUtils.setInt('author_level', state.index);
+    SharedPreferenceUtil.setInt('author_level', state.index);
     print('⚡️ changeAppState $state');
     _appState.sink.add(state);
   }
 
   Future<void> logout() async {
-    await PreferenceUtils.clear();
+    await SharedPreferenceUtil.clear();
     AuthGmail().logout();
     await changeAppState(AppState.unAuthorized);
   }

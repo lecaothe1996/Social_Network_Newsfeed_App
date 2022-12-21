@@ -7,7 +7,7 @@ import 'package:social_app/themes/app_fonts.dart';
 
 import 'firebase/firebase_initializer.dart';
 import 'my_app/my_app.dart';
-import 'utils/preference_util.dart';
+import 'utils/shared_preference_util.dart';
 import 'welcome/blocs/auth_bloc.dart';
 import 'welcome/views/welcome_page.dart';
 
@@ -18,7 +18,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   // initialize SharedPreferences
-  await PreferenceUtils.init();
+  await SharedPreferenceUtil.init();
 
   // await Future.delayed(Duration(seconds: 10));
   runApp(

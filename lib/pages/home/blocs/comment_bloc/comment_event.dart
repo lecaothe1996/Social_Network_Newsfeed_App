@@ -15,3 +15,10 @@ class CreateComment extends CommentEvent {
 
   CreateComment({required this.id, required this.content});
 }
+
+class DeleteComment extends CommentEvent {
+  final String idPost;
+  final String idComment;
+
+  DeleteComment({required this.idPost, required this.idComment});
+}

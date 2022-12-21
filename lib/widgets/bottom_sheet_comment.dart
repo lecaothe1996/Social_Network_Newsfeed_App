@@ -12,6 +12,7 @@ import 'package:social_app/utils/convert_to_time_ago.dart';
 import 'package:social_app/utils/image_util.dart';
 import 'package:social_app/widgets/bottom_sheet_option.dart';
 import 'package:social_app/widgets/dialogs/error_dialog.dart';
+import 'package:social_app/widgets/dialogs/loading_dialog.dart';
 import 'package:social_app/widgets/icon_button_widget.dart';
 import 'package:social_app/widgets/text_field_widget.dart';
 
@@ -60,7 +61,19 @@ class BottomSheetComment {
                                 ErrorDialog.showMsgDialog(context, state.error);
                                 break;
                               default:
-                                ErrorDialog.showMsgDialog(context, '');
+                                break;
+                            }
+                          }
+                          if (state is CommentsLoaded) {
+                            switch (state.stateName) {
+                              case StateComment.createComment:
+                                LoadingDialog.hide(context);
+                                break;
+                              case StateComment.deleteComment:
+                                LoadingDialog.hide(context);
+                                break;
+                              default:
+                                break;
                             }
                           }
                         },
@@ -119,7 +132,7 @@ class BottomSheetComment {
                                             GestureDetector(
                                               onLongPress: () {
                                                 print('Click Card');
-                                                BottomSheetOption.showBottomSheet(idPost, context);
+                                                BottomSheetOption.showBottomSheet(state.data[index], idPost, context);
                                               },
                                               child: Card(
                                                 margin: const EdgeInsets.fromLTRB(5, 0, 0, 0),
@@ -210,7 +223,10 @@ class BottomSheetComment {
                           MyIconButton(
                             onTap: isButtonActive
                                 ? () {
-                                    context.read<PostBloc>().add(CommentCounts(idPost: idPost));
+                                    LoadingDialog.show(context);
+                                    context
+                                        .read<PostBloc>()
+                                        .add(CommentCounts(idPost: idPost, eventAction: EventAction.createComment));
                                     context.read<CommentBloc>().add(CreateComment(id: idPost, content: commentCtl.text));
                                     commentCtl.clear();
                                   }

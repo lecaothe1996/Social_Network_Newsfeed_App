@@ -99,7 +99,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
     final post = oldPosts[index];
 
-    final eventIsLike = event.eventLike == EventLike.likePost ? true : false;
+    final eventIsLike = event.eventAction == EventAction.likePost ? true : false;
     final likeCountNew = eventIsLike ? post.likeCounts! + 1 : post.likeCounts! - 1;
 
     post
@@ -118,7 +118,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
     final post = oldPosts[index];
 
-    final commentCounts = post.commentCounts! + 1;
+    final commentCounts = event.eventAction == EventAction.createComment ? post.commentCounts! + 1 : post.commentCounts! - 1;
 
     post.commentCounts = commentCounts;
 

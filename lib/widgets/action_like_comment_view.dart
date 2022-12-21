@@ -34,13 +34,13 @@ class _LikeCommentViewState extends State<LikeCommentView> {
     _likeCount = widget.post.likeCounts ?? 0;
     _isLiked = widget.post.liked ?? false;
     _commentCounts = widget.post.commentCounts ?? 0;
-    print('initState');
+    // print('initState');
     super.initState();
   }
 
   @override
   void didUpdateWidget(covariant LikeCommentView oldWidget) {
-    print('didUpdateWidget');
+    // print('didUpdateWidget');
     _likeCount = widget.post.likeCounts ?? 0;
     _isLiked = widget.post.liked ?? false;
 
@@ -105,10 +105,10 @@ class _LikeCommentViewState extends State<LikeCommentView> {
 
   void _handleLikePost(bool isLiked) {
     isLiked
-        ? context.read<PostBloc>().add(LikeAndUnLike(post: widget.post, eventLike: EventLike.likePost))
-        : context.read<PostBloc>().add(LikeAndUnLike(post: widget.post, eventLike: EventLike.unLikePost));
+        ? context.read<PostBloc>().add(LikeAndUnLike(post: widget.post, eventAction: EventAction.likePost))
+        : context.read<PostBloc>().add(LikeAndUnLike(post: widget.post, eventAction: EventAction.unLikePost));
     // Call API
-    _likeCubit.likeAndUnLike(widget.post.id ?? '', isLiked ? EventLike.likePost : EventLike.unLikePost);
+    _likeCubit.likeAndUnLike(widget.post.id ?? '', isLiked ? EventAction.likePost : EventAction.unLikePost);
   }
 
   Future _tapComment(BuildContext context) {

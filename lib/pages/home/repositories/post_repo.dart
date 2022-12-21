@@ -3,10 +3,17 @@ import 'package:image_picker/image_picker.dart';
 import 'package:social_app/pages/home/models/post.dart';
 import 'package:social_app/utils/dio_util.dart';
 import 'package:social_app/utils/my_exception.dart';
-import 'package:social_app/utils/preference_util.dart';
+import 'package:social_app/utils/shared_preference_util.dart';
 
 class PostRepo {
   final _dioUtil = DioUtil();
+
+  // Singleton
+  static final PostRepo _instance = PostRepo._internal();
+
+  factory PostRepo() => _instance;
+
+  PostRepo._internal();
 
   Future<List<Post>> getPosts(int page) async {
     try {

@@ -1,21 +1,19 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:social_app/utils/preference_util.dart';
+import 'package:social_app/utils/shared_preference_util.dart';
 import 'package:social_app/welcome/auth/gmail_login.dart';
 
 class DioUtil {
   late Dio _dio;
 
   String get _accessToken {
-    return PreferenceUtils.getString('access_token');
+    return SharedPreferenceUtil.getString('access_token');
   }
 
   // Singleton
   static final DioUtil _instance = DioUtil._internal();
 
-  factory DioUtil() {
-    return _instance;
-  }
+  factory DioUtil() => _instance;
 
   DioUtil._internal() {
     final baseOptions = BaseOptions(baseUrl: 'https://api.dofhunt.200lab.io/v1');
@@ -87,6 +85,23 @@ class DioUtil {
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
+    );
+    return res;
+  }
+
+  Future<Response> delete(
+      String path, {
+        data,
+        Map<String, dynamic>? queryParameters,
+        Options? options,
+        CancelToken? cancelToken,
+      }) {
+    final res = _dio.delete(
+      path,
+      data: data,
+      queryParameters: queryParameters,
+      options: options,
+      cancelToken: cancelToken,
     );
     return res;
   }

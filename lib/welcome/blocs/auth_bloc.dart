@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_app/utils/preference_util.dart';
+import 'package:social_app/pages/user_profile/repositories/user_profile_repo.dart';
+import 'package:social_app/utils/shared_preference_util.dart';
 import 'package:social_app/welcome/auth/gmail_login.dart';
 
 part 'auth_event.dart';
@@ -13,11 +14,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   FutureOr<void> _onLogInGmail(LogInGmail event, Emitter<AuthState> emit) async {
     try {
-      final data = await AuthGmail().logIn();
-      print('⚡️ accessToken=${data.accessToken}');
-      print('⚡️ refreshToken=${data.refreshToken}');
-      PreferenceUtils.setString('access_token', data.accessToken ?? '');
-      PreferenceUtils.setString('refresh_token', data.refreshToken ?? '');
+      final loginData = await AuthGmail().logIn();
+      print('⚡️ accessToken=${loginData.accessToken}');
+      print('⚡️ refreshToken=${loginData.refreshToken}');
+      SharedPreferenceUtil.setString('access_token', loginData.accessToken ?? '');
+      SharedPreferenceUtil.setString('refresh_token', loginData.refreshToken ?? '');
+      final userProfile = await UserProfileRepo().getProfile();
+      print('⚡️ Id User Profile=${userProfile.id}');
+      SharedPreferenceUtil.setString('id_user_profile', userProfile.id ?? '');
       emit(AuthSuccess());
     } catch (e) {
       print('⚡️ Error Login: $e');
