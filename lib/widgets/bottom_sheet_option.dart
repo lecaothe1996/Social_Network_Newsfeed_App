@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:social_app/pages/home/blocs/comment_bloc/comment_bloc.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
+import 'package:social_app/pages/home/models/post.dart';
 import 'package:social_app/pages/home/models/post_comment.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
@@ -10,7 +11,11 @@ import 'package:social_app/utils/shared_preference_util.dart';
 import 'package:social_app/widgets/dialogs/loading_dialog.dart';
 
 class BottomSheetOption {
-  static Future showBottomSheet(PostComment postComment, String idPost, BuildContext context) {
+  static Future showBottomSheet(PostComment postComment, Post post, BuildContext context) {
+    final idUserProfile = SharedPreferenceUtil.getString('id_user_profile');
+    print('post.user?.id==${post.user?.id}');
+    print('postComment.user?.id==${postComment.user?.id}');
+    print('idUserProfile==$idUserProfile');
     return showMaterialModalBottomSheet(
       expand: false,
       context: context,
@@ -32,7 +37,7 @@ class BottomSheetOption {
             ),
             onTap: () {},
           ),
-          postComment.user?.id != SharedPreferenceUtil.getString('id_user_profile')
+          postComment.user?.id != idUserProfile && post.user?.id != idUserProfile
               ? const SizedBox()
               : ListTile(
                   leading: const Icon(
@@ -44,13 +49,15 @@ class BottomSheetOption {
                     style: AppTextStyles.body.copyWith(color: AppColors.white),
                   ),
                   onTap: () {
-                    context.read<PostBloc>().add(CommentCounts(idPost: idPost, eventAction: EventAction.deleteComment));
-                    context.read<CommentBloc>().add(DeleteComment(idPost: idPost, idComment: postComment.id ?? ''));
+                    context
+                        .read<PostBloc>()
+                        .add(CommentCounts(idPost: post.id ?? '', eventAction: EventAction.deleteComment));
+                    context.read<CommentBloc>().add(DeleteComment(idPost: post.id ?? '', idComment: postComment.id ?? ''));
                     Navigator.pop(context);
                     LoadingDialog.show(context);
                   },
                 ),
-          postComment.user?.id != SharedPreferenceUtil.getString('id_user_profile')
+          postComment.user?.id != idUserProfile && post.user?.id != idUserProfile
               ? const SizedBox()
               : ListTile(
                   leading: const Icon(

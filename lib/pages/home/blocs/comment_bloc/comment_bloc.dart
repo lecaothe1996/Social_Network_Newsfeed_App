@@ -22,7 +22,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
 
   FutureOr<void> _onLoadComments(LoadComments event, Emitter<CommentState> emit) async {
     try {
-      final comments = await _commentRepo.getComment(event.id);
+      final comments = await _commentRepo.getComment(event.idPost);
       _comments = comments;
       emit(CommentsLoaded(data: _comments));
     } catch (e) {
@@ -36,7 +36,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
 
   FutureOr<void> _onCreateComment(CreateComment event, Emitter<CommentState> emit) async {
     try {
-      final comment = await _commentRepo.createComment(event.id, event.content);
+      final comment = await _commentRepo.createComment(event.idPost, event.content);
       _comments = List.from(_comments)..add(comment);
       emit(CommentsLoaded(
         data: _comments,

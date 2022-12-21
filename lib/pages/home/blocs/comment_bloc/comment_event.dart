@@ -4,16 +4,16 @@ part of 'comment_bloc.dart';
 abstract class CommentEvent {}
 
 class LoadComments extends CommentEvent {
-  final String id;
+  final String idPost;
 
-  LoadComments({required this.id});
+  LoadComments({required this.idPost});
 }
 
 class CreateComment extends CommentEvent {
-  final String id;
+  final String idPost;
   final String content;
 
-  CreateComment({required this.id, required this.content});
+  CreateComment({required this.idPost, required this.content});
 }
 
 class DeleteComment extends CommentEvent {

@@ -71,9 +71,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 title: GestureDetector(
                   onTap: () {
                     print('Click Search');
-                    // _appStateBloc.changeAppState(AppState.unAuthorized);
-                    // CommentRepo().getComment("5GSRtgYcJZzwoN2MUC");
-                    // LoadingDialog.showLoadingDialog(context);
+                    _appStateBloc.changeAppState(AppState.unAuthorized);
+                    // LoadingDialog.show(context);
                   },
                   child: Container(
                     height: 36,
@@ -125,14 +124,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-              // BlocBuilder<PostBloc, PostState>(
-              //   builder: (context, state) {
-              //     if (state is PostsLoaded) {
-              //       return ListViewStories(posts: state.data);
-              //     }
-              //     return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
-              //   },
-              // ),
+              BlocBuilder<PostBloc, PostState>(
+                builder: (context, state) {
+                  if (state is PostsLoaded) {
+                    return ListViewStories(posts: state.data);
+                  }
+                  return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
+                },
+              ),
               BlocConsumer<PostBloc, PostState>(
                 listener: (context, state) {
                   if (state is PostError) {

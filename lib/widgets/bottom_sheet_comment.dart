@@ -5,6 +5,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readmore/readmore.dart';
 import 'package:social_app/pages/home/blocs/comment_bloc/comment_bloc.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
+import 'package:social_app/pages/home/models/post.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
@@ -17,7 +18,7 @@ import 'package:social_app/widgets/icon_button_widget.dart';
 import 'package:social_app/widgets/text_field_widget.dart';
 
 class BottomSheetComment {
-  static Future showBottomSheet(String idPost, BuildContext context) {
+  static Future showBottomSheet(Post post, BuildContext context) {
     bool isButtonActive = false;
     final commentCtl = TextEditingController();
     return showBarModalBottomSheet(
@@ -27,7 +28,7 @@ class BottomSheetComment {
       // expand: true,
       builder: (context) {
         return BlocProvider(
-          create: (context) => CommentBloc()..add(LoadComments(id: idPost)),
+          create: (context) => CommentBloc()..add(LoadComments(idPost: post.id ?? '')),
           child: StatefulBuilder(
             builder: (context, setState) {
               return Padding(
@@ -132,7 +133,7 @@ class BottomSheetComment {
                                             GestureDetector(
                                               onLongPress: () {
                                                 print('Click Card');
-                                                BottomSheetOption.showBottomSheet(state.data[index], idPost, context);
+                                                BottomSheetOption.showBottomSheet(state.data[index], post, context);
                                               },
                                               child: Card(
                                                 margin: const EdgeInsets.fromLTRB(5, 0, 0, 0),
@@ -203,19 +204,27 @@ class BottomSheetComment {
                       child: Row(
                         children: [
                           Expanded(
-                            child: Scrollbar(
-                              child: MyTextField(
-                                controller: commentCtl,
-                                hintText: 'Viết bình luận...',
-                                border: 15,
-                                minLines: 1,
-                                maxLines: 4,
-                                maxLength: 5000,
-                                keyboardType: TextInputType.multiline,
-                                // scrollController: ModalScrollController.of(context),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              decoration: BoxDecoration(
+                                color: AppColors.slate.withOpacity(0.5),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: TextField(
                                 onChanged: (value) {
                                   setState(() => isButtonActive = value.isNotEmpty ? true : false);
                                 },
+                                controller: commentCtl,
+                                minLines: 1,
+                                maxLines: 4,
+                                keyboardType: TextInputType.multiline,
+                                style: AppTextStyles.body.copyWith(color: AppColors.white),
+                                decoration: InputDecoration(
+                                  hintText: 'Viết bình luận...',
+                                  hintStyle: AppTextStyles.body.copyWith(color: AppColors.blueGrey),
+                                  border: InputBorder.none,
+                                  // counter: Container(),
+                                ),
                               ),
                             ),
                           ),
@@ -226,8 +235,8 @@ class BottomSheetComment {
                                     LoadingDialog.show(context);
                                     context
                                         .read<PostBloc>()
-                                        .add(CommentCounts(idPost: idPost, eventAction: EventAction.createComment));
-                                    context.read<CommentBloc>().add(CreateComment(id: idPost, content: commentCtl.text));
+                                        .add(CommentCounts(idPost: post.id ?? '', eventAction: EventAction.createComment));
+                                    context.read<CommentBloc>().add(CreateComment(idPost: post.id ?? '', content: commentCtl.text));
                                     commentCtl.clear();
                                   }
                                 : null,

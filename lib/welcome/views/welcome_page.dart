@@ -8,6 +8,7 @@ import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/welcome/blocs/auth_bloc.dart';
 import 'package:social_app/widgets/button_widget.dart';
+import 'package:social_app/widgets/dialogs/loading_dialog.dart';
 import 'package:social_app/widgets/icon_button_widget.dart';
 
 class WelcomePage extends StatefulWidget {
@@ -94,6 +95,7 @@ class _WelcomePageState extends State<WelcomePage> {
                             listener: (context, state) {
                               if (state is AuthSuccess) {
                                 appStateBloc.changeAppState(AppState.authorized);
+                                LoadingDialog.hide(context);
                               }
                             },
                             child: Row(
@@ -118,6 +120,7 @@ class _WelcomePageState extends State<WelcomePage> {
                                   nameImage: AppAssetIcons.google,
                                   onTap: () {
                                     print('Click google');
+                                    LoadingDialog.show(context);
                                     context.read<AuthBloc>().add(LogInGmail());
                                   },
                                 ),

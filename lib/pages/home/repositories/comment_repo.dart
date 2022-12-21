@@ -13,9 +13,9 @@ class CommentRepo {
 
   CommentRepo._internal();
 
-  Future<List<PostComment>> getComment(String id) async {
+  Future<List<PostComment>> getComment(String idPost) async {
     try {
-      final res = await _dioUtil.get('/posts/$id/comments');
+      final res = await _dioUtil.get('/posts/$idPost/comments');
       final data = res.data['data'];
       if (data == null) {
         throw MyException('Không có bình luận');
