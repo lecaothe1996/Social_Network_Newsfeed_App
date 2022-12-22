@@ -3,16 +3,16 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:social_app/themes/app_color.dart';
 
 class LoadingDialog {
-  static void show(BuildContext context) {
-    showDialog(
+  static Future show(BuildContext context) {
+    // Hide keyboard
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+    return showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) {
-        // Hide keyboard
-        FocusScopeNode currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus) {
-          currentFocus.unfocus();
-        }
         return WillPopScope(
           onWillPop: () async => false,
           child: const Dialog(

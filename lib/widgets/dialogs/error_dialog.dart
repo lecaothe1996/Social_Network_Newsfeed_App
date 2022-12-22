@@ -3,8 +3,8 @@ import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/widgets/button_widget.dart';
 
 class ErrorDialog {
-  static void showMsgDialog(BuildContext context, String msg) {
-    showDialog(
+  static Future showMsgDialog(BuildContext context, String msg) {
+    return showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text(

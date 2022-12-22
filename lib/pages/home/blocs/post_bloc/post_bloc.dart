@@ -29,7 +29,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   FutureOr<void> _onLoadPosts(LoadPosts event, Emitter<PostState> emit) async {
     try {
       final posts = await _postRepo.getPosts(_page);
-      _posts = List.from(posts)..shuffle();
+      _posts = posts..shuffle();
       emit(PostsLoaded(data: _posts));
     } catch (e) {
       print('⚡️ Error Load Posts: $e');
@@ -51,8 +51,8 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     try {
       _page = _page + 1;
       final posts = await _postRepo.getPosts(_page);
-      List<Post> shuffle = List.from(posts)..shuffle();
-      _posts = List.from(_posts)..addAll(shuffle);
+      List<Post> shufflePosts = posts..shuffle();
+      _posts = _posts..addAll(shufflePosts);
       emit(PostsLoaded(data: _posts));
     } catch (e) {
       print('⚡️ Error Load More Posts: $e');
@@ -66,8 +66,8 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       _posts = [];
       _page = 1;
       final posts = await _postRepo.getPosts(event.page);
-      List<Post> shuffle = List.from(posts)..shuffle();
-      _posts = List.from(_posts)..addAll(shuffle);
+      List<Post> shufflePosts = posts..shuffle();
+      _posts = List.from(_posts)..addAll(shufflePosts);
       emit(PostsLoaded(data: _posts));
     } catch (e) {
       print('⚡️ Error Refresh Posts: $e');
@@ -78,7 +78,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   FutureOr<void> _onCreatePost(CreatePost event, Emitter<PostState> emit) async {
     try {
       final post = await _postRepo.createPosts(event.description, event.images);
-      _posts = List.from(_posts)..insert(0, post);
+      _posts = _posts..insert(0, post);
       emit(PostsLoaded(
         data: _posts,
         stateName: StatePost.createPost,
@@ -107,7 +107,6 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       ..liked = eventIsLike;
 
     oldPosts[index] = post;
-    // print('No idddddd');
     emit(PostsLoaded(data: oldPosts));
   }
 

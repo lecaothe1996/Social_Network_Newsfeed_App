@@ -92,6 +92,7 @@ class BottomSheetEditComment {
                               controller: commentCtl,
                               minLines: 1,
                               maxLines: 10,
+                              maxLength: 255,
                               keyboardType: TextInputType.multiline,
                               style: AppTextStyles.body.copyWith(color: AppColors.white),
                               decoration: InputDecoration(

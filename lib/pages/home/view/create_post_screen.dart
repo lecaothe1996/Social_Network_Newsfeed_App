@@ -158,10 +158,10 @@ class _CreatePostPageState extends State<CreatePostPage> {
   void _createPost() {
     print('Click Create Post');
     if (_pickImageBloc.images.isEmpty) {
-      return ErrorDialog.showMsgDialog(context, 'Vui lòng chọn ảnh');
+      ErrorDialog.showMsgDialog(context, 'Vui lòng chọn ảnh');
     }
     if (_pickImageBloc.images.length > 10) {
-      return ErrorDialog.showMsgDialog(context, 'Bạn chỉ được đăng tối đa 10 ảnh');
+      ErrorDialog.showMsgDialog(context, 'Bạn chỉ được đăng tối đa 10 ảnh');
     }
     context.read<PostBloc>().add(CreatePost(description: _descriptionCtl.text, images: _pickImageBloc.images));
   }

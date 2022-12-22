@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:social_app/pages/home/blocs/comment_bloc/comment_bloc.dart';
@@ -33,7 +34,10 @@ class BottomSheetOption {
               'Sao chép',
               style: AppTextStyles.body.copyWith(color: AppColors.white),
             ),
-            onTap: () {},
+            onTap: () {
+              Clipboard.setData(ClipboardData(text: postComment.content));
+              Navigator.pop(context);
+            },
           ),
           postComment.user?.id != idUserProfile && post.user?.id != idUserProfile
               ? const SizedBox()
@@ -47,9 +51,6 @@ class BottomSheetOption {
                     style: AppTextStyles.body.copyWith(color: AppColors.white),
                   ),
                   onTap: () {
-                    context
-                        .read<PostBloc>()
-                        .add(CommentCounts(idPost: post.id ?? '', eventAction: EventAction.deleteComment));
                     context.read<CommentBloc>().add(DeleteComment(idPost: post.id ?? '', idComment: postComment.id ?? ''));
                     Navigator.pop(context);
                     LoadingDialog.show(context);

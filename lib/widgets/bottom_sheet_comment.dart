@@ -74,10 +74,16 @@ class BottomSheetComment {
                           if (state is CommentsLoaded) {
                             switch (state.stateName) {
                               case StateComment.createComment:
+                                context
+                                    .read<PostBloc>()
+                                    .add(CommentCounts(idPost: post.id ?? '', eventAction: EventAction.createComment));
                                 ScrollTopBottom.onTop(scrollCtlComment);
                                 LoadingDialog.hide(context);
                                 break;
                               case StateComment.deleteComment:
+                                context
+                                    .read<PostBloc>()
+                                    .add(CommentCounts(idPost: post.id ?? '', eventAction: EventAction.deleteComment));
                                 LoadingDialog.hide(context);
                                 break;
                               case StateComment.updateComment:
@@ -133,6 +139,7 @@ class BottomSheetComment {
                                 controller: commentCtl,
                                 minLines: 1,
                                 maxLines: 4,
+                                maxLength: 255,
                                 keyboardType: TextInputType.multiline,
                                 style: AppTextStyles.body.copyWith(color: AppColors.white),
                                 decoration: InputDecoration(
@@ -153,9 +160,7 @@ class BottomSheetComment {
                             onTap: isButtonActive
                                 ? () {
                                     LoadingDialog.show(context);
-                                    context
-                                        .read<PostBloc>()
-                                        .add(CommentCounts(idPost: post.id ?? '', eventAction: EventAction.createComment));
+                                    setState(() => isButtonActive = false);
                                     context
                                         .read<CommentBloc>()
                                         .add(CreateComment(idPost: post.id ?? '', content: commentCtl.text));
