@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/home/models/post_comment.dart';
 import 'package:social_app/pages/home/repositories/comment_repo.dart';
 
@@ -18,6 +17,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
     on<LoadComments>(_onLoadComments);
     on<CreateComment>(_onCreateComment);
     on<DeleteComment>(_onDeleteComment);
+    on<UpdateComment>(_onUpdateComment);
   }
 
   FutureOr<void> _onLoadComments(LoadComments event, Emitter<CommentState> emit) async {
@@ -37,10 +37,10 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
   FutureOr<void> _onCreateComment(CreateComment event, Emitter<CommentState> emit) async {
     try {
       final comment = await _commentRepo.createComment(event.idPost, event.content);
-      _comments = List.from(_comments)..add(comment);
+      _comments = List.from(_comments)..insert(0, comment);
       emit(CommentsLoaded(
         data: _comments,
-        stateName: StateComment.deleteComment,
+        stateName: StateComment.createComment,
       ));
     } catch (e) {
       print('⚡️ Error Create Comments: $e');
@@ -53,8 +53,8 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
 
   FutureOr<void> _onDeleteComment(DeleteComment event, Emitter<CommentState> emit) async {
     try {
-      final isComment = await _commentRepo.deleteComment(event.idPost, event.idComment);
-      if (isComment == false) {
+      final deleteComment = await _commentRepo.deleteComment(event.idPost, event.idComment);
+      if (deleteComment == false) {
         return;
       }
       final index = _comments.indexWhere((comment) => comment.id == event.idComment);
@@ -69,6 +69,29 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
       emit(CommentError(
         error: e.toString(),
         stateName: StateComment.deleteComment,
+      ));
+    }
+  }
+
+  FutureOr<void> _onUpdateComment(UpdateComment event, Emitter<CommentState> emit) async {
+    try {
+      final updateComment = await _commentRepo.updateComment(event.idPost, event.idComment, event.content);
+      if (updateComment == false) {
+        return;
+      }
+      final index = _comments.indexWhere((comment) => comment.id == event.idComment);
+      final comment = _comments[index];
+      comment.content = event.content;
+      _comments[index] = comment;
+      emit(CommentsLoaded(
+        data: _comments,
+        stateName: StateComment.updateComment,
+      ));
+    } catch (e) {
+      print('⚡️ Error Update Comments: $e');
+      emit(CommentError(
+        error: e.toString(),
+        stateName: StateComment.updateComment,
       ));
     }
   }

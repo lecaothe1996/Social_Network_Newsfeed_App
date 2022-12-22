@@ -1,26 +1,23 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:readmore/readmore.dart';
 import 'package:social_app/pages/home/blocs/comment_bloc/comment_bloc.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/home/models/post.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
-import 'package:social_app/utils/convert_to_time_ago.dart';
-import 'package:social_app/utils/image_util.dart';
-import 'package:social_app/widgets/bottom_sheet_option.dart';
+import 'package:social_app/utils/scroll_top_bottom.dart';
 import 'package:social_app/widgets/dialogs/error_dialog.dart';
 import 'package:social_app/widgets/dialogs/loading_dialog.dart';
 import 'package:social_app/widgets/icon_button_widget.dart';
-import 'package:social_app/widgets/text_field_widget.dart';
+import 'package:social_app/widgets/list_comment.dart';
 
 class BottomSheetComment {
-  static Future showBottomSheet(Post post, BuildContext context) {
+  static Future show(Post post, BuildContext context) {
     bool isButtonActive = false;
     final commentCtl = TextEditingController();
+    final scrollCtlComment = ScrollController();
     return showBarModalBottomSheet(
       context: context,
       enableDrag: false,
@@ -59,6 +56,15 @@ class BottomSheetComment {
                           if (state is CommentError) {
                             switch (state.stateName) {
                               case StateComment.createComment:
+                                LoadingDialog.hide(context);
+                                ErrorDialog.showMsgDialog(context, state.error);
+                                break;
+                              case StateComment.deleteComment:
+                                LoadingDialog.hide(context);
+                                ErrorDialog.showMsgDialog(context, state.error);
+                                break;
+                              case StateComment.updateComment:
+                                LoadingDialog.hide(context);
                                 ErrorDialog.showMsgDialog(context, state.error);
                                 break;
                               default:
@@ -68,9 +74,13 @@ class BottomSheetComment {
                           if (state is CommentsLoaded) {
                             switch (state.stateName) {
                               case StateComment.createComment:
+                                ScrollTopBottom.onTop(scrollCtlComment);
                                 LoadingDialog.hide(context);
                                 break;
                               case StateComment.deleteComment:
+                                LoadingDialog.hide(context);
+                                break;
+                              case StateComment.updateComment:
                                 LoadingDialog.hide(context);
                                 break;
                               default:
@@ -99,98 +109,7 @@ class BottomSheetComment {
                                 ),
                               );
                             }
-                            return ListView.builder(
-                              controller: ModalScrollController.of(context),
-                              itemCount: state.data.length,
-                              physics: const BouncingScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                final urlAvatar = ImageUtils.genImgIx(state.data[index].user?.avatar?.url, 40, 40);
-                                return Container(
-                                  margin: const EdgeInsets.fromLTRB(15, 10, 15, 0),
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      CircleAvatar(
-                                        backgroundColor: AppColors.slate,
-                                        child: ClipOval(
-                                          child: CachedNetworkImage(
-                                            imageUrl: urlAvatar,
-                                            height: 40,
-                                            fit: BoxFit.cover,
-                                            errorWidget: (_, __, ___) => Image.asset(
-                                              AppAssetIcons.avatar,
-                                              color: AppColors.blueGrey,
-                                              width: double.infinity,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Flexible(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            GestureDetector(
-                                              onLongPress: () {
-                                                print('Click Card');
-                                                BottomSheetOption.showBottomSheet(state.data[index], post, context);
-                                              },
-                                              child: Card(
-                                                margin: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                                                color: AppColors.slate.withOpacity(0.5),
-                                                elevation: 0,
-                                                shape: const RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                                                ),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.fromLTRB(10, 5, 10, 7),
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Text(
-                                                        '${state.data[index].user?.firstName ?? ''} ${state.data[index].user?.lastName ?? 'User'}',
-                                                        maxLines: 2,
-                                                        overflow: TextOverflow.ellipsis,
-                                                        style: AppTextStyles.body.copyWith(fontWeight: FontWeight.bold),
-                                                      ),
-                                                      state.data[index].content == null || state.data[index].content!.isEmpty
-                                                          ? const SizedBox()
-                                                          : ReadMoreText(
-                                                              state.data[index].content ?? '',
-                                                              trimLines: 4,
-                                                              colorClickableText: AppColors.blueGrey,
-                                                              trimMode: TrimMode.Line,
-                                                              trimCollapsedText: 'Show more',
-                                                              trimExpandedText: '',
-                                                              style: AppTextStyles.body,
-                                                            ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.fromLTRB(15, 5, 0, 5),
-                                              child: Row(
-                                                children: [
-                                                  Expanded(
-                                                    child: Text(
-                                                      ConvertToTimeAgo.timeAgo(
-                                                          state.data[index].createdAt ?? DateTime.now()),
-                                                      style: AppTextStyles.body.copyWith(color: AppColors.blueGrey),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            );
+                            return ListComment(postComment: state.data, post: post, scrollCtlComment: scrollCtlComment);
                           }
                           return const SizedBox();
                         },
@@ -211,9 +130,6 @@ class BottomSheetComment {
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               child: TextField(
-                                onChanged: (value) {
-                                  setState(() => isButtonActive = value.isNotEmpty ? true : false);
-                                },
                                 controller: commentCtl,
                                 minLines: 1,
                                 maxLines: 4,
@@ -223,25 +139,29 @@ class BottomSheetComment {
                                   hintText: 'Viết bình luận...',
                                   hintStyle: AppTextStyles.body.copyWith(color: AppColors.blueGrey),
                                   border: InputBorder.none,
-                                  // counter: Container(),
                                 ),
+                                onChanged: (value) {
+                                  setState(() => isButtonActive = value.isNotEmpty ? true : false);
+                                },
                               ),
                             ),
                           ),
                           const SizedBox(width: 11),
                           MyIconButton(
+                            nameImage: AppAssetIcons.plane,
+                            colorImage: !isButtonActive ? AppColors.blueGrey : AppColors.redMedium,
                             onTap: isButtonActive
                                 ? () {
                                     LoadingDialog.show(context);
                                     context
                                         .read<PostBloc>()
                                         .add(CommentCounts(idPost: post.id ?? '', eventAction: EventAction.createComment));
-                                    context.read<CommentBloc>().add(CreateComment(idPost: post.id ?? '', content: commentCtl.text));
+                                    context
+                                        .read<CommentBloc>()
+                                        .add(CreateComment(idPost: post.id ?? '', content: commentCtl.text));
                                     commentCtl.clear();
                                   }
                                 : null,
-                            nameImage: AppAssetIcons.plane,
-                            colorImage: !isButtonActive ? AppColors.blueGrey : AppColors.redMedium,
                           ),
                         ],
                       ),

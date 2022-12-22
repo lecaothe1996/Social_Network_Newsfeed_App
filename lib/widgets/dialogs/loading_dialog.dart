@@ -7,19 +7,27 @@ class LoadingDialog {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => WillPopScope(
-        onWillPop: () async => false,
-        child: const Dialog(
-          backgroundColor: AppColors.transparent,
-          elevation: 0,
-          child: Center(
-            child: SpinKitCircle(
-              color: AppColors.white,
-              size: 80,
+      builder: (context) {
+        // Hide keyboard
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: const Dialog(
+            backgroundColor: AppColors.transparent,
+            elevation: 0,
+            child: Center(
+              child: SpinKitCircle(
+                color: AppColors.white,
+                size: 80,
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      }
+
     );
   }
 

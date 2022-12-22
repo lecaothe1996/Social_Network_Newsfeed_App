@@ -22,3 +22,11 @@ class DeleteComment extends CommentEvent {
 
   DeleteComment({required this.idPost, required this.idComment});
 }
+
+class UpdateComment extends CommentEvent {
+  final String idPost;
+  final String idComment;
+  final String content;
+
+  UpdateComment({required this.idPost, required this.idComment, required this.content});
+}

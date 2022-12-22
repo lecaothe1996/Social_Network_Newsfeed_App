@@ -105,6 +105,27 @@ class DioUtil {
     );
     return res;
   }
+
+  Future<Response> put(
+      String path, {
+        data,
+        Map<String, dynamic>? queryParameters,
+        Options? options,
+        CancelToken? cancelToken,
+        ProgressCallback? onSendProgress,
+        ProgressCallback? onReceiveProgress,
+      }) {
+    final res = _dio.put(
+      path,
+      data: data,
+      queryParameters: queryParameters,
+      options: options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    );
+    return res;
+  }
 }
 
 dynamic _parseAndDecode(String response) {

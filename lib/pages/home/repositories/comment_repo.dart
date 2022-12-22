@@ -15,7 +15,7 @@ class CommentRepo {
 
   Future<List<PostComment>> getComment(String idPost) async {
     try {
-      final res = await _dioUtil.get('/posts/$idPost/comments');
+      final res = await _dioUtil.get('/posts/$idPost/comments?limit=100');
       final data = res.data['data'];
       if (data == null) {
         throw MyException('Không có bình luận');
@@ -27,7 +27,7 @@ class CommentRepo {
       if (e.response?.statusCode == 400) {
         throw MyException('Lỗi tải bình luận, xin vui lòng thử lại');
       }
-      throw MyException('Lỗi kết nối!');
+      throw MyException('Vui lòng kiểm tra kết nối internet và thử lại.');
     }
   }
 
@@ -48,7 +48,7 @@ class CommentRepo {
       if (e.response?.statusCode == 400) {
         throw MyException('Lỗi tạo bình luận, xin vui lòng thử lại');
       }
-      throw MyException('Lỗi kết nối!');
+      throw MyException('Vui lòng kiểm tra kết nối internet và thử lại.');
     }
   }
 
@@ -62,7 +62,20 @@ class CommentRepo {
       if (e.response?.statusCode == 400) {
         throw MyException('Lỗi xóa bình luận, xin vui lòng thử lại');
       }
-      throw MyException('Lỗi kết nối!');
+      throw MyException('Vui lòng kiểm tra kết nối internet và thử lại.');
+    }
+  }
+
+  Future<bool> updateComment(String idPost, String idComment, String content) async {
+    try {
+      final res = await _dioUtil.put('/posts/$idPost/comments/$idComment',data: {"content": content});
+      // print('res comments==${res}');
+      return res.statusCode == 200;
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 400) {
+        throw MyException('Lỗi chỉnh sửa bình luận, xin vui lòng thử lại');
+      }
+      throw MyException('Vui lòng kiểm tra kết nối internet và thử lại.');
     }
   }
 }

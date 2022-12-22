@@ -10,8 +10,8 @@ import 'package:social_app/pages/home/widgets/list_view_stories.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
+import 'package:social_app/utils/scroll_top_bottom.dart';
 import 'package:social_app/widgets/dialogs/error_dialog.dart';
-import 'package:social_app/widgets/dialogs/loading_dialog.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -29,7 +29,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     _scrollController.addListener(_scrollListener);
-    // print('initState');
     super.initState();
   }
 
@@ -43,8 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        _scrollToTop();
-        return false;
+        // ScrollTopBottom.onTop(_scrollController);
+        return true;
       },
       child: Scaffold(
         backgroundColor: AppColors.slate,
@@ -175,13 +174,5 @@ class _HomeScreenState extends State<HomeScreen> {
         BlocProvider.of<PostBloc>(context).add(LoadMorePosts());
       }
     }
-  }
-
-  void _scrollToTop() {
-    _scrollController.animateTo(
-      0,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeOutCirc,
-    );
   }
 }

@@ -16,7 +16,7 @@ class PostComment {
   final int? status;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-  final String? content;
+  String? content;
   final dynamic replyForId;
   final User? user;
   final ImageComment? image;

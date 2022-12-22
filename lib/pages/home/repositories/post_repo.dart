@@ -31,7 +31,7 @@ class PostRepo {
       if (e.response?.statusCode == 400) {
         throw MyException('Lỗi tải bài viết, xin vui lòng thử lại');
       }
-      throw MyException('Lỗi kết nối!');
+      throw MyException('Vui lòng kiểm tra kết nối internet và thử lại.');
     }
   }
 
@@ -63,7 +63,7 @@ class PostRepo {
       if (e.response?.statusCode == 400) {
         throw MyException('Lỗi tạo bài viết');
       }
-      throw MyException('Không thể kết nối');
+      throw MyException('Vui lòng kiểm tra kết nối internet và thử lại.');
     }
 
   }
@@ -79,7 +79,7 @@ class PostRepo {
       if (e.response?.statusCode == 400) {
         throw MyException('Bài viết đã bị xóa');
       }
-      throw MyException('Không thể kết nối');
+      throw MyException('Vui lòng kiểm tra kết nối internet và thử lại.');
     }
   }
 }

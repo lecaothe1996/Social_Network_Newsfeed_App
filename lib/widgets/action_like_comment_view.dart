@@ -112,6 +112,6 @@ class _LikeCommentViewState extends State<LikeCommentView> {
   }
 
   Future _tapComment(BuildContext context) {
-    return BottomSheetComment.showBottomSheet(widget.post, context);
+    return BottomSheetComment.show(widget.post, context);
   }
 }

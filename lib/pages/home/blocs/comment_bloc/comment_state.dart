@@ -3,6 +3,7 @@ part of 'comment_bloc.dart';
 enum StateComment {
   createComment,
   deleteComment,
+  updateComment,
 }
 
 @immutable
