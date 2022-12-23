@@ -1,7 +1,12 @@
 part of 'post_bloc.dart';
 
 enum StatePost {
+  loadPosts,
+  loadDetailPost,
+  loadMorePosts,
+  refreshPosts,
   createPost,
+  deletePost,
 }
 
 @immutable
@@ -18,8 +23,9 @@ class PostsLoaded extends PostState {
 
 class DetailPostLoaded extends PostState {
   final Post data;
+  final StatePost? stateName;
 
-  DetailPostLoaded({required this.data});
+  DetailPostLoaded({required this.data, this.stateName});
 }
 
 class PostsRefresh extends PostState {}

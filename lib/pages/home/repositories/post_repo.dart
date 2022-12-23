@@ -3,7 +3,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:social_app/pages/home/models/post.dart';
 import 'package:social_app/utils/dio_util.dart';
 import 'package:social_app/utils/my_exception.dart';
-import 'package:social_app/utils/shared_preference_util.dart';
 
 class PostRepo {
   final _dioUtil = DioUtil();
@@ -65,12 +64,24 @@ class PostRepo {
       }
       throw MyException('Vui lòng kiểm tra kết nối internet và thử lại.');
     }
-
   }
 
-  Future<Post> getDetailPost(String id) async {
+  Future<bool> deletePost(String idPost) async {
     try {
-      final res = await _dioUtil.get('/posts/$id');
+      final res = await _dioUtil.delete('/posts/$idPost');
+      return res.statusCode == 200;
+    } on DioError catch (e) {
+      print('statusCode====${e.response?.statusCode}');
+      if (e.response?.statusCode == 400) {
+        throw MyException('Lỗi xóa bài viết, xin vui lòng thử lại');
+      }
+      throw MyException('Vui lòng kiểm tra kết nối internet và thử lại.');
+    }
+  }
+
+  Future<Post> getDetailPost(String idPost) async {
+    try {
+      final res = await _dioUtil.get('/posts/$idPost');
       Map<String, dynamic> data = res.data['data'];
       final post = Post.fromJson(data);
       return post;

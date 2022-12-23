@@ -1,6 +1,7 @@
 part of 'comment_bloc.dart';
 
 enum StateComment {
+  loadComments,
   createComment,
   deleteComment,
   updateComment,

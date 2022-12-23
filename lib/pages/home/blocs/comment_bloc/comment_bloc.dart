@@ -22,15 +22,18 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
 
   FutureOr<void> _onLoadComments(LoadComments event, Emitter<CommentState> emit) async {
     try {
-      // await Future.delayed(Duration(seconds: 55));
+      // await Future.delayed(Duration(seconds: 2));
       final comments = await _commentRepo.getComment(event.idPost);
       _comments = comments.reversed.toList();
-      emit(CommentsLoaded(data: _comments));
+      emit(CommentsLoaded(
+        data: _comments,
+        stateName: StateComment.loadComments,
+      ));
     } catch (e) {
       print('⚡️ Error Load Comments: $e');
       emit(CommentError(
         error: e.toString(),
-        stateName: StateComment.createComment,
+        stateName: StateComment.loadComments,
       ));
     }
   }

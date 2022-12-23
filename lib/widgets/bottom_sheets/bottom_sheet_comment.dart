@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:social_app/pages/home/blocs/comment_bloc/comment_bloc.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/home/models/post.dart';
@@ -57,17 +56,20 @@ class BottomSheetComment {
                         listener: (context, state) {
                           if (state is CommentError) {
                             switch (state.stateName) {
+                              case StateComment.loadComments:
+                                ErrorDialog.show(context, state.error);
+                                break;
                               case StateComment.createComment:
                                 LoadingDialog.hide(context);
-                                ErrorDialog.showMsgDialog(context, state.error);
+                                ErrorDialog.show(context, state.error);
                                 break;
                               case StateComment.deleteComment:
                                 LoadingDialog.hide(context);
-                                ErrorDialog.showMsgDialog(context, state.error);
+                                ErrorDialog.show(context, state.error);
                                 break;
                               case StateComment.updateComment:
                                 LoadingDialog.hide(context);
-                                ErrorDialog.showMsgDialog(context, state.error);
+                                ErrorDialog.show(context, state.error);
                                 break;
                               default:
                                 break;

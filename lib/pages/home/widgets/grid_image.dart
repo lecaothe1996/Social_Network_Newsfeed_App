@@ -778,7 +778,7 @@ class GridImage extends StatelessWidget {
   }
 
   void _navigateToPostDetailScreen(List<Images> images, int index, BuildContext context) {
-    final postsBloc = context.read<PostBloc>()..add(LoadDetailPost(id: post.id ?? ''));
+    final postsBloc = context.read<PostBloc>()..add(LoadDetailPost(idPost: post.id ?? ''));
 
     postsBloc.stream.firstWhere(
       (element) {

@@ -22,6 +22,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     on<LoadMorePosts>(_onLoadMorePosts);
     on<RefreshPosts>(_onRefreshPosts);
     on<CreatePost>(_onCreatePost);
+    on<DeletePost>(_onDeletePost);
     on<LikeAndUnLike>(_onLikeAndUnLike);
     on<CommentCounts>(_onCommentCounts);
   }
@@ -30,20 +31,32 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     try {
       final posts = await _postRepo.getPosts(_page);
       _posts = posts..shuffle();
-      emit(PostsLoaded(data: _posts));
+      emit(PostsLoaded(
+        data: _posts,
+        stateName: StatePost.loadPosts,
+      ));
     } catch (e) {
       print('⚡️ Error Load Posts: $e');
-      emit(PostError(error: e.toString()));
+      emit(PostError(
+        error: e.toString(),
+        stateName: StatePost.loadPosts,
+      ));
     }
   }
 
   FutureOr<void> _onLoadDetailPost(LoadDetailPost event, Emitter<PostState> emit) async {
     try {
-      final post = await _postRepo.getDetailPost(event.id);
-      emit(DetailPostLoaded(data: post));
+      final post = await _postRepo.getDetailPost(event.idPost);
+      emit(DetailPostLoaded(
+        data: post,
+        stateName: StatePost.loadPosts,
+      ));
     } catch (e) {
       print('⚡️ Error Load Detail Post: $e');
-      emit(PostError(error: e.toString()));
+      emit(PostError(
+        error: e.toString(),
+        stateName: StatePost.loadPosts,
+      ));
     }
   }
 
@@ -53,25 +66,37 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       final posts = await _postRepo.getPosts(_page);
       List<Post> shufflePosts = posts..shuffle();
       _posts = _posts..addAll(shufflePosts);
-      emit(PostsLoaded(data: _posts));
+      emit(PostsLoaded(
+        data: _posts,
+        stateName: StatePost.loadMorePosts,
+      ));
     } catch (e) {
       print('⚡️ Error Load More Posts: $e');
-      emit(PostError(error: e.toString()));
+      emit(PostError(
+        error: e.toString(),
+        stateName: StatePost.loadMorePosts,
+      ));
     }
   }
 
   FutureOr<void> _onRefreshPosts(RefreshPosts event, Emitter<PostState> emit) async {
     try {
-      emit(PostsRefresh());
+      // emit(PostsRefresh());
       _posts = [];
       _page = 1;
       final posts = await _postRepo.getPosts(event.page);
       List<Post> shufflePosts = posts..shuffle();
       _posts = List.from(_posts)..addAll(shufflePosts);
-      emit(PostsLoaded(data: _posts));
+      emit(PostsLoaded(
+        data: _posts,
+        stateName: StatePost.refreshPosts,
+      ));
     } catch (e) {
       print('⚡️ Error Refresh Posts: $e');
-      emit(PostError(error: e.toString()));
+      emit(PostError(
+        error: e.toString(),
+        stateName: StatePost.refreshPosts,
+      ));
     }
   }
 
@@ -88,6 +113,28 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       emit(PostError(
         error: e.toString(),
         stateName: StatePost.createPost,
+      ));
+    }
+  }
+
+  FutureOr<void> _onDeletePost(DeletePost event, Emitter<PostState> emit) async {
+    try {
+      final deletePost = await _postRepo.deletePost(event.idPost);
+      if (deletePost == false) {
+        return;
+      }
+      final index = _posts.indexWhere((post) => post.id == event.idPost);
+      final post = _posts[index];
+      _posts = _posts..remove(post);
+      emit(PostsLoaded(
+        data: _posts,
+        stateName: StatePost.deletePost,
+      ));
+    } catch (e) {
+      print('⚡️ Error Delete Post: $e');
+      emit(PostError(
+        error: e.toString(),
+        stateName: StatePost.deletePost,
       ));
     }
   }

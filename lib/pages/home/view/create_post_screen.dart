@@ -51,7 +51,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
               listener: (context, state) {
                 if (state is PostError) {
                   if (state.stateName == StatePost.createPost) {
-                    ErrorDialog.showMsgDialog(context, state.error);
+                    ErrorDialog.show(context, state.error);
                   }
                 } else if (state is PostsLoaded) {
                   if (state.stateName == StatePost.createPost) {
@@ -158,10 +158,10 @@ class _CreatePostPageState extends State<CreatePostPage> {
   void _createPost() {
     print('Click Create Post');
     if (_pickImageBloc.images.isEmpty) {
-      ErrorDialog.showMsgDialog(context, 'Vui lòng chọn ảnh');
+      ErrorDialog.show(context, 'Vui lòng chọn ảnh');
     }
     if (_pickImageBloc.images.length > 10) {
-      ErrorDialog.showMsgDialog(context, 'Bạn chỉ được đăng tối đa 10 ảnh');
+      ErrorDialog.show(context, 'Bạn chỉ được đăng tối đa 10 ảnh');
     }
     context.read<PostBloc>().add(CreatePost(description: _descriptionCtl.text, images: _pickImageBloc.images));
   }

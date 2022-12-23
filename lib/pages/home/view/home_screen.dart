@@ -12,6 +12,7 @@ import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/utils/scroll_top_bottom.dart';
 import 'package:social_app/widgets/dialogs/error_dialog.dart';
+import 'package:social_app/widgets/dialogs/loading_dialog.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -52,6 +53,9 @@ class _HomeScreenState extends State<HomeScreen> {
             final postsBloc = context.read<PostBloc>()..add(RefreshPosts(page: 1));
             return postsBloc.stream.firstWhere(
               (element) {
+                if (element is PostError) {
+                  return true;
+                }
                 return element is PostsLoaded;
               },
             );
@@ -72,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     print('Click Search');
                     // _appStateBloc.changeAppState(AppState.unAuthorized);
                     // LoadingDialog.show(context);
-                    ErrorDialog.showMsgDialog(context, 'Loiox');
+                    ErrorDialog.show(context, 'Loiox');
                   },
                   child: Container(
                     height: 36,
@@ -124,19 +128,52 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-              BlocBuilder<PostBloc, PostState>(
-                builder: (context, state) {
-                  if (state is PostsLoaded) {
-                    return ListViewStories(posts: state.data);
-                  }
-                  return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
-                },
-              ),
+              // BlocBuilder<PostBloc, PostState>(
+              //   builder: (context, state) {
+              //     if (state is PostsLoaded) {
+              //       return ListViewStories(posts: state.data);
+              //     }
+              //     return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
+              //   },
+              // ),
               BlocConsumer<PostBloc, PostState>(
                 listener: (context, state) {
                   if (state is PostError) {
-                    if (state.stateName != StatePost.createPost) {
-                      ErrorDialog.showMsgDialog(context, state.error);
+                    switch (state.stateName) {
+                      case StatePost.loadPosts:
+                        ErrorDialog.show(context, state.error);
+                        break;
+                      case StatePost.loadDetailPost:
+                        ErrorDialog.show(context, state.error);
+                        break;
+                      case StatePost.loadMorePosts:
+                        ErrorDialog.show(context, state.error);
+                        break;
+                      case StatePost.refreshPosts:
+                        ErrorDialog.show(context, state.error);
+                        break;
+                      case StatePost.createPost:
+                        LoadingDialog.hide(context);
+                        ErrorDialog.show(context, state.error);
+                        break;
+                      case StatePost.deletePost:
+                        LoadingDialog.hide(context);
+                        ErrorDialog.show(context, state.error);
+                        break;
+                      default:
+                        break;
+                    }
+                  }
+                  if (state is PostsLoaded) {
+                    switch (state.stateName) {
+                      case StatePost.createPost:
+                        LoadingDialog.hide(context);
+                        break;
+                      case StatePost.deletePost:
+                        LoadingDialog.hide(context);
+                        break;
+                      default:
+                        break;
                     }
                   }
                 },
@@ -149,6 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   return true;
                 },
                 builder: (context, state) {
+                  print('state====$state');
                   if (state is PostsLoaded) {
                     if (_isLoading == true) {
                       _isLoading = false;

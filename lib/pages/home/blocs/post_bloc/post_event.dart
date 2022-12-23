@@ -13,9 +13,9 @@ abstract class PostEvent {}
 class LoadPosts extends PostEvent {}
 
 class LoadDetailPost extends PostEvent {
-  final String id;
+  final String idPost;
 
-  LoadDetailPost({required this.id});
+  LoadDetailPost({required this.idPost});
 }
 
 class LoadMorePosts extends PostEvent {}
@@ -31,6 +31,12 @@ class CreatePost extends PostEvent {
   final List<XFile> images;
 
   CreatePost({this.description = '', required this.images});
+}
+
+class DeletePost extends PostEvent {
+  final String idPost;
+
+  DeletePost({required this.idPost});
 }
 
 class LikeAndUnLike extends PostEvent {
