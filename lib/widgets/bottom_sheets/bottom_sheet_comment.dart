@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:social_app/pages/home/blocs/comment_bloc/comment_bloc.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/home/models/post.dart';
@@ -11,7 +12,8 @@ import 'package:social_app/utils/scroll_top_bottom.dart';
 import 'package:social_app/widgets/dialogs/error_dialog.dart';
 import 'package:social_app/widgets/dialogs/loading_dialog.dart';
 import 'package:social_app/widgets/icon_button_widget.dart';
-import 'package:social_app/widgets/list_comment.dart';
+import 'package:social_app/widgets/list_comments/list_comments.dart';
+import 'package:social_app/widgets/list_comments/list_comments_shimmer.dart';
 
 class BottomSheetComment {
   static Future show(Post post, BuildContext context) {
@@ -103,6 +105,7 @@ class BottomSheetComment {
                         builder: (context, state) {
                           if (state is CommentsLoading) {
                             // print('Loading Comment!!!!!!!!!!!!!!!!');
+                            return const ListCommentsShimmer();
                           }
                           if (state is CommentsLoaded) {
                             if (state.data.isEmpty) {

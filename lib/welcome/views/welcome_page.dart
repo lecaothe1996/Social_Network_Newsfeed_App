@@ -19,7 +19,7 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
-  AppStateBloc get appStateBloc => Provider.of<AppStateBloc>(context, listen: false);
+  AppStateBloc get _appStateBloc => Provider.of<AppStateBloc>(context, listen: false);
 
   @override
   Widget build(BuildContext context) {
@@ -94,8 +94,7 @@ class _WelcomePageState extends State<WelcomePage> {
                           child: BlocListener<AuthBloc, AuthState>(
                             listener: (context, state) {
                               if (state is AuthSuccess) {
-                                appStateBloc.changeAppState(AppState.authorized);
-                                LoadingDialog.hide(context);
+                                _appStateBloc.changeAppState(AppState.authorized);
                               }
                             },
                             child: Row(
@@ -120,7 +119,6 @@ class _WelcomePageState extends State<WelcomePage> {
                                   nameImage: AppAssetIcons.google,
                                   onTap: () {
                                     print('Click google');
-                                    LoadingDialog.show(context);
                                     context.read<AuthBloc>().add(LogInGmail());
                                   },
                                 ),

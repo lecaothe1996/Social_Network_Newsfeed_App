@@ -22,6 +22,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
 
   FutureOr<void> _onLoadComments(LoadComments event, Emitter<CommentState> emit) async {
     try {
+      // await Future.delayed(Duration(seconds: 55));
       final comments = await _commentRepo.getComment(event.idPost);
       _comments = comments.reversed.toList();
       emit(CommentsLoaded(data: _comments));

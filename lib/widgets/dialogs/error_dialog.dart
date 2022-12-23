@@ -24,7 +24,7 @@ class ErrorDialog {
         actions: [
           Container(
             decoration: const BoxDecoration(
-              border: Border(top: BorderSide(color: AppColors.blueGrey, width: 1)),
+              border: Border(top: BorderSide(color: AppColors.blueGrey, width: 0.5)),
             ),
             child: MyElevatedButton(
               onPressed: () => Navigator.of(context).pop(ErrorDialog),

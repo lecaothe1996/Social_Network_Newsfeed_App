@@ -29,4 +29,5 @@ class AppAssetIcons {
   static const String picture = '${imagePath}ic_picture.png';
   static const String camera = '${imagePath}ic_camera.png';
   static const String plane = '${imagePath}ic_plane.png';
+  static const String menu = '${imagePath}ic_menu.png';
 }

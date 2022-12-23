@@ -17,7 +17,6 @@ class AppColors {
   static const Color slate = Color(0xff4e586e);
   static const Color dark = Color(0xff242a37);
   static const Color blueGrey = Color(0xff8e8e93);
-  // static const Color textLogin = Color(0xffff2d55);
 }
 
 class Gradients {

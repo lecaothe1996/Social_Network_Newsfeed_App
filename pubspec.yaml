@@ -64,8 +64,10 @@ dependencies:
   image_size_getter: ^2.1.2
   # Bottom sheet
   modal_bottom_sheet: ^2.0.0
-  # Loading
+  # Loading animation
   flutter_spinkit: ^5.1.0
+  # Shimmer loading effect
+  shimmer: ^2.0.0
 
 dev_dependencies:
   flutter_test:

@@ -8,7 +8,7 @@ import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/utils/convert_to_time_ago.dart';
 import 'package:social_app/utils/image_util.dart';
-import 'package:social_app/widgets/bottom_sheet_option.dart';
+import 'package:social_app/widgets/bottom_sheets/option_bottom_sheet_comment.dart';
 
 class ListComment extends StatelessWidget {
   final List<PostComment> postComment;
@@ -58,7 +58,7 @@ class ListComment extends StatelessWidget {
                     GestureDetector(
                       onLongPress: () {
                         print('Click Card');
-                        BottomSheetOption.showBottomSheet(postComment[index], post, context);
+                        OptionBottomSheetComment.showBottomSheet(context, post, postComment[index]);
                       },
                       child: Card(
                         margin: const EdgeInsets.fromLTRB(5, 0, 0, 0),
@@ -81,7 +81,7 @@ class ListComment extends StatelessWidget {
                               postComment[index].content == null || postComment[index].content!.isEmpty
                                   ? const SizedBox()
                                   : ReadMoreText(
-                                postComment[index].content ?? '',
+                                      postComment[index].content ?? '',
                                       trimLines: 4,
                                       colorClickableText: AppColors.blueGrey,
                                       trimMode: TrimMode.Line,

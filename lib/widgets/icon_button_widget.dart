@@ -19,10 +19,11 @@ class MyIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      splashColor: Colors.transparent,
-      highlightColor: Colors.transparent,
+    return InkResponse(
       onTap: onTap,
+      radius: 18,
+      splashColor: AppColors.transparent,
+      highlightColor: AppColors.blueGrey.withOpacity(0.5),
       child: Image.asset(
         nameImage,
         color: colorImage,

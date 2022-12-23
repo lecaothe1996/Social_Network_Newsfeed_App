@@ -9,6 +9,7 @@ import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/utils/convert_to_time_ago.dart';
 import 'package:social_app/utils/image_util.dart';
+import 'package:social_app/widgets/bottom_sheets/option_bottom_sheet_post.dart';
 import 'package:social_app/widgets/icon_button_widget.dart';
 
 class ListViewPosts extends StatelessWidget {
@@ -26,12 +27,11 @@ class ListViewPosts extends StatelessWidget {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         childCount: posts.length,
-            (context, index) {
+        (context, index) {
           final urlAvatar = ImageUtils.genImgIx(posts[index].user?.avatar?.url, 40, 40);
           // print('url Avatar = $urlAvatar');
           return Container(
             margin: const EdgeInsets.only(top: 15),
-            // color: Colors.black.withOpacity(0.5),
             color: AppColors.dark,
             child: Column(
               children: [
@@ -49,13 +49,12 @@ class ListViewPosts extends StatelessWidget {
                             child: ClipOval(
                               child: CachedNetworkImage(
                                 imageUrl: urlAvatar,
-                                errorWidget: (_, __, ___) =>
-                                    Image.asset(
-                                      AppAssetIcons.avatar,
-                                      color: AppColors.blueGrey,
-                                      width: double.infinity,
-                                      fit: BoxFit.cover,
-                                    ),
+                                errorWidget: (_, __, ___) => Image.asset(
+                                  AppAssetIcons.avatar,
+                                  color: AppColors.blueGrey,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ),
@@ -77,17 +76,16 @@ class ListViewPosts extends StatelessWidget {
                                         ),
                                       ),
                                       MyIconButton(
-                                        nameImage: AppAssetIcons.close,
+                                        nameImage: AppAssetIcons.menu,
                                         colorImage: AppColors.blueGrey,
-                                        width: 20,
-                                        height: 20,
+                                        height: 25,
                                         onTap: () {
-                                          print('Click Close');
+                                          OptionBottomSheetPost.showBottomSheet(context, posts[index]);
+                                          print('Click Menu');
                                         },
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(height: 2),
                                   Text(
                                     ConvertToTimeAgo.timeAgo(posts[index].createdAt ?? DateTime.now()),
                                     overflow: TextOverflow.ellipsis,
@@ -103,23 +101,23 @@ class ListViewPosts extends StatelessWidget {
                       posts[index].description!.isEmpty || posts[index].description == null
                           ? const SizedBox()
                           : ReadMoreText(
-                        posts[index].description ?? '',
-                        trimLines: 3,
-                        colorClickableText: AppColors.blueGrey,
-                        trimMode: TrimMode.Line,
-                        trimCollapsedText: 'Show more',
-                        trimExpandedText: '',
-                        style: AppTextStyles.body,
-                      ),
+                              posts[index].description ?? '',
+                              trimLines: 3,
+                              colorClickableText: AppColors.blueGrey,
+                              trimMode: TrimMode.Line,
+                              trimCollapsedText: 'Show more',
+                              trimExpandedText: '',
+                              style: AppTextStyles.body,
+                            ),
                     ],
                   ),
                 ),
-                // GridImage
+                // Grid image
                 posts[index].images?[0].url == null
                     ? const SizedBox()
                     : GridImage(
-                  post: posts[index],
-                ),
+                        post: posts[index],
+                      ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: LikeCommentView(
