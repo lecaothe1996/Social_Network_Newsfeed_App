@@ -56,6 +56,7 @@ class GridImage extends StatelessWidget {
           child: CachedNetworkImage(
             imageUrl: imageUrl,
             fit: BoxFit.cover,
+            errorWidget: (_, __, ___) => const SizedBox(),
           ),
         ),
       );
@@ -69,6 +70,7 @@ class GridImage extends StatelessWidget {
         child: CachedNetworkImage(
           imageUrl: imageUrl,
           fit: BoxFit.cover,
+          errorWidget: (_, __, ___) => const SizedBox(),
         ),
       ),
     );
@@ -117,6 +119,7 @@ class GridImage extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: urlVerticalImage1,
                   fit: BoxFit.cover,
+                  errorWidget: (_, __, ___) => const SizedBox(),
                 ),
               ),
             ),
@@ -131,6 +134,7 @@ class GridImage extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: urlVerticalImage2,
                   fit: BoxFit.cover,
+                  errorWidget: (_, __, ___) => const SizedBox(),
                 ),
               ),
             ),
@@ -154,6 +158,7 @@ class GridImage extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: urlHorizontalImage1,
                   fit: BoxFit.cover,
+                  errorWidget: (_, __, ___) => const SizedBox(),
                 ),
               ),
             ),
@@ -168,6 +173,7 @@ class GridImage extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: urlHorizontalImage2,
                   fit: BoxFit.cover,
+                  errorWidget: (_, __, ___) => const SizedBox(),
                 ),
               ),
             ),
@@ -191,6 +197,7 @@ class GridImage extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: urlSquareImage1,
                   fit: BoxFit.cover,
+                  errorWidget: (_, __, ___) => const SizedBox(),
                 ),
               ),
             ),
@@ -205,6 +212,7 @@ class GridImage extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: urlSquareImage2,
                   fit: BoxFit.cover,
+                  errorWidget: (_, __, ___) => const SizedBox(),
                 ),
               ),
             ),
@@ -253,6 +261,7 @@ class GridImage extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: urlVerticalImage1,
                   fit: BoxFit.cover,
+                  errorWidget: (_, __, ___) => const SizedBox(),
                 ),
               ),
             ),
@@ -267,6 +276,7 @@ class GridImage extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: urlVerticalImage2,
                   fit: BoxFit.cover,
+                  errorWidget: (_, __, ___) => const SizedBox(),
                 ),
               ),
             ),
@@ -281,6 +291,7 @@ class GridImage extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: urlVerticalImage3,
                   fit: BoxFit.cover,
+                  errorWidget: (_, __, ___) => const SizedBox(),
                 ),
               ),
             ),
@@ -304,6 +315,7 @@ class GridImage extends StatelessWidget {
               child: CachedNetworkImage(
                 imageUrl: images[0].orgWidth! >= images[0].orgHeight! ? urlHorizontalImage1 : urlVerticalImage1,
                 fit: BoxFit.cover,
+                errorWidget: (_, __, ___) => const SizedBox(),
               ),
             ),
           ),
@@ -318,6 +330,7 @@ class GridImage extends StatelessWidget {
               child: CachedNetworkImage(
                 imageUrl: urlHorizontalImage2,
                 fit: BoxFit.cover,
+                errorWidget: (_, __, ___) => const SizedBox(),
               ),
             ),
           ),
@@ -332,6 +345,7 @@ class GridImage extends StatelessWidget {
               child: CachedNetworkImage(
                 imageUrl: urlHorizontalImage3,
                 fit: BoxFit.cover,
+                errorWidget: (_, __, ___) => const SizedBox(),
               ),
             ),
           ),
@@ -403,6 +417,7 @@ class GridImage extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: urlVerticalImage1,
                   fit: BoxFit.cover,
+                  errorWidget: (_, __, ___) => const SizedBox(),
                 ),
               ),
             ),
@@ -417,6 +432,7 @@ class GridImage extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: urlVerticalImage2,
                   fit: BoxFit.cover,
+                  errorWidget: (_, __, ___) => const SizedBox(),
                 ),
               ),
             ),
@@ -431,6 +447,7 @@ class GridImage extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: urlVerticalImage3,
                   fit: BoxFit.cover,
+                  errorWidget: (_, __, ___) => const SizedBox(),
                 ),
               ),
             ),
@@ -445,6 +462,7 @@ class GridImage extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: urlVerticalImage4,
                   fit: BoxFit.cover,
+                  errorWidget: (_, __, ___) => const SizedBox(),
                 ),
               ),
             ),
@@ -468,6 +486,7 @@ class GridImage extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: urlHorizontalImage1,
                   fit: BoxFit.cover,
+                  errorWidget: (_, __, ___) => const SizedBox(),
                 ),
               ),
             ),
@@ -482,6 +501,7 @@ class GridImage extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: urlHorizontalImage2,
                   fit: BoxFit.cover,
+                  errorWidget: (_, __, ___) => const SizedBox(),
                 ),
               ),
             ),
@@ -496,6 +516,7 @@ class GridImage extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: urlHorizontalImage3,
                   fit: BoxFit.cover,
+                  errorWidget: (_, __, ___) => const SizedBox(),
                 ),
               ),
             ),
@@ -510,6 +531,7 @@ class GridImage extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: urlHorizontalImage4,
                   fit: BoxFit.cover,
+                  errorWidget: (_, __, ___) => const SizedBox(),
                 ),
               ),
             ),
@@ -533,6 +555,7 @@ class GridImage extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: urlSquareImage1,
                   fit: BoxFit.cover,
+                  errorWidget: (_, __, ___) => const SizedBox(),
                 ),
               ),
             ),
@@ -547,6 +570,7 @@ class GridImage extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: urlSquareImage2,
                   fit: BoxFit.cover,
+                  errorWidget: (_, __, ___) => const SizedBox(),
                 ),
               ),
             ),
@@ -561,6 +585,7 @@ class GridImage extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: urlSquareImage3,
                   fit: BoxFit.cover,
+                  errorWidget: (_, __, ___) => const SizedBox(),
                 ),
               ),
             ),
@@ -575,6 +600,7 @@ class GridImage extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: urlSquareImage4,
                   fit: BoxFit.cover,
+                  errorWidget: (_, __, ___) => const SizedBox(),
                 ),
               ),
             ),
@@ -610,6 +636,7 @@ class GridImage extends StatelessWidget {
               child: CachedNetworkImage(
                 imageUrl: urlImage1,
                 fit: BoxFit.cover,
+                errorWidget: (_, __, ___) => const SizedBox(),
               ),
             ),
           ),
@@ -624,6 +651,7 @@ class GridImage extends StatelessWidget {
               child: CachedNetworkImage(
                 imageUrl: urlImage3,
                 fit: BoxFit.cover,
+                errorWidget: (_, __, ___) => const SizedBox(),
               ),
             ),
           ),
@@ -638,6 +666,7 @@ class GridImage extends StatelessWidget {
               child: CachedNetworkImage(
                 imageUrl: urlImage4,
                 fit: BoxFit.cover,
+                errorWidget: (_, __, ___) => const SizedBox(),
               ),
             ),
           ),
@@ -652,6 +681,7 @@ class GridImage extends StatelessWidget {
               child: CachedNetworkImage(
                 imageUrl: urlImage2,
                 fit: BoxFit.cover,
+                errorWidget: (_, __, ___) => const SizedBox(),
               ),
             ),
           ),
@@ -666,6 +696,7 @@ class GridImage extends StatelessWidget {
               child: CachedNetworkImage(
                 imageUrl: urlImage5,
                 fit: BoxFit.cover,
+                errorWidget: (_, __, ___) => const SizedBox(),
               ),
             ),
           ),
@@ -700,6 +731,7 @@ class GridImage extends StatelessWidget {
               child: CachedNetworkImage(
                 imageUrl: urlImage1,
                 fit: BoxFit.cover,
+                errorWidget: (_, __, ___) => const SizedBox(),
               ),
             ),
           ),
@@ -714,6 +746,7 @@ class GridImage extends StatelessWidget {
               child: CachedNetworkImage(
                 imageUrl: urlImage3,
                 fit: BoxFit.cover,
+                errorWidget: (_, __, ___) => const SizedBox(),
               ),
             ),
           ),
@@ -728,6 +761,7 @@ class GridImage extends StatelessWidget {
               child: CachedNetworkImage(
                 imageUrl: urlImage4,
                 fit: BoxFit.cover,
+                errorWidget: (_, __, ___) => const SizedBox(),
               ),
             ),
           ),
@@ -742,6 +776,7 @@ class GridImage extends StatelessWidget {
               child: CachedNetworkImage(
                 imageUrl: urlImage2,
                 fit: BoxFit.cover,
+                errorWidget: (_, __, ___) => const SizedBox(),
               ),
             ),
           ),
@@ -758,6 +793,7 @@ class GridImage extends StatelessWidget {
                   CachedNetworkImage(
                     imageUrl: urlImage5,
                     fit: BoxFit.cover,
+                    errorWidget: (_, __, ___) => const SizedBox(),
                   ),
                   Container(
                     color: AppColors.black.withOpacity(0.4),

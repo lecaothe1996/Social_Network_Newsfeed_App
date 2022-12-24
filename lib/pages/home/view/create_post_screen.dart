@@ -10,6 +10,7 @@ import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/widgets/button_widget.dart';
 import 'package:social_app/widgets/dialogs/error_dialog.dart';
+import 'package:social_app/widgets/dialogs/loading_dialog.dart';
 import 'package:social_app/widgets/icon_button_widget.dart';
 
 class CreatePostPage extends StatefulWidget {
@@ -51,10 +52,12 @@ class _CreatePostPageState extends State<CreatePostPage> {
               listener: (context, state) {
                 if (state is PostError) {
                   if (state.stateName == StatePost.createPost) {
+                    LoadingDialog.hide(context);
                     ErrorDialog.show(context, state.error);
                   }
                 } else if (state is PostsLoaded) {
                   if (state.stateName == StatePost.createPost) {
+                    LoadingDialog.hide(context);
                     Navigator.pop(context);
                   }
                 }
@@ -79,7 +82,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
                 controller: _descriptionCtl,
                 minLines: 1,
                 maxLines: null,
-                maxLength: 5000,
+                maxLength: 10000,
                 keyboardType: TextInputType.multiline,
                 style: AppTextStyles.body.copyWith(color: AppColors.white),
                 decoration: InputDecoration(
@@ -159,10 +162,13 @@ class _CreatePostPageState extends State<CreatePostPage> {
     print('Click Create Post');
     if (_pickImageBloc.images.isEmpty) {
       ErrorDialog.show(context, 'Vui lòng chọn ảnh');
+      return;
     }
     if (_pickImageBloc.images.length > 10) {
       ErrorDialog.show(context, 'Bạn chỉ được đăng tối đa 10 ảnh');
+      return;
     }
+    LoadingDialog.show(context);
     context.read<PostBloc>().add(CreatePost(description: _descriptionCtl.text, images: _pickImageBloc.images));
   }
 }

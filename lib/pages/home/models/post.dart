@@ -46,27 +46,27 @@ class Post {
   final int? storageLength;
 
   factory Post.fromJson(Map<String, dynamic> json) => Post(
-    id: json["id"] == null ? null : json["id"],
-    status: json["status"] == null ? null : json["status"],
+    id: json["id"],
+    status: json["status"],
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-    title: json["title"] == null ? null : json["title"],
-    description: json["description"] == null ? null : json["description"],
-    commentCounts: json["comment_counts"] == null ? null : json["comment_counts"],
+    title: json["title"],
+    description: json["description"],
+    commentCounts: json["comment_counts"],
     images: json["images"] == null ? null : List<Images>.from(json["images"].map((x) => Images.fromJson(x))),
-    likeCounts: json["like_counts"] == null ? null : json["like_counts"],
-    viewCounts: json["view_counts"] == null ? null : json["view_counts"],
-    pulseScore: json["pulse_score"] == null ? null : json["pulse_score"],
-    isSensitive: json["is_sensitive"] == null ? null : json["is_sensitive"],
-    isPrivate: json["is_private"] == null ? null : json["is_private"],
+    likeCounts: json["like_counts"],
+    viewCounts: json["view_counts"],
+    pulseScore: json["pulse_score"],
+    isSensitive: json["is_sensitive"],
+    isPrivate: json["is_private"],
     tags: json["tags"],
     user: json["user"] == null ? null : User.fromJson(json["user"]),
     photos: json["photos"] == null ? null : List<Post>.from(json["photos"].map((x) => Post.fromJson(x))),
-    liked: json["liked"] == null ? null : json["liked"],
+    liked: json["liked"],
     image: json["image"] == null ? null : Images.fromJson(json["image"]),
-    collectionCounts: json["collection_counts"] == null ? null : json["collection_counts"],
-    pulseType: json["pulse_type"] == null ? null : json["pulse_type"],
-    storageLength: json["storage_length"] == null ? null : json["storage_length"],
+    collectionCounts: json["collection_counts"],
+    pulseType: json["pulse_type"],
+    storageLength: json["storage_length"],
   );
 }
 
@@ -90,13 +90,13 @@ class Images {
   final int? fileSize;
 
   factory Images.fromJson(Map<String, dynamic> json) => Images(
-    id: json["id"] == null ? null : json["id"],
-    url: json["url"] == null ? null : json["url"],
-    orgWidth: json["org_width"] == null ? null : json["org_width"],
-    orgHeight: json["org_height"] == null ? null : json["org_height"],
-    orgUrl: json["org_url"] == null ? null : json["org_url"],
-    dominantColor: json["dominant_color"] == null ? null : json["dominant_color"],
-    fileSize: json["file_size"] == null ? null : json["file_size"],
+    id: json["id"],
+    url: json["url"],
+    orgWidth: json["org_width"],
+    orgHeight: json["org_height"],
+    orgUrl: json["org_url"],
+    dominantColor: json["dominant_color"],
+    fileSize: json["file_size"],
   );
 }
 
@@ -122,13 +122,13 @@ class User {
   final DateTime? createdAt;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-    id: json["id"] == null ? null : json["id"],
-    username: json["username"] == null ? null : json["username"],
-    firstName: json["first_name"] == null ? null : json["first_name"],
-    lastName: json["last_name"] == null ? null : json["last_name"],
+    id: json["id"],
+    username: json["username"],
+    firstName: json["first_name"],
+    lastName: json["last_name"],
     avatar: json["avatar"] == null ? null : Images.fromJson(json["avatar"]),
-    systemRole: json["system_role"] == null ? null : json["system_role"],
-    isVerified: json["is_verified"] == null ? null : json["is_verified"],
+    systemRole: json["system_role"],
+    isVerified: json["is_verified"],
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
   );
 }

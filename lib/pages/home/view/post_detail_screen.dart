@@ -126,9 +126,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     ),
                     BlocBuilder<PostBloc, PostState>(
                       builder: (context, state) {
-                        return LikeCommentView(
-                          post: widget.post,
-                        );
+                        return LikeCommentView(post: widget.post);
                       },
                     ),
                     const Divider(color: AppColors.slate),

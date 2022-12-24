@@ -66,6 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
               SliverAppBar(
                 centerTitle: false,
                 floating: true,
+                snap: true,
                 // forceElevated: true,
                 // elevation: 1,
                 systemOverlayStyle: const SystemUiOverlayStyle(
@@ -152,10 +153,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       case StatePost.refreshPosts:
                         ErrorDialog.show(context, state.error);
                         break;
-                      case StatePost.createPost:
-                        LoadingDialog.hide(context);
-                        ErrorDialog.show(context, state.error);
-                        break;
                       case StatePost.deletePost:
                         LoadingDialog.hide(context);
                         ErrorDialog.show(context, state.error);
@@ -166,9 +163,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                   if (state is PostsLoaded) {
                     switch (state.stateName) {
-                      case StatePost.createPost:
-                        LoadingDialog.hide(context);
-                        break;
                       case StatePost.deletePost:
                         LoadingDialog.hide(context);
                         break;

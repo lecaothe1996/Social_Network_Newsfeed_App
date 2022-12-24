@@ -81,8 +81,8 @@ class BottomSheetComment {
                                 context
                                     .read<PostBloc>()
                                     .add(CommentCounts(idPost: post.id ?? '', eventAction: EventAction.createComment));
-                                ScrollTopBottom.onTop(scrollCtlComment);
                                 LoadingDialog.hide(context);
+                                ScrollTopBottom.onBottom(scrollCtlComment);
                                 break;
                               case StateComment.deleteComment:
                                 context
