@@ -43,8 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        // ScrollTopBottom.onTop(_scrollController);
-        return true;
+        ScrollTopBottom.onTop(_scrollController);
+        return false;
       },
       child: Scaffold(
         backgroundColor: AppColors.slate,
@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 centerTitle: false,
                 floating: true,
                 snap: true,
-                // forceElevated: true,
+                forceElevated: true,
                 // elevation: 1,
                 systemOverlayStyle: const SystemUiOverlayStyle(
                   statusBarColor: AppColors.dark,
@@ -80,6 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ErrorDialog.show(context, 'Loiox');
                   },
                   child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 15),
                     height: 36,
                     decoration: BoxDecoration(
                       color: AppColors.blueGrey.withOpacity(0.12),
@@ -95,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           padding: const EdgeInsets.only(left: 7),
                           child: Text(
                             'Search',
-                            style: AppTextStyles.body.copyWith(color: AppColors.slate),
+                            style: AppTextStyles.body.copyWith(color: AppColors.blueGrey),
                           ),
                         ),
                       ],
@@ -110,10 +111,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       // context.read<PostBloc>().add(LoadPosts());
                       // context.read<PostBloc>().add(CreatePost(description: '123', images: []));
                       Navigator.of(context).push(
-                        MaterialPageRoute<CreatePostPage>(
+                        MaterialPageRoute<CreatePostScreen>(
                           builder: (_) => BlocProvider.value(
                             value: BlocProvider.of<PostBloc>(context),
-                            child: const CreatePostPage(),
+                            child: const CreatePostScreen(),
                           ),
                         ),
                       );
@@ -163,6 +164,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                   if (state is PostsLoaded) {
                     switch (state.stateName) {
+                      case StatePost.createPost:
+                        ScrollTopBottom.onTop(_scrollController);
+                        break;
                       case StatePost.deletePost:
                         LoadingDialog.hide(context);
                         break;

@@ -13,14 +13,14 @@ import 'package:social_app/widgets/dialogs/error_dialog.dart';
 import 'package:social_app/widgets/dialogs/loading_dialog.dart';
 import 'package:social_app/widgets/icon_button_widget.dart';
 
-class CreatePostPage extends StatefulWidget {
-  const CreatePostPage({Key? key}) : super(key: key);
+class CreatePostScreen extends StatefulWidget {
+  const CreatePostScreen({Key? key}) : super(key: key);
 
   @override
-  State<CreatePostPage> createState() => _CreatePostPageState();
+  State<CreatePostScreen> createState() => _CreatePostScreenState();
 }
 
-class _CreatePostPageState extends State<CreatePostPage> {
+class _CreatePostScreenState extends State<CreatePostScreen> {
   final _descriptionCtl = TextEditingController();
   final _pickImageBloc = PickImageBloc();
 

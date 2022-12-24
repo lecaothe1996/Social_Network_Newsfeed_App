@@ -22,6 +22,7 @@ class BottomSheetComment {
     return showBarModalBottomSheet(
       context: context,
       enableDrag: false,
+      duration: const Duration(microseconds: 500),
       backgroundColor: AppColors.dark,
       // expand: true,
       builder: (context) {

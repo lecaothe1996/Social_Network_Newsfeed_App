@@ -23,6 +23,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     on<RefreshPosts>(_onRefreshPosts);
     on<CreatePost>(_onCreatePost);
     on<DeletePost>(_onDeletePost);
+    on<UpdatePost>(_onUpdatePost);
     on<LikeAndUnLike>(_onLikeAndUnLike);
     on<CommentCounts>(_onCommentCounts);
   }
@@ -135,6 +136,29 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       emit(PostError(
         error: e.toString(),
         stateName: StatePost.deletePost,
+      ));
+    }
+  }
+
+  FutureOr<void> _onUpdatePost(UpdatePost event, Emitter<PostState> emit) async {
+    try {
+      final updatePost = await _postRepo.updatePost(event.idPost, event.description);
+      if (updatePost == false) {
+        return;
+      }
+      final index = _posts.indexWhere((post) => post.id == event.idPost);
+      final post = _posts[index];
+      post.description = event.description;
+      _posts[index] = post;
+      emit(PostsLoaded(
+        data: _posts,
+        stateName: StatePost.updatePost,
+      ));
+    } catch (e) {
+      print('⚡️ Error Update Post: $e');
+      emit(PostError(
+        error: e.toString(),
+        stateName: StatePost.updatePost,
       ));
     }
   }

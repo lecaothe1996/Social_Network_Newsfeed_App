@@ -50,11 +50,6 @@ class _LikeCommentViewState extends State<LikeCommentView> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),

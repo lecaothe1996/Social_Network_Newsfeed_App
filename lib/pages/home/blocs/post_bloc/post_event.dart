@@ -39,6 +39,13 @@ class DeletePost extends PostEvent {
   DeletePost({required this.idPost});
 }
 
+class UpdatePost extends PostEvent {
+  final String idPost;
+  final String description;
+
+  UpdatePost({required this.idPost, required this.description});
+}
+
 class LikeAndUnLike extends PostEvent {
   final Post post;
   final EventAction eventAction;

@@ -7,6 +7,7 @@ enum StatePost {
   refreshPosts,
   createPost,
   deletePost,
+  updatePost,
 }
 
 @immutable

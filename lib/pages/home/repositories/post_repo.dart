@@ -79,6 +79,19 @@ class PostRepo {
     }
   }
 
+  Future<bool> updatePost(String idPost, String description) async {
+    try {
+      final res = await _dioUtil.put('/posts/$idPost', data: {"description": description});
+      return res.statusCode == 200;
+    } on DioError catch (e) {
+      print('statusCode====${e.response?.statusCode}');
+      if (e.response?.statusCode == 400) {
+        throw MyException('Lỗi chỉnh sửa bài viết, xin vui lòng thử lại');
+      }
+      throw MyException('Vui lòng kiểm tra kết nối internet và thử lại.');
+    }
+  }
+
   Future<Post> getDetailPost(String idPost) async {
     try {
       final res = await _dioUtil.get('/posts/$idPost');

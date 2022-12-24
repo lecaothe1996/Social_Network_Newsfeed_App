@@ -54,7 +54,7 @@ class _ToggleState extends State<Toggle> {
           _debounce!.cancel();
         }
 
-        _debounce = Timer(const Duration(milliseconds: 500), () {
+        _debounce = Timer(const Duration(milliseconds: 400), () {
           if (_count % 2 == 1) {
             _count = 0;
             widget.onTrigger(_isOn);

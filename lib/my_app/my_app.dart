@@ -34,6 +34,7 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
           appBarTheme: const AppBarTheme(
             color: AppColors.dark,
+            titleSpacing: 0,
             elevation: 0,
             centerTitle: true,
           ),
