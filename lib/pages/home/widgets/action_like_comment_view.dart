@@ -1,28 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_app/pages/home/blocs/comment_bloc/comment_bloc.dart';
 import 'package:social_app/pages/home/blocs/like_bloc/like_cubit.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/home/models/post.dart';
+import 'package:social_app/pages/home/widgets/bottom_sheets/bottom_sheet_comment.dart';
 import 'package:social_app/pages/home/widgets/toggle.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
-import 'package:social_app/themes/app_text_styles.dart';
-import 'package:social_app/widgets/bottom_sheets/bottom_sheet_comment.dart';
 
-class LikeCommentView extends StatefulWidget {
+class ActionLikeCommentView extends StatefulWidget {
   final Post post;
 
-  const LikeCommentView({
+  const ActionLikeCommentView({
     Key? key,
     required this.post,
   }) : super(key: key);
 
   @override
-  State<LikeCommentView> createState() => _LikeCommentViewState();
+  State<ActionLikeCommentView> createState() => _ActionLikeCommentViewState();
 }
 
-class _LikeCommentViewState extends State<LikeCommentView> {
+class _ActionLikeCommentViewState extends State<ActionLikeCommentView> {
   final _likeCubit = LikeCubit();
 
   int _likeCount = 0;
@@ -39,7 +37,7 @@ class _LikeCommentViewState extends State<LikeCommentView> {
   }
 
   @override
-  void didUpdateWidget(covariant LikeCommentView oldWidget) {
+  void didUpdateWidget(covariant ActionLikeCommentView oldWidget) {
     // print('didUpdateWidget');
     _likeCount = widget.post.likeCounts ?? 0;
     _isLiked = widget.post.liked ?? false;

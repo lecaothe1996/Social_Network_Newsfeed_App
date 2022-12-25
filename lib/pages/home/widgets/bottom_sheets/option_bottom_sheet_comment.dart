@@ -5,10 +5,10 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:social_app/pages/home/blocs/comment_bloc/comment_bloc.dart';
 import 'package:social_app/pages/home/models/post.dart';
 import 'package:social_app/pages/home/models/post_comment.dart';
+import 'package:social_app/pages/home/widgets/bottom_sheets/bottom_sheet_edit_comment.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/utils/shared_preference_util.dart';
-import 'package:social_app/widgets/bottom_sheets/bottom_sheet_edit_comment.dart';
 import 'package:social_app/widgets/dialogs/loading_dialog.dart';
 
 class OptionBottomSheetComment {

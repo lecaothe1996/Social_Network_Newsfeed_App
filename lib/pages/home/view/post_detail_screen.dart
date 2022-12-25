@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readmore/readmore.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/home/models/post.dart';
-import 'package:social_app/widgets/action_like_comment_view.dart';
+import 'package:social_app/pages/home/widgets/action_like_comment_view.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
@@ -126,7 +126,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     ),
                     BlocBuilder<PostBloc, PostState>(
                       builder: (context, state) {
-                        return LikeCommentView(post: widget.post);
+                        return ActionLikeCommentView(post: widget.post);
                       },
                     ),
                     const Divider(color: AppColors.slate),

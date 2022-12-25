@@ -1,9 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:social_app/pages/home/blocs/comment_bloc/comment_bloc.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/home/models/post.dart';
+import 'package:social_app/pages/home/view/likes_screen.dart';
+import 'package:social_app/pages/home/widgets/list_comments/list_comments.dart';
+import 'package:social_app/pages/home/widgets/list_comments/list_comments_shimmer.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
@@ -11,8 +15,6 @@ import 'package:social_app/utils/scroll_top_bottom.dart';
 import 'package:social_app/widgets/dialogs/error_dialog.dart';
 import 'package:social_app/widgets/dialogs/loading_dialog.dart';
 import 'package:social_app/widgets/icon_button_widget.dart';
-import 'package:social_app/widgets/list_comments/list_comments.dart';
-import 'package:social_app/widgets/list_comments/list_comments_shimmer.dart';
 
 class BottomSheetComment {
   static Future show(Post post, BuildContext context) {
@@ -38,9 +40,31 @@ class BottomSheetComment {
                       height: 50,
                       child: Row(
                         children: [
-                          const Expanded(child: Center(child: Text('likeeeeeeeeeee'))),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                print('Click get like');
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => LikesScreen(idPost: post.id ?? ''),));
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.only(left: 15),
+                                height: double.infinity,
+                                color: AppColors.transparent,
+                                alignment: Alignment.centerLeft,
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      '${post.likeCounts} lượt thích',
+                                      style: AppTextStyles.body.copyWith(fontWeight: FontWeight.bold),
+                                    ),
+                                    const Icon(CupertinoIcons.right_chevron, color: AppColors.redMedium,),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
                           Padding(
-                            padding: const EdgeInsets.only(right: 15),
+                            padding: const EdgeInsets.fromLTRB(10, 0, 15, 0),
                             child: MyIconButton(
                               onTap: () {
                                 print('Click close');

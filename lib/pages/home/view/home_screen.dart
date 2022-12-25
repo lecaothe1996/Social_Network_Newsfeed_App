@@ -5,7 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:social_app/my_app/app_state_bloc.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/home/view/create_post_screen.dart';
-import 'package:social_app/pages/home/widgets/list_view_posts.dart';
+import 'package:social_app/pages/home/widgets/list_view_posts/list_view_posts.dart';
+import 'package:social_app/pages/home/widgets/list_view_posts/list_view_posts_shimmer.dart';
 import 'package:social_app/pages/home/widgets/list_view_stories.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
@@ -24,6 +25,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final _scrollController = ScrollController();
   bool _isLoading = false;
+  bool _isScroll = false;
 
   AppStateBloc get _appStateBloc => Provider.of<AppStateBloc>(context, listen: false);
 
@@ -62,6 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
           },
           child: CustomScrollView(
             controller: _scrollController,
+            physics: _isScroll ? const ClampingScrollPhysics() : const NeverScrollableScrollPhysics(),
             slivers: [
               SliverAppBar(
                 centerTitle: false,
@@ -80,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ErrorDialog.show(context, 'Loiox');
                   },
                   child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 15),
+                    margin: const EdgeInsets.symmetric(horizontal: 15),
                     height: 36,
                     decoration: BoxDecoration(
                       color: AppColors.blueGrey.withOpacity(0.12),
@@ -164,6 +167,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                   if (state is PostsLoaded) {
                     switch (state.stateName) {
+                      case StatePost.loadPosts:
+                        setState(() => _isScroll = true);
+                        break;
                       case StatePost.createPost:
                         ScrollTopBottom.onTop(_scrollController);
                         break;
@@ -185,6 +191,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 builder: (context, state) {
                   print('state====$state');
+                  if (state is PostsLoading) {
+                    return const ListViewPostsShimmer();
+                  }
                   if (state is PostsLoaded) {
                     if (_isLoading == true) {
                       _isLoading = false;

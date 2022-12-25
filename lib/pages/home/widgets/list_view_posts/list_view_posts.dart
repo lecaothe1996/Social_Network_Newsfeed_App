@@ -2,14 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
 import 'package:social_app/pages/home/models/post.dart';
+import 'package:social_app/pages/home/widgets/action_like_comment_view.dart';
+import 'package:social_app/pages/home/widgets/bottom_sheets/option_bottom_sheet_post.dart';
 import 'package:social_app/pages/home/widgets/grid_image.dart';
-import 'package:social_app/widgets/action_like_comment_view.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/utils/convert_to_time_ago.dart';
 import 'package:social_app/utils/image_util.dart';
-import 'package:social_app/widgets/bottom_sheets/option_bottom_sheet_post.dart';
 import 'package:social_app/widgets/icon_button_widget.dart';
 
 class ListViewPosts extends StatelessWidget {
@@ -22,14 +22,11 @@ class ListViewPosts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // print('devicePixelRatio==${MediaQuery.of(context).devicePixelRatio}');
-    // print('device width==${MediaQuery.of(context).size.width}');
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         childCount: posts.length,
         (context, index) {
           final urlAvatar = ImageUtils.genImgIx(posts[index].user?.avatar?.url, 40, 40);
-          // print('url Avatar = $urlAvatar');
           return Container(
             margin: const EdgeInsets.only(top: 15),
             color: AppColors.dark,
@@ -120,7 +117,7 @@ class ListViewPosts extends StatelessWidget {
                       ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: LikeCommentView(
+                  child: ActionLikeCommentView(
                     post: posts[index],
                   ),
                 ),
