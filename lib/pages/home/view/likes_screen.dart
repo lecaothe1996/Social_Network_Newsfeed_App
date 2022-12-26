@@ -1,9 +1,9 @@
+import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:social_app/pages/home/blocs/like_bloc/like_cubit.dart';
-import 'package:social_app/pages/home/models/post.dart';
-import 'package:social_app/pages/home/repositories/like_repo.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
@@ -11,23 +11,13 @@ import 'package:social_app/utils/image_util.dart';
 import 'package:social_app/widgets/dialogs/error_dialog.dart';
 import 'package:social_app/widgets/icon_button_widget.dart';
 
-class LikesScreen extends StatefulWidget {
+class LikesScreen extends StatelessWidget {
   final String idPost;
 
   const LikesScreen({
     Key? key,
     required this.idPost,
   }) : super(key: key);
-
-  @override
-  State<LikesScreen> createState() => _LikesScreenState();
-}
-
-class _LikesScreenState extends State<LikesScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +35,46 @@ class _LikesScreenState extends State<LikesScreen> {
         title: const Text('Người đã thích'),
       ),
       body: BlocProvider(
-        create: (context) => LikeCubit()..loadUserLikePost(widget.idPost),
-        child: BlocBuilder<LikeCubit, LikeState>(
-          builder: (context, state) {
-            if (state is UserLikePostLoading) {
-              print('Loading User Like Post====');
-            }
+        create: (context) => LikeCubit()..loadUserLikePost(idPost),
+        child: BlocConsumer<LikeCubit, LikeState>(
+          listener: (context, state) {
             if (state is UserLikePostError) {
               ErrorDialog.show(context, state.error);
+            }
+          },
+          buildWhen: (previous, current) {
+            if (current is UserLikePostError) {
+              return false;
+            }
+            return true;
+          },
+          builder: (context, state) {
+            if (state is UserLikePostLoading) {
+              final deviceWidth = MediaQuery.of(context).size.width;
+              List<int> randomMargin = List.generate(25, (_) => Random().nextInt((deviceWidth - 85).toInt() - 155) + 50);
+              return Shimmer.fromColors(
+                baseColor: AppColors.slate.withOpacity(0.5),
+                highlightColor: AppColors.slate,
+                child: ListView.builder(
+                  itemCount: 25,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      leading: CircleAvatar(
+                        backgroundColor: AppColors.slate.withOpacity(0.5),
+                      ),
+                      title: Container(
+                        margin: EdgeInsets.only(right: randomMargin[index].toDouble()),
+                        height: 17,
+                        decoration: BoxDecoration(
+                          color: AppColors.slate.withOpacity(0.5),
+                          borderRadius: const BorderRadius.all(Radius.circular(15)),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              );
             }
             if (state is UserLikePostLoaded) {
               if (state.data.isEmpty) {

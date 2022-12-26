@@ -93,6 +93,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                             height: 20,
                                             onTap: () {
                                               print('Click Close');
+                                              Navigator.pop(context);
                                             },
                                           ),
                                         ],
