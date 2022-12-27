@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/home/models/post.dart';
 import 'package:social_app/pages/home/view/update_post_screen.dart';
+import 'package:social_app/pages/user_profile/models/user_profile.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/utils/shared_preference_util.dart';
@@ -11,7 +14,8 @@ import 'package:social_app/widgets/dialogs/loading_dialog.dart';
 
 class OptionBottomSheetPost {
   static Future showBottomSheet(BuildContext context, Post post) {
-    final idUserProfile = SharedPreferenceUtil.getString('id_user_profile');
+    final jsonUserProfile = SharedPreferenceUtil.getString('json_user_profile');
+    final userProfile = UserProfile.fromJson(jsonDecode(jsonUserProfile));
     return showMaterialModalBottomSheet(
       expand: false,
       context: context,
@@ -22,7 +26,7 @@ class OptionBottomSheetPost {
       builder: (_) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          post.user?.id == idUserProfile
+          post.user?.id == userProfile.id
               ? const SizedBox()
               : ListTile(
                   leading: const Icon(
@@ -37,7 +41,7 @@ class OptionBottomSheetPost {
                     Navigator.pop(context);
                   },
                 ),
-          post.user?.id != idUserProfile
+          post.user?.id != userProfile.id
               ? const SizedBox()
               : ListTile(
                   leading: const Icon(
@@ -54,7 +58,7 @@ class OptionBottomSheetPost {
                     LoadingDialog.show(context);
                   },
                 ),
-          post.user?.id != idUserProfile
+          post.user?.id != userProfile.id
               ? const SizedBox()
               : ListTile(
                   leading: const Icon(
@@ -67,7 +71,11 @@ class OptionBottomSheetPost {
                   ),
                   onTap: () {
                     Navigator.pop(context);
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => UpdatePostScreen(post: post),));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UpdatePostScreen(post: post),
+                        ));
                   },
                 ),
         ],

@@ -65,6 +65,29 @@ class UserProfile {
         counters: json["counters"] == null ? null : Counters.fromJson(json["counters"]),
         followed: json["followed"],
       );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "status": status,
+    "created_at": createdAt?.toIso8601String(),
+    "updated_at": updatedAt?.toIso8601String(),
+    "username": username,
+    "first_name": firstName,
+    "last_name": lastName,
+    "email": email,
+    "phone_prefix": phonePrefix,
+    "phone": phone,
+    "gender": gender,
+    "dob": dob == null ? null : "${dob?.year.toString().padLeft(4, '0')}-${dob?.month.toString().padLeft(2, '0')}-${dob?.day.toString().padLeft(2, '0')}",
+    "avatar": avatar?.toJson(),
+    "total_points": totalPoints,
+    "balance_points": balancePoints,
+    "system_role": systemRole,
+    "scores": scores,
+    "is_verified": isVerified,
+    "counters": counters?.toJson(),
+    "followed": followed,
+  };
 }
 
 class Avatar {
@@ -92,6 +115,15 @@ class Avatar {
         cloudName: json["cloud_name"],
         dominantColor: json["dominant_color"],
       );
+
+  Map<String, dynamic> toJson() => {
+    "url": url,
+    "org_width": orgWidth,
+    "org_height": orgHeight,
+    "org_url": orgUrl,
+    "cloud_name": cloudName,
+    "dominant_color": dominantColor,
+  };
 }
 
 class Counters {
@@ -122,4 +154,14 @@ class Counters {
         bookings: json["bookings"],
         bookingApplications: json["booking_applications"],
       );
+
+  Map<String, dynamic> toJson() => {
+    "photos": photos,
+    "likes": likes,
+    "followers": followers,
+    "followings": followings,
+    "collections": collections,
+    "bookings": bookings,
+    "booking_applications": bookingApplications,
+  };
 }

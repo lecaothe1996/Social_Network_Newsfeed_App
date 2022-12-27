@@ -78,9 +78,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 title: GestureDetector(
                   onTap: () {
                     print('Click Search');
-                    // _appStateBloc.changeAppState(AppState.unAuthorized);
+                    _appStateBloc.changeAppState(AppState.unAuthorized);
                     // LoadingDialog.show(context);
-                    ErrorDialog.show(context, 'Loiox');
+                    // ErrorDialog.show(context, 'Loiox');
                   },
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 15),

@@ -27,11 +27,6 @@ class PostDetailScreen extends StatefulWidget {
 
 class _PostDetailScreenState extends State<PostDetailScreen> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final urlAvatar = ImageUtils.genImgIx(widget.post.user?.avatar?.url, 40, 40);
     return AnnotatedRegion<SystemUiOverlayStyle>(
