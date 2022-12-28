@@ -47,9 +47,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final jsonUserProfile = SharedPreferenceUtil.getString('json_user_profile');
-    final userProfile = UserProfile.fromJson(jsonDecode(jsonUserProfile));
-    final urlAvatar = ImageUtils.genImgIx(userProfile.avatar?.url, 40, 40);
+    final urlAvatar = ImageUtils.genImgIx(widget.post.user?.avatar?.url, 40, 40);
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -113,7 +111,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10),
                       child: Text(
-                        '${userProfile.firstName ?? ''} ${userProfile.lastName ?? 'Người dùng'}',
+                        '${widget.post.user?.firstName ?? ''} ${widget.post.user?.lastName ?? 'Người dùng'}',
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: AppTextStyles.body.copyWith(fontWeight: FontWeight.bold),

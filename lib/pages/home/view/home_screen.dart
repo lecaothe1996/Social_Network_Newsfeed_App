@@ -25,7 +25,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMixin<HomeScreen> {
   final _scrollController = ScrollController();
   bool _isLoading = false;
-  bool _isScroll = true;
+  bool _isScroll = false;
 
   AppStateBloc get _appStateBloc => Provider.of<AppStateBloc>(context, listen: false);
 
@@ -46,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
 
   @override
   Widget build(BuildContext context) {
+    print('==== Build HomeScreen ====');
     super.build(context);
     return WillPopScope(
       onWillPop: () async {
@@ -74,13 +75,9 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                 floating: true,
                 snap: true,
                 forceElevated: true,
-                // elevation: 1,
-                systemOverlayStyle: const SystemUiOverlayStyle(
-                  statusBarColor: AppColors.dark,
-                ),
                 title: GestureDetector(
                   onTap: () {
-                    print('Click Search');
+                    // print('Click Search');
                     _appStateBloc.changeAppState(AppState.unAuthorized);
                     // LoadingDialog.show(context);
                     // ErrorDialog.show(context, 'Loiox');
@@ -112,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                 actions: [
                   GestureDetector(
                     onTap: () {
-                      print('Click Create Post');
+                      // print('Click Create Post');
                       Navigator.of(context).push(
                         MaterialPageRoute<CreatePostScreen>(
                           builder: (_) => BlocProvider.value(
@@ -143,9 +140,6 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
               // ),
               BlocConsumer<PostBloc, PostState>(
                 listener: (context, state) {
-                  if (state is PostsLoading) {
-                    setState(() => _isScroll = false);
-                  }
                   if (state is PostError) {
                     switch (state.stateName) {
                       case StatePost.loadPosts:
@@ -170,9 +164,9 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                   }
                   if (state is PostsLoaded) {
                     switch (state.stateName) {
-                      // case StatePost.loadPosts:
-                      //   setState(() => _isScroll = false);
-                      //   break;
+                      case StatePost.loadPosts:
+                        setState(() => _isScroll = true);
+                        break;
                       case StatePost.createPost:
                         ScrollTopBottom.onTop(_scrollController);
                         break;
@@ -193,7 +187,6 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                   return true;
                 },
                 builder: (context, state) {
-                  print('state====$state');
                   if (state is PostsLoading) {
                     return const ListViewPostsShimmer();
                   }

@@ -30,7 +30,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
   FutureOr<void> _onLoadPosts(LoadPosts event, Emitter<PostState> emit) async {
     try {
-      // await Future.delayed(Duration(seconds: 5));
+      // await Future.delayed(Duration(seconds: 10));
       final posts = await _postRepo.getPosts(_page);
       _posts = posts..shuffle();
       emit(PostsLoaded(

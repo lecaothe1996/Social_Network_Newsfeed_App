@@ -22,6 +22,7 @@ class ListViewPosts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('===== Build ListViewPosts =====');
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         childCount: posts.length,
@@ -46,6 +47,8 @@ class ListViewPosts extends StatelessWidget {
                             child: ClipOval(
                               child: CachedNetworkImage(
                                 imageUrl: urlAvatar,
+                                height: 40,
+                                fit: BoxFit.cover,
                                 errorWidget: (_, __, ___) => Image.asset(
                                   AppAssetIcons.avatar,
                                   color: AppColors.blueGrey,

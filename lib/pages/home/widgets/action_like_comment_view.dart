@@ -49,6 +49,7 @@ class _ActionLikeCommentViewState extends State<ActionLikeCommentView> {
 
   @override
   Widget build(BuildContext context) {
+    print('===== Build ActionLikeCommentView =====');
     return Container(
       margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
       child: Row(
