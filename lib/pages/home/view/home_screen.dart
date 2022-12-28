@@ -22,12 +22,15 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMixin<HomeScreen> {
   final _scrollController = ScrollController();
   bool _isLoading = false;
-  bool _isScroll = false;
+  bool _isScroll = true;
 
   AppStateBloc get _appStateBloc => Provider.of<AppStateBloc>(context, listen: false);
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -43,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return WillPopScope(
       onWillPop: () async {
         ScrollTopBottom.onTop(_scrollController);
@@ -67,7 +71,6 @@ class _HomeScreenState extends State<HomeScreen> {
             physics: _isScroll ? const ClampingScrollPhysics() : const NeverScrollableScrollPhysics(),
             slivers: [
               SliverAppBar(
-                centerTitle: false,
                 floating: true,
                 snap: true,
                 forceElevated: true,
@@ -110,9 +113,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   GestureDetector(
                     onTap: () {
                       print('Click Create Post');
-                      // ListHomeFeedsRepo().getHomeFeeds();
-                      // context.read<PostBloc>().add(LoadPosts());
-                      // context.read<PostBloc>().add(CreatePost(description: '123', images: []));
                       Navigator.of(context).push(
                         MaterialPageRoute<CreatePostScreen>(
                           builder: (_) => BlocProvider.value(
@@ -143,6 +143,9 @@ class _HomeScreenState extends State<HomeScreen> {
               // ),
               BlocConsumer<PostBloc, PostState>(
                 listener: (context, state) {
+                  if (state is PostsLoading) {
+                    setState(() => _isScroll = false);
+                  }
                   if (state is PostError) {
                     switch (state.stateName) {
                       case StatePost.loadPosts:
@@ -167,9 +170,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                   if (state is PostsLoaded) {
                     switch (state.stateName) {
-                      case StatePost.loadPosts:
-                        setState(() => _isScroll = true);
-                        break;
+                      // case StatePost.loadPosts:
+                      //   setState(() => _isScroll = false);
+                      //   break;
                       case StatePost.createPost:
                         ScrollTopBottom.onTop(_scrollController);
                         break;

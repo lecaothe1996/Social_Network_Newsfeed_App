@@ -84,7 +84,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
+            Padding(
               padding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
               child: Row(
                 children: [

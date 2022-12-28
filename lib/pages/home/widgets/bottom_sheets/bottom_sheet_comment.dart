@@ -27,9 +27,16 @@ class BottomSheetComment {
       duration: const Duration(microseconds: 500),
       backgroundColor: AppColors.dark,
       // expand: true,
-      builder: (context) {
-        return BlocProvider(
-          create: (context) => CommentBloc()..add(LoadComments(idPost: post.id ?? '')),
+      builder: (_) {
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider.value(
+              value: BlocProvider.of<PostBloc>(context),
+            ),
+            BlocProvider(
+              create: (context) => CommentBloc()..add(LoadComments(idPost: post.id ?? '')),
+            ),
+          ],
           child: StatefulBuilder(
             builder: (context, setState) {
               return Padding(
@@ -44,7 +51,11 @@ class BottomSheetComment {
                             child: GestureDetector(
                               onTap: () {
                                 print('Click get like');
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => LikesScreen(idPost: post.id ?? ''),));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => LikesScreen(idPost: post.id ?? ''),
+                                    ));
                               },
                               child: Container(
                                 padding: const EdgeInsets.only(left: 15),
@@ -57,7 +68,10 @@ class BottomSheetComment {
                                       '${post.likeCounts} lượt thích',
                                       style: AppTextStyles.body.copyWith(fontWeight: FontWeight.bold),
                                     ),
-                                    const Icon(CupertinoIcons.right_chevron, color: AppColors.redMedium,),
+                                    const Icon(
+                                      CupertinoIcons.right_chevron,
+                                      color: AppColors.redMedium,
+                                    ),
                                   ],
                                 ),
                               ),
@@ -78,7 +92,7 @@ class BottomSheetComment {
                     ),
                     Expanded(
                       child: BlocConsumer<CommentBloc, CommentState>(
-                        listener: (context, state) {
+                        listener: (_, state) {
                           if (state is CommentError) {
                             switch (state.stateName) {
                               case StateComment.loadComments:

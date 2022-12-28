@@ -23,63 +23,68 @@ class OptionBottomSheetPost {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
       ),
-      builder: (_) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          post.user?.id == userProfile.id
-              ? const SizedBox()
-              : ListTile(
-                  leading: const Icon(
-                    Icons.add,
-                    color: AppColors.white,
-                  ),
-                  title: Text(
-                    'Theo dõi ${post.user?.firstName} ${post.user?.lastName}',
-                    style: AppTextStyles.body.copyWith(color: AppColors.white, fontWeight: FontWeight.bold),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
+      builder: (_) =>
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              post.user?.id == userProfile.id
+                  ? const SizedBox()
+                  : ListTile(
+                leading: const Icon(
+                  Icons.add,
+                  color: AppColors.white,
                 ),
-          post.user?.id != userProfile.id
-              ? const SizedBox()
-              : ListTile(
-                  leading: const Icon(
-                    Icons.delete_outline,
-                    color: AppColors.white,
-                  ),
-                  title: Text(
-                    'Xóa bài viết',
-                    style: AppTextStyles.body.copyWith(color: AppColors.white, fontWeight: FontWeight.bold),
-                  ),
-                  onTap: () {
-                    context.read<PostBloc>().add(DeletePost(idPost: post.id ?? ''));
-                    Navigator.pop(context);
-                    LoadingDialog.show(context);
-                  },
+                title: Text(
+                  'Theo dõi ${post.user?.firstName} ${post.user?.lastName}',
+                  style: AppTextStyles.body.copyWith(color: AppColors.white, fontWeight: FontWeight.bold),
                 ),
-          post.user?.id != userProfile.id
-              ? const SizedBox()
-              : ListTile(
-                  leading: const Icon(
-                    Icons.edit_outlined,
-                    color: AppColors.white,
-                  ),
-                  title: Text(
-                    'Chỉnh sửa bài viết',
-                    style: AppTextStyles.body.copyWith(color: AppColors.white, fontWeight: FontWeight.bold),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => UpdatePostScreen(post: post),
-                        ));
-                  },
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              post.user?.id != userProfile.id
+                  ? const SizedBox()
+                  : ListTile(
+                leading: const Icon(
+                  Icons.delete_outline,
+                  color: AppColors.white,
                 ),
-        ],
-      ),
+                title: Text(
+                  'Xóa bài viết',
+                  style: AppTextStyles.body.copyWith(color: AppColors.white, fontWeight: FontWeight.bold),
+                ),
+                onTap: () {
+                  context.read<PostBloc>().add(DeletePost(idPost: post.id ?? ''));
+                  Navigator.pop(context);
+                  LoadingDialog.show(context);
+                },
+              ),
+              post.user?.id != userProfile.id
+                  ? const SizedBox()
+                  : ListTile(
+                leading: const Icon(
+                  Icons.edit_outlined,
+                  color: AppColors.white,
+                ),
+                title: Text(
+                  'Chỉnh sửa bài viết',
+                  style: AppTextStyles.body.copyWith(color: AppColors.white, fontWeight: FontWeight.bold),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            BlocProvider.value(
+                              value: BlocProvider.of<PostBloc>(context),
+                              child: UpdatePostScreen(post: post),
+                            ),
+                      ));
+                },
+              ),
+            ],
+          ),
     );
   }
 }

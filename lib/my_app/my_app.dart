@@ -27,43 +27,43 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => PostBloc()..add(LoadPosts()),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          appBarTheme: const AppBarTheme(
-            color: AppColors.dark,
-            titleSpacing: 0,
-            elevation: 0,
-            centerTitle: true,
-          ),
-          textTheme: const TextTheme(
-            bodyText1: TextStyle(),
-            bodyText2: TextStyle(),
-          ).apply(bodyColor: AppColors.white),
-          fontFamily: FontFamily.arial,
-          scaffoldBackgroundColor: AppColors.dark,
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          color: AppColors.dark,
+          titleSpacing: 0,
+          elevation: 0,
+          centerTitle: true,
         ),
-        home: Provider<AppStateBloc>(
-          create: (context) => _appStateBloc,
-          child: StreamBuilder<AppState>(
-            stream: _appStateBloc.appState,
-            initialData: _appStateBloc.initState,
-            builder: (context, snapshot) {
-              // print('⚡️ snapshot===${snapshot.data}');
-              if (snapshot.data == AppState.loading) {
-                print('⚡️ loading splash===');
-              }
-              if (snapshot.data == AppState.unAuthorized) {
-                return BlocProvider(
-                  create: (context) => AuthBloc(),
-                  child: const WelcomePage(),
-                );
-              }
-              return const Pages();
-            },
-          ),
+        textTheme: const TextTheme(
+          bodyText1: TextStyle(),
+          bodyText2: TextStyle(),
+        ).apply(bodyColor: AppColors.white),
+        fontFamily: FontFamily.arial,
+        scaffoldBackgroundColor: AppColors.dark,
+      ),
+      home: Provider<AppStateBloc>(
+        create: (context) => _appStateBloc,
+        child: StreamBuilder<AppState>(
+          stream: _appStateBloc.appState,
+          initialData: _appStateBloc.initState,
+          builder: (context, snapshot) {
+            // print('⚡️ snapshot===${snapshot.data}');
+            if (snapshot.data == AppState.loading) {
+              print('⚡️ loading splash===');
+            }
+            if (snapshot.data == AppState.unAuthorized) {
+              return BlocProvider(
+                create: (context) => AuthBloc(),
+                child: const WelcomePage(),
+              );
+            }
+            return BlocProvider(
+              create: (context) => PostBloc()..add(LoadPosts()),
+              child: Pages(),
+            );
+          },
         ),
       ),
     );
