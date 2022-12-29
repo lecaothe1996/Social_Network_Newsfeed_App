@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/home/models/post.dart';
-import 'package:social_app/pages/home/view/update_post_screen.dart';
+import 'package:social_app/pages/home/views/update_post_screen.dart';
 import 'package:social_app/pages/user_profile/models/user_profile.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';

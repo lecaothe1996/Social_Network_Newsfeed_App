@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/home/models/post.dart';
-import 'package:social_app/pages/home/view/post_detail_screen.dart';
+import 'package:social_app/pages/home/views/post_detail_screen.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/utils/image_util.dart';
@@ -45,7 +45,7 @@ class GridImage extends StatelessWidget {
   Widget _buildOneImage(Images image, double deviceWidth, BuildContext context) {
     final heightView = ImageUtils.getHeightView(deviceWidth, image.orgWidth ?? 1, image.orgHeight ?? 1);
     final imageUrl = ImageUtils.genImgIx(image.url, deviceWidth.toInt(), heightView.toInt());
-    // view lớn hơn tỷ lệ 9/16
+    // views lớn hơn tỷ lệ 9/16
     if (heightView >= deviceWidth * 1.5) {
       return Container(
         height: deviceWidth * 1.5,

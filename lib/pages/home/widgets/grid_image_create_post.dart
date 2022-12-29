@@ -4,7 +4,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/pages/home/blocs/pick_image_bloc.dart';
-import 'package:social_app/pages/home/view/edit_image_xfile_screen.dart';
+import 'package:social_app/pages/home/views/edit_image_xfile_screen.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/utils/get_size_image_xfile.dart';
@@ -49,7 +49,7 @@ class GridImageCreatePost extends StatelessWidget {
     final heightView = ImageUtils.getHeightView(deviceWidth, sizeImage.width, sizeImage.height);
     // print('width = $deviceWidth, height = $heightView');
 
-    // view lớn hơn tỷ lệ 9/16
+    // views lớn hơn tỷ lệ 9/16
     if (heightView >= deviceWidth * 1.5) {
       return Container(
         height: deviceWidth * 1.5,

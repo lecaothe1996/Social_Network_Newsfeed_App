@@ -22,7 +22,7 @@ class ListViewPosts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('===== Build ListViewPosts =====');
+    // print('===== Build ListViewPosts =====');
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         childCount: posts.length,

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/my_app/app_state_bloc.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
-import 'package:social_app/pages/home/view/create_post_screen.dart';
+import 'package:social_app/pages/home/views/create_post_screen.dart';
 import 'package:social_app/pages/home/widgets/list_view_posts/list_view_posts.dart';
 import 'package:social_app/pages/home/widgets/list_view_posts/list_view_posts_shimmer.dart';
-import 'package:social_app/pages/home/widgets/list_view_stories.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
@@ -46,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
 
   @override
   Widget build(BuildContext context) {
-    print('==== Build HomeScreen ====');
+    // print('==== Build HomeScreen ====');
     super.build(context);
     return WillPopScope(
       onWillPop: () async {
@@ -54,7 +52,6 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
         return false;
       },
       child: Scaffold(
-        backgroundColor: AppColors.slate,
         body: RefreshIndicator(
           onRefresh: () {
             final postsBloc = context.read<PostBloc>()..add(RefreshPosts(page: 1));

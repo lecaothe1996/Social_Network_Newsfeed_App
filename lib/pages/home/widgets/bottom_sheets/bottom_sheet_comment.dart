@@ -5,7 +5,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:social_app/pages/home/blocs/comment_bloc/comment_bloc.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/home/models/post.dart';
-import 'package:social_app/pages/home/view/likes_screen.dart';
+import 'package:social_app/pages/home/views/likes_screen.dart';
 import 'package:social_app/pages/home/widgets/list_comments/list_comments.dart';
 import 'package:social_app/pages/home/widgets/list_comments/list_comments_shimmer.dart';
 import 'package:social_app/themes/app_assets.dart';

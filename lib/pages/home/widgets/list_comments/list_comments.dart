@@ -40,6 +40,7 @@ class ListComment extends StatelessWidget {
                 child: ClipOval(
                   child: CachedNetworkImage(
                     imageUrl: urlAvatar,
+                    width: 40,
                     height: 40,
                     fit: BoxFit.cover,
                     errorWidget: (_, __, ___) => Image.asset(

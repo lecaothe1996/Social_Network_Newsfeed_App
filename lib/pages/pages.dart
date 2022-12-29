@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import 'package:social_app/pages/home/view/home_screen.dart';
+import 'package:social_app/pages/home/views/home_screen.dart';
+import 'package:social_app/pages/user_profile/views/profile_screen.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 
@@ -23,7 +24,7 @@ class _PagesState extends State<Pages> {
           const HomeScreen(),
           Container(color: Colors.green),
           Container(color: Colors.amber),
-          Container(color: Colors.tealAccent),
+          const ProfileScreen(),
         ],
       ),
       bottomNavigationBar: SalomonBottomBar(

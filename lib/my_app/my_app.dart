@@ -41,7 +41,7 @@ class _MyAppState extends State<MyApp> {
           bodyText2: TextStyle(),
         ).apply(bodyColor: AppColors.white),
         fontFamily: FontFamily.arial,
-        scaffoldBackgroundColor: AppColors.dark,
+        scaffoldBackgroundColor: AppColors.black,
       ),
       home: Provider<AppStateBloc>(
         create: (context) => _appStateBloc,
