@@ -1,11 +1,23 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:readmore/readmore.dart';
+import 'package:social_app/pages/home/widgets/list_view_posts/list_view_posts.dart';
+import 'package:social_app/pages/home/widgets/list_view_posts/list_view_posts_shimmer.dart';
+import 'package:social_app/pages/user_profile/blocs/user_posts/user_posts_cubit.dart';
+import 'package:social_app/pages/user_profile/models/user_profile.dart';
+import 'package:social_app/pages/user_profile/repositories/user_repo.dart';
+import 'package:social_app/pages/user_profile/widgets/list_view_user_posts.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
+import 'package:social_app/utils/convert_to_time_ago.dart';
+import 'package:social_app/utils/image_util.dart';
+import 'package:social_app/utils/shared_preference_util.dart';
 import 'package:social_app/widgets/button_widget.dart';
 import 'package:social_app/widgets/icon_button_widget.dart';
 
@@ -15,17 +27,29 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
+    final jsonUserProfile = SharedPreferenceUtil.getString('json_user_profile');
+    final userProfile = UserProfile.fromJson(jsonDecode(jsonUserProfile));
+    final urlAvatar = ImageUtils.genImgIx(userProfile.avatar?.url, 150, 150);
+    final urlCoverImage = ImageUtils.genImgIx(userProfile.avatar?.url, deviceWidth.toInt(), 190);
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
         elevation: 1,
         shadowColor: AppColors.white,
-        title: const Text('Tên người dùng'),
+        title: Padding(
+          padding: const EdgeInsets.only(left: 15),
+          child: Text(
+            '${userProfile.firstName ?? ''} ${userProfile.lastName ?? 'Người dùng'}',
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
         actions: [
           Container(
             margin: const EdgeInsets.fromLTRB(0, 10, 15, 10),
             child: MyElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                UserRepo().getUserPosts(userProfile.id ?? '', 1);
+              },
               text: 'Theo dõi',
               width: 110,
             ),
@@ -37,17 +61,17 @@ class ProfileScreen extends StatelessWidget {
           SliverToBoxAdapter(
             child: Container(
               // padding: const EdgeInsets.symmetric(vertical: 15),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(
-                    'https://image.cnbcfm.com/api/v1/image/105897632-1557241558937avatar-e1541360922907.jpg?v=1664130328&w=1920&h=1080',
+                  image: CachedNetworkImageProvider(
+                    urlCoverImage,
                   ),
                   fit: BoxFit.cover,
                 ),
               ),
               child: ClipRRect(
                 child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 7, sigmaY: 7),
+                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     child: CircleAvatar(
@@ -55,8 +79,7 @@ class ProfileScreen extends StatelessWidget {
                       maxRadius: 80,
                       child: ClipOval(
                         child: CachedNetworkImage(
-                          imageUrl:
-                              'https://image.cnbcfm.com/api/v1/image/105897632-1557241558937avatar-e1541360922907.jpg?v=1664130328&w=1920&h=1080',
+                          imageUrl: urlAvatar,
                           height: 150,
                           width: 150,
                           fit: BoxFit.cover,
@@ -73,6 +96,9 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
             ),
+          ),
+          const SliverToBoxAdapter(
+            child: SizedBox(height: 15),
           ),
           SliverToBoxAdapter(
             child: Container(
@@ -167,23 +193,61 @@ class ProfileScreen extends StatelessWidget {
                     ],
                   ),
                   Container(
-                      margin: const EdgeInsets.only(top: 15),
-                      height: 400,
-                      child: GridView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: 8,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 4,
-                          crossAxisSpacing: 4.0,
-                          mainAxisSpacing: 4.0,
-                        ),
-                        itemBuilder: (BuildContext context, int index) {
-                          return Image.network(
-                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQT59lh0oJdzqgypa_PMVxTI20MLi1Q5yi_5Q&usqp=CAU');
-                        },
-                      )),
+                    margin: const EdgeInsets.only(top: 15),
+                    child: AlignedGridView.count(
+                      crossAxisCount: 4,
+                      mainAxisSpacing: 5,
+                      crossAxisSpacing: 5,
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: 8,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {},
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            child: CachedNetworkImage(
+                              imageUrl:
+                                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQT59lh0oJdzqgypa_PMVxTI20MLi1Q5yi_5Q&usqp=CAU',
+                              fit: BoxFit.cover,
+                              errorWidget: (_, __, ___) => const SizedBox(),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                 ],
               ),
+            ),
+          ),
+          const SliverToBoxAdapter(
+            child: SizedBox(height: 15),
+          ),
+          BlocProvider(
+            create: (context) => UserPostsCubit()..loadPosts(userProfile.id ?? ''),
+            child: BlocConsumer<UserPostsCubit, UserPostsState>(
+              listener: (context, state) {
+                // TODO: implement listener
+              },
+                buildWhen: (previous, current) {
+                if (current is UserPostError) {
+                    return false;
+                  }
+                  return true;
+                },
+                builder: (context, state) {
+                  if (state is UserPostsLoading) {
+                    return const ListViewPostsShimmer();
+                  }
+                  if (state is UserPostsLoaded) {
+                    // if (_isLoading == true) {
+                    //   _isLoading = false;
+                    // }
+                    return ListViewPosts(posts: state.data);
+                  }
+                  return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
+                },
             ),
           ),
         ],
