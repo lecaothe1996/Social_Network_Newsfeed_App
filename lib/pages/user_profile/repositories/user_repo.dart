@@ -32,4 +32,24 @@ class UserRepo {
       throw MyException('Vui lòng kiểm tra kết nối internet và thử lại.');
     }
   }
+
+  Future<List<Post>> getUserPhotos(String idUser, int page) async {
+    try {
+      final res = await _dioUtil.get(
+        '/users/$idUser/photos',
+        queryParameters: {'page': page},
+      );
+      final data = res.data['data'];
+      if (data == null) {
+        throw MyException('Không có ảnh nào');
+      }
+      final photo = List<Post>.from(data.map((x) => Post.fromJson(x)));
+      return photo;
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 400) {
+        throw MyException('Lỗi tải ảnh, xin vui lòng thử lại');
+      }
+      throw MyException('Vui lòng kiểm tra kết nối internet và thử lại.');
+    }
+  }
 }

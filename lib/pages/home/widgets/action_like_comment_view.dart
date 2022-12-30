@@ -5,6 +5,7 @@ import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/home/models/post.dart';
 import 'package:social_app/pages/home/widgets/bottom_sheets/bottom_sheet_comment.dart';
 import 'package:social_app/pages/home/widgets/toggle.dart';
+import 'package:social_app/pages/user_profile/blocs/user_posts/user_posts_cubit.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 
@@ -98,9 +99,14 @@ class _ActionLikeCommentViewState extends State<ActionLikeCommentView> {
   }
 
   void _handleLikePost(bool isLiked) {
+    // Update post
     isLiked
         ? context.read<PostBloc>().add(LikeAndUnLike(post: widget.post, eventAction: EventAction.likePost))
         : context.read<PostBloc>().add(LikeAndUnLike(post: widget.post, eventAction: EventAction.unLikePost));
+    // Update user post
+    isLiked
+        ? context.read<UserPostsCubit>().likeAndUnLike(widget.post, EventAction.likePost)
+        : context.read<UserPostsCubit>().likeAndUnLike(widget.post, EventAction.unLikePost);
     // Call API
     _likeCubit.likeAndUnLike(widget.post.id ?? '', isLiked ? EventAction.likePost : EventAction.unLikePost);
   }

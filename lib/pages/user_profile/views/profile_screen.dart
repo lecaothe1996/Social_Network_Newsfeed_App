@@ -4,13 +4,16 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:readmore/readmore.dart';
 import 'package:social_app/pages/home/widgets/list_view_posts/list_view_posts.dart';
 import 'package:social_app/pages/home/widgets/list_view_posts/list_view_posts_shimmer.dart';
+import 'package:social_app/pages/user_profile/blocs/user_photos/user_photos_cubit.dart';
 import 'package:social_app/pages/user_profile/blocs/user_posts/user_posts_cubit.dart';
 import 'package:social_app/pages/user_profile/models/user_profile.dart';
 import 'package:social_app/pages/user_profile/repositories/user_repo.dart';
+import 'package:social_app/pages/user_profile/widgets/grid_view_user_photos.dart';
 import 'package:social_app/pages/user_profile/widgets/list_view_user_posts.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
@@ -48,7 +51,7 @@ class ProfileScreen extends StatelessWidget {
             margin: const EdgeInsets.fromLTRB(0, 10, 15, 10),
             child: MyElevatedButton(
               onPressed: () {
-                UserRepo().getUserPosts(userProfile.id ?? '', 1);
+                UserRepo().getUserPhotos(userProfile.id ?? '', 1);
               },
               text: 'Theo dõi',
               width: 110,
@@ -172,82 +175,57 @@ class ProfileScreen extends StatelessWidget {
           const SliverToBoxAdapter(
             child: SizedBox(height: 15),
           ),
-          SliverToBoxAdapter(
-            child: Container(
-              padding: const EdgeInsets.all(15),
-              color: AppColors.dark,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Ảnh (30)',
-                        style: AppTextStyles.body.copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        'Xem tất cả',
-                        style: AppTextStyles.body.copyWith(color: AppColors.tealBlue),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 15),
-                    child: AlignedGridView.count(
-                      crossAxisCount: 4,
-                      mainAxisSpacing: 5,
-                      crossAxisSpacing: 5,
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: 8,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {},
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                            child: CachedNetworkImage(
-                              imageUrl:
-                                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQT59lh0oJdzqgypa_PMVxTI20MLi1Q5yi_5Q&usqp=CAU',
-                              fit: BoxFit.cover,
-                              errorWidget: (_, __, ___) => const SizedBox(),
-                            ),
-                          ),
-                        );
-                      },
+          BlocProvider(
+            create: (context) => UserPhotosCubit()..loadUserPhotos(userProfile.id ?? ''),
+            child: BlocConsumer<UserPhotosCubit, UserPhotosState>(
+              listener: (context, state) {
+                // TODO: implement listener
+              },
+              builder: (context, state) {
+                if (state is UserPhotosLoading) {
+                  return const SliverToBoxAdapter(
+                    child: SpinKitCircle(
+                      color: AppColors.white,
+                      size: 30,
                     ),
-                  ),
-                ],
-              ),
+                  );
+                }
+                if (state is UserPhotosLoaded) {
+                  return GridViewUserPhotos(userPhotos: state.data);
+                }
+                return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
+              },
             ),
           ),
           const SliverToBoxAdapter(
             child: SizedBox(height: 15),
           ),
           BlocProvider(
-            create: (context) => UserPostsCubit()..loadPosts(userProfile.id ?? ''),
+            create: (context) => UserPostsCubit()..loadUserPosts(userProfile.id ?? ''),
             child: BlocConsumer<UserPostsCubit, UserPostsState>(
               listener: (context, state) {
                 // TODO: implement listener
               },
-                buildWhen: (previous, current) {
+              buildWhen: (previous, current) {
                 if (current is UserPostError) {
-                    return false;
-                  }
-                  return true;
-                },
-                builder: (context, state) {
-                  if (state is UserPostsLoading) {
-                    return const ListViewPostsShimmer();
-                  }
-                  if (state is UserPostsLoaded) {
-                    // if (_isLoading == true) {
-                    //   _isLoading = false;
-                    // }
-                    return ListViewPosts(posts: state.data);
-                  }
-                  return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
-                },
+                  return false;
+                }
+                return true;
+              },
+              builder: (context, state) {
+                if (state is UserPostsLoading) {
+                  return const SliverToBoxAdapter(
+                    child: SpinKitCircle(
+                      color: AppColors.white,
+                      size: 30,
+                    ),
+                  );
+                }
+                if (state is UserPostsLoaded) {
+                  return ListViewPosts(posts: state.data);
+                }
+                return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
+              },
             ),
           ),
         ],

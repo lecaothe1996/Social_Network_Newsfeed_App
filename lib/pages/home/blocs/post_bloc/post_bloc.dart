@@ -182,7 +182,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     emit(PostsLoaded(data: oldPosts));
   }
 
-  FutureOr<void> _onCommentCounts(CommentCounts event, Emitter<PostState> emit) {
+  void _onCommentCounts(CommentCounts event, Emitter<PostState> emit) {
     final oldPosts = _posts;
 
     final index = oldPosts.indexWhere((post) => post.id == event.idPost);
