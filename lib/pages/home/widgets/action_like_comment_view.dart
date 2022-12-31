@@ -104,9 +104,9 @@ class _ActionLikeCommentViewState extends State<ActionLikeCommentView> {
         ? context.read<PostBloc>().add(LikeAndUnLike(post: widget.post, eventAction: EventAction.likePost))
         : context.read<PostBloc>().add(LikeAndUnLike(post: widget.post, eventAction: EventAction.unLikePost));
     // Update user post
-    isLiked
-        ? context.read<UserPostsCubit>().likeAndUnLike(widget.post, EventAction.likePost)
-        : context.read<UserPostsCubit>().likeAndUnLike(widget.post, EventAction.unLikePost);
+    // isLiked
+    //     ? context.read<UserPostsCubit>().likeAndUnLike(widget.post, EventAction.likePost)
+    //     : context.read<UserPostsCubit>().likeAndUnLike(widget.post, EventAction.unLikePost);
     // Call API
     _likeCubit.likeAndUnLike(widget.post.id ?? '', isLiked ? EventAction.likePost : EventAction.unLikePost);
   }

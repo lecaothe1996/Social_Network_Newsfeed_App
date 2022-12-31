@@ -24,16 +24,30 @@ import 'package:social_app/utils/shared_preference_util.dart';
 import 'package:social_app/widgets/button_widget.dart';
 import 'package:social_app/widgets/icon_button_widget.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  late UserProfile _userProfile;
+
+  @override
+  void initState() {
+    final jsonUserProfile = SharedPreferenceUtil.getString('json_user_profile');
+    final userProfile = UserProfile.fromJson(jsonDecode(jsonUserProfile));
+    _userProfile = userProfile;
+    context.read<UserPostsCubit>().loadUserPosts(userProfile.id ?? '');
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
-    final jsonUserProfile = SharedPreferenceUtil.getString('json_user_profile');
-    final userProfile = UserProfile.fromJson(jsonDecode(jsonUserProfile));
-    final urlAvatar = ImageUtils.genImgIx(userProfile.avatar?.url, 150, 150);
-    final urlCoverImage = ImageUtils.genImgIx(userProfile.avatar?.url, deviceWidth.toInt(), 190);
+    final urlAvatar = ImageUtils.genImgIx(_userProfile.avatar?.url, 150, 150);
+    final urlCoverImage = ImageUtils.genImgIx(_userProfile.avatar?.url, deviceWidth.toInt(), 190);
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -42,7 +56,7 @@ class ProfileScreen extends StatelessWidget {
         title: Padding(
           padding: const EdgeInsets.only(left: 15),
           child: Text(
-            '${userProfile.firstName ?? ''} ${userProfile.lastName ?? 'Người dùng'}',
+            '${_userProfile.firstName ?? ''} ${_userProfile.lastName ?? 'Người dùng'}',
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
@@ -51,7 +65,7 @@ class ProfileScreen extends StatelessWidget {
             margin: const EdgeInsets.fromLTRB(0, 10, 15, 10),
             child: MyElevatedButton(
               onPressed: () {
-                UserRepo().getUserPhotos(userProfile.id ?? '', 1);
+                UserRepo().getUserPhotos(_userProfile.id ?? '', 1);
               },
               text: 'Theo dõi',
               width: 110,
@@ -176,7 +190,7 @@ class ProfileScreen extends StatelessWidget {
             child: SizedBox(height: 15),
           ),
           BlocProvider(
-            create: (context) => UserPhotosCubit()..loadUserPhotos(userProfile.id ?? ''),
+            create: (context) => UserPhotosCubit()..loadUserPhotos(_userProfile.id ?? ''),
             child: BlocConsumer<UserPhotosCubit, UserPhotosState>(
               listener: (context, state) {
                 // TODO: implement listener
@@ -200,33 +214,30 @@ class ProfileScreen extends StatelessWidget {
           const SliverToBoxAdapter(
             child: SizedBox(height: 15),
           ),
-          BlocProvider(
-            create: (context) => UserPostsCubit()..loadUserPosts(userProfile.id ?? ''),
-            child: BlocConsumer<UserPostsCubit, UserPostsState>(
-              listener: (context, state) {
-                // TODO: implement listener
-              },
-              buildWhen: (previous, current) {
-                if (current is UserPostError) {
-                  return false;
-                }
-                return true;
-              },
-              builder: (context, state) {
-                if (state is UserPostsLoading) {
-                  return const SliverToBoxAdapter(
-                    child: SpinKitCircle(
-                      color: AppColors.white,
-                      size: 30,
-                    ),
-                  );
-                }
-                if (state is UserPostsLoaded) {
-                  return ListViewPosts(posts: state.data);
-                }
-                return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
-              },
-            ),
+          BlocConsumer<UserPostsCubit, UserPostsState>(
+            listener: (context, state) {
+              // TODO: implement listener
+            },
+            buildWhen: (previous, current) {
+              if (current is UserPostError) {
+                return false;
+              }
+              return true;
+            },
+            builder: (context, state) {
+              if (state is UserPostsLoading) {
+                return const SliverToBoxAdapter(
+                  child: SpinKitCircle(
+                    color: AppColors.white,
+                    size: 30,
+                  ),
+                );
+              }
+              if (state is UserPostsLoaded) {
+                return ListViewPosts(posts: state.data);
+              }
+              return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
+            },
           ),
         ],
       ),

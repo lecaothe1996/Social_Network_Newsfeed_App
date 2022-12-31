@@ -17,9 +17,9 @@ class UserPostsCubit extends Cubit<UserPostsState> {
   Future loadUserPosts(String idUser) async {
     try {
       // await Future.delayed(Duration(seconds: 50));
-      final posts = await _userRepo.getUserPosts(idUser, _page);
-      _userPosts = posts;
-      print('_userPosts==$_userPosts');
+      final userPosts = await _userRepo.getUserPosts(idUser, _page);
+      _userPosts = userPosts;
+      // print('_userPosts==$_userPosts');
       emit(UserPostsLoaded(
         data: _userPosts,
       ));
@@ -36,6 +36,10 @@ class UserPostsCubit extends Cubit<UserPostsState> {
 
     final index = oldUserPosts.indexWhere((userPost) => userPost.id == post.id);
 
+    if (index == -1) {
+      return;
+    }
+
     final userPost = oldUserPosts[index];
 
     final eventIsLike = eventAction == EventAction.likePost ? true : false;
@@ -45,7 +49,7 @@ class UserPostsCubit extends Cubit<UserPostsState> {
       ..likeCounts = likeCountNew
       ..liked = eventIsLike;
 
-    oldUserPosts[index] = post;
+    oldUserPosts[index] = userPost;
     emit(UserPostsLoaded(data: oldUserPosts));
   }
 }

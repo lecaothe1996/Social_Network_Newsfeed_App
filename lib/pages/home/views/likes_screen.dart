@@ -22,6 +22,7 @@ class LikesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.dark,
       appBar: AppBar(
         centerTitle: false,
         elevation: 1,

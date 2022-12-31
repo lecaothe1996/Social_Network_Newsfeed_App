@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_app/pages/home/models/post.dart';
 import 'package:social_app/pages/home/repositories/post_repo.dart';
+import 'package:social_app/pages/user_profile/blocs/user_posts/user_posts_cubit.dart';
 
 part 'post_event.dart';
 
@@ -12,11 +13,16 @@ part 'post_state.dart';
 class PostBloc extends Bloc<PostEvent, PostState> {
   final _postRepo = PostRepo();
 
+  // final _userPostsCubit = UserPostsCubit();
+  final UserPostsCubit userPostsCubit;
+
+  // StreamSubscription _todosSubscription;
+
   List<Post> _posts = [];
 
   int _page = 1;
 
-  PostBloc() : super(PostsLoading()) {
+  PostBloc({required this.userPostsCubit}) : super(PostsLoading()) {
     on<LoadPosts>(_onLoadPosts);
     on<LoadDetailPost>(_onLoadDetailPost);
     on<LoadMorePosts>(_onLoadMorePosts);
@@ -169,6 +175,10 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
     final index = oldPosts.indexWhere((post) => post.id == event.post.id);
 
+    if (index == -1) {
+      return;
+    }
+
     final post = oldPosts[index];
 
     final eventIsLike = event.eventAction == EventAction.likePost ? true : false;
@@ -180,12 +190,18 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
     oldPosts[index] = post;
     emit(PostsLoaded(data: oldPosts));
+
+    userPostsCubit.likeAndUnLike(event.post, event.eventAction);
   }
 
   void _onCommentCounts(CommentCounts event, Emitter<PostState> emit) {
     final oldPosts = _posts;
 
     final index = oldPosts.indexWhere((post) => post.id == event.idPost);
+
+    if (index == -1) {
+      return;
+    }
 
     final post = oldPosts[index];
 

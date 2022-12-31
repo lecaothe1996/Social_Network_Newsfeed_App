@@ -16,9 +16,9 @@ class UserPhotosCubit extends Cubit<UserPhotosState> {
   Future loadUserPhotos(String idUser) async {
     try {
       // await Future.delayed(Duration(seconds: 50));
-      final posts = await _userRepo.getUserPhotos(idUser, _page);
-      _userPhotos = posts;
-      print('_userPhotos==$_userPhotos');
+      final userPhotos = await _userRepo.getUserPhotos(idUser, _page);
+      _userPhotos = userPhotos;
+      // print('_userPhotos==$_userPhotos');
       emit(UserPhotosLoaded(
         data: _userPhotos,
       ));

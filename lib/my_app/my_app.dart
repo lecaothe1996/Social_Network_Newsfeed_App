@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:social_app/my_app/app_state_bloc.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/pages.dart';
+import 'package:social_app/pages/user_profile/blocs/user_posts/user_posts_cubit.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_fonts.dart';
 import 'package:social_app/welcome/blocs/auth_bloc.dart';
@@ -59,9 +60,18 @@ class _MyAppState extends State<MyApp> {
                 child: const WelcomePage(),
               );
             }
-            return BlocProvider(
-              create: (context) => PostBloc()..add(LoadPosts()),
-              child: Pages(),
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider(create: (context) => UserPostsCubit()),
+                BlocProvider(
+                  create: (context) => PostBloc(userPostsCubit: BlocProvider.of<UserPostsCubit>(context))
+                    ..add(
+                      LoadPosts(),
+                    ),
+                  child: const Pages(),
+                ),
+              ],
+              child: const Pages(),
             );
           },
         ),
