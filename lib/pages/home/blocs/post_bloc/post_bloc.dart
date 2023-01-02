@@ -11,15 +11,9 @@ part 'post_event.dart';
 part 'post_state.dart';
 
 class PostBloc extends Bloc<PostEvent, PostState> {
-  final _postRepo = PostRepo();
-
-  // final _userPostsCubit = UserPostsCubit();
   final UserPostsCubit userPostsCubit;
-
-  // StreamSubscription _todosSubscription;
-
+  final _postRepo = PostRepo();
   List<Post> _posts = [];
-
   int _page = 1;
 
   PostBloc({required this.userPostsCubit}) : super(PostsLoading()) {
@@ -72,6 +66,9 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     try {
       _page = _page + 1;
       final posts = await _postRepo.getPosts(_page);
+      if (posts.isEmpty) {
+        return;
+      }
       List<Post> shufflePosts = posts..shuffle();
       _posts = _posts..addAll(shufflePosts);
       emit(PostsLoaded(
@@ -92,7 +89,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       // emit(PostsRefresh());
       _posts = [];
       _page = 1;
-      final posts = await _postRepo.getPosts(event.page);
+      final posts = await _postRepo.getPosts(_page);
       List<Post> shufflePosts = posts..shuffle();
       _posts = List.from(_posts)..addAll(shufflePosts);
       emit(PostsLoaded(
@@ -116,6 +113,10 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         data: _posts,
         stateName: StatePost.createPost,
       ));
+      // Clone post
+      Post postCopyWith = post.copyWith();
+      // Ban event qua user posts
+      userPostsCubit.createUserPost(postCopyWith);
     } catch (e) {
       print('⚡️ Error Create Post: $e');
       emit(PostError(
@@ -138,6 +139,8 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         data: _posts,
         stateName: StatePost.deletePost,
       ));
+      // Ban event qua user posts
+      userPostsCubit.deleteUserPost(event.idPost);
     } catch (e) {
       print('⚡️ Error Delete Post: $e');
       emit(PostError(
@@ -161,6 +164,8 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         data: _posts,
         stateName: StatePost.updatePost,
       ));
+      // Ban event qua user posts
+      userPostsCubit.updateUserPost(event.idPost, event.description);
     } catch (e) {
       print('⚡️ Error Update Post: $e');
       emit(PostError(
@@ -173,14 +178,12 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   void _onLikeAndUnLike(LikeAndUnLike event, Emitter<PostState> emit) {
     final oldPosts = _posts;
 
-    final index = oldPosts.indexWhere((post) => post.id == event.post.id);
-
+    final index = oldPosts.indexWhere((post) => post.id == event.idPost);
     if (index == -1) {
       return;
     }
 
     final post = oldPosts[index];
-
     final eventIsLike = event.eventAction == EventAction.likePost ? true : false;
     final likeCountNew = eventIsLike ? post.likeCounts! + 1 : post.likeCounts! - 1;
 
@@ -190,15 +193,14 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
     oldPosts[index] = post;
     emit(PostsLoaded(data: oldPosts));
-
-    userPostsCubit.likeAndUnLike(event.post, event.eventAction);
+    // Ban event qua user posts
+    userPostsCubit.likeAndUnLike(event.idPost, event.eventAction);
   }
 
   void _onCommentCounts(CommentCounts event, Emitter<PostState> emit) {
     final oldPosts = _posts;
 
     final index = oldPosts.indexWhere((post) => post.id == event.idPost);
-
     if (index == -1) {
       return;
     }
@@ -212,5 +214,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     oldPosts[index] = post;
 
     emit(PostsLoaded(data: oldPosts));
+    // Ban event qua user posts
+    userPostsCubit.commentCounts(event.idPost, event.eventAction);
   }
 }

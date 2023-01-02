@@ -30,10 +30,10 @@ class _ActionLikeCommentViewState extends State<ActionLikeCommentView> {
 
   @override
   void initState() {
+    // print('initState');
     _likeCount = widget.post.likeCounts ?? 0;
     _isLiked = widget.post.liked ?? false;
     _commentCounts = widget.post.commentCounts ?? 0;
-    // print('initState');
     super.initState();
   }
 
@@ -42,9 +42,7 @@ class _ActionLikeCommentViewState extends State<ActionLikeCommentView> {
     // print('didUpdateWidget');
     _likeCount = widget.post.likeCounts ?? 0;
     _isLiked = widget.post.liked ?? false;
-
     _commentCounts = widget.post.commentCounts ?? 0;
-    // print('_commentCounts==$_commentCounts');
     super.didUpdateWidget(oldWidget);
   }
 
@@ -101,12 +99,8 @@ class _ActionLikeCommentViewState extends State<ActionLikeCommentView> {
   void _handleLikePost(bool isLiked) {
     // Update post
     isLiked
-        ? context.read<PostBloc>().add(LikeAndUnLike(post: widget.post, eventAction: EventAction.likePost))
-        : context.read<PostBloc>().add(LikeAndUnLike(post: widget.post, eventAction: EventAction.unLikePost));
-    // Update user post
-    // isLiked
-    //     ? context.read<UserPostsCubit>().likeAndUnLike(widget.post, EventAction.likePost)
-    //     : context.read<UserPostsCubit>().likeAndUnLike(widget.post, EventAction.unLikePost);
+        ? context.read<PostBloc>().add(LikeAndUnLike(idPost: widget.post.id ?? '', eventAction: EventAction.likePost))
+        : context.read<PostBloc>().add(LikeAndUnLike(idPost: widget.post.id ?? '', eventAction: EventAction.unLikePost));
     // Call API
     _likeCubit.likeAndUnLike(widget.post.id ?? '', isLiked ? EventAction.likePost : EventAction.unLikePost);
   }

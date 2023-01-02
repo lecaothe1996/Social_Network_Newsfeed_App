@@ -20,11 +20,7 @@ class LoadDetailPost extends PostEvent {
 
 class LoadMorePosts extends PostEvent {}
 
-class RefreshPosts extends PostEvent {
-  final int page;
-
-  RefreshPosts({required this.page});
-}
+class RefreshPosts extends PostEvent {}
 
 class CreatePost extends PostEvent {
   final String description;
@@ -47,10 +43,10 @@ class UpdatePost extends PostEvent {
 }
 
 class LikeAndUnLike extends PostEvent {
-  final Post post;
+  final String idPost;
   final EventAction eventAction;
 
-  LikeAndUnLike({required this.post, required this.eventAction});
+  LikeAndUnLike({required this.idPost, required this.eventAction});
 }
 
 class CommentCounts extends PostEvent {
