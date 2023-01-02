@@ -5,24 +5,19 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:readmore/readmore.dart';
+import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
+import 'package:social_app/pages/home/views/create_post_screen.dart';
 import 'package:social_app/pages/home/widgets/list_view_posts/list_view_posts.dart';
-import 'package:social_app/pages/home/widgets/list_view_posts/list_view_posts_shimmer.dart';
 import 'package:social_app/pages/user_profile/blocs/user_photos/user_photos_cubit.dart';
 import 'package:social_app/pages/user_profile/blocs/user_posts/user_posts_cubit.dart';
 import 'package:social_app/pages/user_profile/models/user_profile.dart';
-import 'package:social_app/pages/user_profile/repositories/user_repo.dart';
 import 'package:social_app/pages/user_profile/widgets/grid_view_user_photos.dart';
-import 'package:social_app/pages/user_profile/widgets/list_view_user_posts.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
-import 'package:social_app/utils/convert_to_time_ago.dart';
 import 'package:social_app/utils/image_util.dart';
 import 'package:social_app/utils/shared_preference_util.dart';
 import 'package:social_app/widgets/button_widget.dart';
-import 'package:social_app/widgets/icon_button_widget.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -33,6 +28,8 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late UserProfile _userProfile;
+  final _scrollController = ScrollController();
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -40,7 +37,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final userProfile = UserProfile.fromJson(jsonDecode(jsonUserProfile));
     _userProfile = userProfile;
     context.read<UserPostsCubit>().loadUserPosts(userProfile.id ?? '');
+    _scrollController.addListener(_scrollListener);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -64,47 +68,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Container(
             margin: const EdgeInsets.fromLTRB(0, 10, 15, 10),
             child: MyElevatedButton(
-              onPressed: () {
-                UserRepo().getUserPhotos(_userProfile.id ?? '', 1);
-              },
-              text: 'Theo dõi',
+              onPressed: () => _createPost(),
+              text: 'Thêm ảnh',
               width: 110,
             ),
           ),
         ],
       ),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Container(
-              // padding: const EdgeInsets.symmetric(vertical: 15),
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: CachedNetworkImageProvider(
-                    urlCoverImage,
+      body: RefreshIndicator(
+        onRefresh: () => _refresh(),
+        child: CustomScrollView(
+          controller: _scrollController,
+          slivers: [
+            SliverToBoxAdapter(
+              child: Container(
+                // padding: const EdgeInsets.symmetric(vertical: 15),
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: CachedNetworkImageProvider(
+                      urlCoverImage,
+                    ),
+                    fit: BoxFit.cover,
                   ),
-                  fit: BoxFit.cover,
                 ),
-              ),
-              child: ClipRRect(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    child: CircleAvatar(
-                      backgroundColor: AppColors.dark,
-                      maxRadius: 80,
-                      child: ClipOval(
-                        child: CachedNetworkImage(
-                          imageUrl: urlAvatar,
-                          height: 150,
-                          width: 150,
-                          fit: BoxFit.cover,
-                          errorWidget: (_, __, ___) => Image.asset(
-                            AppAssetIcons.avatar,
-                            color: AppColors.blueGrey,
-                            width: double.infinity,
+                child: ClipRRect(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      child: CircleAvatar(
+                        backgroundColor: AppColors.dark,
+                        maxRadius: 80,
+                        child: ClipOval(
+                          child: CachedNetworkImage(
+                            imageUrl: urlAvatar,
+                            height: 150,
+                            width: 150,
                             fit: BoxFit.cover,
+                            errorWidget: (_, __, ___) => Image.asset(
+                              AppAssetIcons.avatar,
+                              color: AppColors.blueGrey,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
@@ -113,90 +119,118 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
             ),
-          ),
-          const SliverToBoxAdapter(
-            child: SizedBox(height: 15),
-          ),
-          SliverToBoxAdapter(
-            child: Container(
-              padding: const EdgeInsets.all(15),
-              color: AppColors.dark,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Người theo dõi (113)',
-                        style: AppTextStyles.body.copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        'Xem tất cả',
-                        style: AppTextStyles.body.copyWith(color: AppColors.tealBlue),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 15),
-                    height: ((deviceWidth - 70) / 4) + 10,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 4,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-                          width: (deviceWidth - 70) / 4,
-                          child: Column(
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: AppColors.dark,
-                                radius: (deviceWidth - 150) / 8,
-                                child: ClipOval(
-                                  child: CachedNetworkImage(
-                                    imageUrl:
-                                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJn-ytD3MhGQ2mjdLdyT7pfbZQ65cgaL2wGkKBib2ks5RktR5gWii0dMAyxcT84F2jSMk&usqp=CAU',
-                                    height: (deviceWidth - 150) / 4,
-                                    width: (deviceWidth - 150) / 4,
-                                    fit: BoxFit.cover,
-                                    errorWidget: (_, __, ___) => Image.asset(
-                                      AppAssetIcons.avatar,
-                                      color: AppColors.blueGrey,
-                                      width: double.infinity,
+            const SliverToBoxAdapter(
+              child: SizedBox(height: 15),
+            ),
+            SliverToBoxAdapter(
+              child: Container(
+                padding: const EdgeInsets.all(15),
+                color: AppColors.dark,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Người theo dõi (113)',
+                          style: AppTextStyles.body.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          'Xem tất cả',
+                          style: AppTextStyles.body.copyWith(color: AppColors.tealBlue),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 15),
+                      height: ((deviceWidth - 70) / 4) + 10,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 4,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                            width: (deviceWidth - 70) / 4,
+                            child: Column(
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor: AppColors.dark,
+                                  radius: (deviceWidth - 150) / 8,
+                                  child: ClipOval(
+                                    child: CachedNetworkImage(
+                                      imageUrl:
+                                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJn-ytD3MhGQ2mjdLdyT7pfbZQ65cgaL2wGkKBib2ks5RktR5gWii0dMAyxcT84F2jSMk&usqp=CAU',
+                                      height: (deviceWidth - 150) / 4,
+                                      width: (deviceWidth - 150) / 4,
                                       fit: BoxFit.cover,
+                                      errorWidget: (_, __, ___) => Image.asset(
+                                        AppAssetIcons.avatar,
+                                        color: AppColors.blueGrey,
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(top: 9),
-                                child: Text(
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                  'Le Thu huyen',
+                                const Padding(
+                                  padding: EdgeInsets.only(top: 9),
+                                  child: Text(
+                                    textAlign: TextAlign.center,
+                                    overflow: TextOverflow.ellipsis,
+                                    'Le Thu huyen',
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
+                              ],
+                            ),
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          const SliverToBoxAdapter(
-            child: SizedBox(height: 15),
-          ),
-          BlocProvider(
-            create: (context) => UserPhotosCubit()..loadUserPhotos(_userProfile.id ?? ''),
-            child: BlocConsumer<UserPhotosCubit, UserPhotosState>(
+            const SliverToBoxAdapter(
+              child: SizedBox(height: 15),
+            ),
+            BlocProvider(
+              create: (context) => UserPhotosCubit()..loadUserPhotos(_userProfile.id ?? ''),
+              child: BlocConsumer<UserPhotosCubit, UserPhotosState>(
+                listener: (context, state) {
+                  // TODO: implement listener
+                },
+                builder: (context, state) {
+                  if (state is UserPhotosLoading) {
+                    return const SliverToBoxAdapter(
+                      child: SpinKitCircle(
+                        color: AppColors.white,
+                        size: 30,
+                      ),
+                    );
+                  }
+                  if (state is UserPhotosLoaded) {
+                    return GridViewUserPhotos(userPhotos: state.data);
+                  }
+                  return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
+                },
+              ),
+            ),
+            const SliverToBoxAdapter(
+              child: SizedBox(height: 15),
+            ),
+            BlocConsumer<UserPostsCubit, UserPostsState>(
               listener: (context, state) {
                 // TODO: implement listener
               },
+              buildWhen: (previous, current) {
+                if (current is UserPostError) {
+                  return false;
+                }
+                return true;
+              },
               builder: (context, state) {
-                if (state is UserPhotosLoading) {
+                if (state is UserPostsLoading) {
                   return const SliverToBoxAdapter(
                     child: SpinKitCircle(
                       color: AppColors.white,
@@ -204,43 +238,54 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   );
                 }
-                if (state is UserPhotosLoaded) {
-                  return GridViewUserPhotos(userPhotos: state.data);
+                if (state is UserPostsLoaded) {
+                  if (_isLoading == true) {
+                    _isLoading = false;
+                  }
+                  return ListViewPosts(posts: state.data);
                 }
                 return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
               },
             ),
-          ),
-          const SliverToBoxAdapter(
-            child: SizedBox(height: 15),
-          ),
-          BlocConsumer<UserPostsCubit, UserPostsState>(
-            listener: (context, state) {
-              // TODO: implement listener
-            },
-            buildWhen: (previous, current) {
-              if (current is UserPostError) {
-                return false;
-              }
-              return true;
-            },
-            builder: (context, state) {
-              if (state is UserPostsLoading) {
-                return const SliverToBoxAdapter(
-                  child: SpinKitCircle(
-                    color: AppColors.white,
-                    size: 30,
-                  ),
-                );
-              }
-              if (state is UserPostsLoaded) {
-                return ListViewPosts(posts: state.data);
-              }
-              return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
-            },
-          ),
-        ],
+          ],
+        ),
       ),
     );
+  }
+
+  Future _refresh() {
+    final userPostsCubit = context.read<UserPostsCubit>()..refreshUserPosts(_userProfile.id ?? '');
+    return userPostsCubit.stream.firstWhere(
+          (element) {
+        if (element is UserPostError) {
+          return true;
+        }
+        return element is UserPostsLoaded;
+      },
+    );
+  }
+
+  void _createPost() {
+    // print('Click Create Post');
+    Navigator.of(context).push(
+      MaterialPageRoute<CreatePostScreen>(
+        builder: (_) => BlocProvider.value(
+          value: BlocProvider.of<PostBloc>(context),
+          child: const CreatePostScreen(),
+        ),
+      ),
+    );
+  }
+
+  void _scrollListener() {
+    final currentScroll = _scrollController.position.pixels;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+
+    if (maxScroll - currentScroll <= 500) {
+      if (_isLoading == false) {
+        _isLoading = true;
+        // context.read<UserPostsCubit>().loadMoreUserPosts(_userProfile.id ?? '');
+      }
+    }
   }
 }

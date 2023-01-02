@@ -6,10 +6,12 @@ import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/home/views/create_post_screen.dart';
 import 'package:social_app/pages/home/widgets/list_view_posts/list_view_posts.dart';
 import 'package:social_app/pages/home/widgets/list_view_posts/list_view_posts_shimmer.dart';
+import 'package:social_app/pages/home/widgets/list_view_stories.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/utils/scroll_top_bottom.dart';
+import 'package:social_app/widgets/button_widget.dart';
 import 'package:social_app/widgets/dialogs/error_dialog.dart';
 import 'package:social_app/widgets/dialogs/loading_dialog.dart';
 
@@ -20,15 +22,12 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMixin<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   final _scrollController = ScrollController();
   bool _isLoading = false;
   bool _isScroll = false;
 
   AppStateBloc get _appStateBloc => Provider.of<AppStateBloc>(context, listen: false);
-
-  @override
-  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -45,7 +44,6 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
   @override
   Widget build(BuildContext context) {
     // print('==== Build HomeScreen ====');
-    super.build(context);
     return WillPopScope(
       onWillPop: () async {
         ScrollTopBottom.onTop(_scrollController);
@@ -53,17 +51,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
       },
       child: Scaffold(
         body: RefreshIndicator(
-          onRefresh: () {
-            final postsBloc = context.read<PostBloc>()..add(RefreshPosts(page: 1));
-            return postsBloc.stream.firstWhere(
-              (element) {
-                if (element is PostError) {
-                  return true;
-                }
-                return element is PostsLoaded;
-              },
-            );
-          },
+          onRefresh: () => _refresh(),
           child: CustomScrollView(
             controller: _scrollController,
             physics: _isScroll ? const ClampingScrollPhysics() : const NeverScrollableScrollPhysics(),
@@ -105,36 +93,27 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                 ),
                 actions: [
                   GestureDetector(
-                    onTap: () {
-                      // print('Click Create Post');
-                      Navigator.of(context).push(
-                        MaterialPageRoute<CreatePostScreen>(
-                          builder: (_) => BlocProvider.value(
-                            value: BlocProvider.of<PostBloc>(context),
-                            child: const CreatePostScreen(),
-                          ),
-                        ),
-                      );
-                    },
+                    onTap: () => _createPost(),
                     child: Container(
                       margin: const EdgeInsets.fromLTRB(0, 10, 15, 10),
                       decoration: const BoxDecoration(
                         gradient: Gradients.defaultGradientButton,
                         shape: BoxShape.circle,
                       ),
-                      child: Image.asset(AppAssetIcons.plus),
+                      child: Image.asset(AppAssetIcons.picture),
                     ),
                   ),
                 ],
               ),
-              // BlocBuilder<PostBloc, PostState>(
-              //   builder: (context, state) {
-              //     if (state is PostsLoaded) {
-              //       return ListViewStories(posts: state.data);
-              //     }
-              //     return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
-              //   },
-              // ),
+              BlocBuilder<PostBloc, PostState>(
+                builder: (context, state) {
+                  if (state is PostsLoaded) {
+                    return ListViewStories(posts: state.data);
+                  }
+                  return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
+                },
+              ),
+              const SliverToBoxAdapter(child: SizedBox(height: 15)),
               BlocConsumer<PostBloc, PostState>(
                 listener: (context, state) {
                   if (state is PostError) {
@@ -198,6 +177,30 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Future _refresh() {
+    final postsBloc = context.read<PostBloc>()..add(RefreshPosts());
+    return postsBloc.stream.firstWhere(
+          (element) {
+        if (element is PostError) {
+          return true;
+        }
+        return element is PostsLoaded;
+      },
+    );
+  }
+
+  void _createPost() {
+    // print('Click Create Post');
+    Navigator.of(context).push(
+      MaterialPageRoute<CreatePostScreen>(
+        builder: (_) => BlocProvider.value(
+          value: BlocProvider.of<PostBloc>(context),
+          child: const CreatePostScreen(),
         ),
       ),
     );

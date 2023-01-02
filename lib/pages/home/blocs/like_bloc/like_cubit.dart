@@ -18,7 +18,7 @@ class LikeCubit extends Cubit<LikeState> {
     if (likeAndUnLike == false) {
       throw MyException('Like And UnLike Fail');
     }
-    print('Like And UnLike Success');
+    // print('Like And UnLike Success');
   }
 
   Future loadUserLikePost(String idPost) async {

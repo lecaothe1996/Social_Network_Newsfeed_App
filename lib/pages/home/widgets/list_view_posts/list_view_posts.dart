@@ -29,7 +29,7 @@ class ListViewPosts extends StatelessWidget {
         (context, index) {
           final urlAvatar = ImageUtils.genImgIx(posts[index].user?.avatar?.url, 40, 40);
           return Container(
-            margin: const EdgeInsets.only(top: 15),
+            margin: const EdgeInsets.only(bottom: 15),
             color: AppColors.dark,
             child: Column(
               children: [

@@ -29,7 +29,7 @@ class DetailPostLoaded extends PostState {
   DetailPostLoaded({required this.data, this.stateName});
 }
 
-class PostsRefresh extends PostState {}
+// class PostsRefresh extends PostState {}
 
 class PostError extends PostState {
   final String error;
