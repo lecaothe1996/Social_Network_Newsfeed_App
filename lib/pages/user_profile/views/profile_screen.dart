@@ -53,8 +53,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final urlAvatar = ImageUtils.genImgIx(_userProfile.avatar?.url, 150, 150);
     final urlCoverImage = ImageUtils.genImgIx(_userProfile.avatar?.url, deviceWidth.toInt(), 190);
     return Scaffold(
+      backgroundColor: AppColors.black,
       appBar: AppBar(
-        centerTitle: false,
         elevation: 1,
         shadowColor: AppColors.white,
         title: Padding(

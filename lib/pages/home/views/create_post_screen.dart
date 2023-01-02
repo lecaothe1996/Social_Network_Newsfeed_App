@@ -44,7 +44,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     final urlAvatar = ImageUtils.genImgIx(userProfile.avatar?.url, 40, 40);
     return Scaffold(
       appBar: AppBar(
-        centerTitle: false,
         elevation: 1,
         shadowColor: AppColors.white,
         leading: MyIconButton(

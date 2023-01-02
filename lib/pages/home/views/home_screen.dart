@@ -50,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
         return false;
       },
       child: Scaffold(
+        backgroundColor: AppColors.black,
         body: RefreshIndicator(
           onRefresh: () => _refresh(),
           child: CustomScrollView(

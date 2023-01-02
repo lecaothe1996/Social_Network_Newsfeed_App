@@ -50,7 +50,6 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
     final urlAvatar = ImageUtils.genImgIx(widget.post.user?.avatar?.url, 40, 40);
     return Scaffold(
       appBar: AppBar(
-        centerTitle: false,
         elevation: 1,
         shadowColor: AppColors.white,
         leading: MyIconButton(

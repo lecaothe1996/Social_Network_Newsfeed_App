@@ -35,14 +35,13 @@ class _MyAppState extends State<MyApp> {
           color: AppColors.dark,
           titleSpacing: 0,
           elevation: 0,
-          centerTitle: true,
         ),
         textTheme: const TextTheme(
           bodyText1: TextStyle(),
           bodyText2: TextStyle(),
         ).apply(bodyColor: AppColors.white),
         fontFamily: FontFamily.arial,
-        scaffoldBackgroundColor: AppColors.black,
+        scaffoldBackgroundColor: AppColors.dark,
       ),
       home: Provider<AppStateBloc>(
         create: (context) => _appStateBloc,

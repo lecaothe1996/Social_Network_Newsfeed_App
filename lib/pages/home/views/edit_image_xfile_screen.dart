@@ -25,7 +25,6 @@ class _EditImageXFileScreenState extends State<EditImageXFileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: false,
         elevation: 1,
         shadowColor: AppColors.white,
         leading: MyIconButton(

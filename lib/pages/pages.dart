@@ -29,6 +29,7 @@ class _PagesState extends State<Pages> {
       ),
       bottomNavigationBar: SalomonBottomBar(
         margin: EdgeInsets.zero,
+        selectedColorOpacity: 0,
         itemShape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(0)),
         ),
