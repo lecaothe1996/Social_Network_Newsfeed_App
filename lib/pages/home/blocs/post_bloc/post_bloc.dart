@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:social_app/pages/home/models/post.dart';
 import 'package:social_app/pages/home/repositories/post_repo.dart';
 import 'package:social_app/pages/user_profile/blocs/user_posts/user_posts_cubit.dart';
+import 'package:social_app/pages/user_profile/repositories/user_profile_repo.dart';
 
 part 'post_event.dart';
 
@@ -13,6 +14,7 @@ part 'post_state.dart';
 class PostBloc extends Bloc<PostEvent, PostState> {
   final UserPostsCubit userPostsCubit;
   final _postRepo = PostRepo();
+  final _userProfileRepo = UserProfileRepo();
   List<Post> _posts = [];
   int _page = 1;
 
@@ -115,6 +117,8 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       ));
       // Clone post
       Post postCopyWith = post.copyWith();
+      // Update profile
+      _userProfileRepo.getProfile();
       // Ban event qua user posts
       userPostsCubit.createUserPost(postCopyWith);
     } catch (e) {

@@ -11,7 +11,7 @@ import 'package:social_app/pages/home/widgets/list_view_posts/list_view_posts.da
 import 'package:social_app/pages/user_profile/blocs/user_photos/user_photos_cubit.dart';
 import 'package:social_app/pages/user_profile/blocs/user_posts/user_posts_cubit.dart';
 import 'package:social_app/pages/user_profile/models/user_profile.dart';
-import 'package:social_app/pages/user_profile/widgets/grid_view_user_photos.dart';
+import 'package:social_app/pages/user_profile/widgets/grid_view_photos.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
@@ -210,7 +210,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     );
                   }
                   if (state is UserPhotosLoaded) {
-                    return GridViewUserPhotos(userPhotos: state.data);
+                    return GridViewPhotos(userPhotos: state.data);
                   }
                   return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
                 },

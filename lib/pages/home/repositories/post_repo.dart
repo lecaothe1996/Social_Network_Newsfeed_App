@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_app/pages/home/models/post.dart';
+import 'package:social_app/pages/user_profile/repositories/user_profile_repo.dart';
 import 'package:social_app/utils/dio_util.dart';
 import 'package:social_app/utils/my_exception.dart';
 

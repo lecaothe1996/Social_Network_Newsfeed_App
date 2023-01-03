@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:social_app/pages/user_profile/models/user_profile.dart';
 import 'package:social_app/utils/dio_util.dart';
 import 'package:social_app/utils/my_exception.dart';
+import 'package:social_app/utils/shared_preference_util.dart';
 
 class UserProfileRepo {
   final _dioUtil = DioUtil();
@@ -21,6 +24,10 @@ class UserProfileRepo {
         throw MyException('Không có thông tin người dùng');
       }
       final userProfile = UserProfile.fromJson(data);
+      final String jsonUserProfile = jsonEncode(userProfile);
+      // print('⚡️ Json User==${jsonUserProfile}');
+      SharedPreferenceUtil.setString('json_user_profile', jsonUserProfile);
+      print('⚡️ User photos=${userProfile.counters?.photos}');
       return userProfile;
     } on DioError catch (e) {
       if (e.response?.statusCode == 400) {

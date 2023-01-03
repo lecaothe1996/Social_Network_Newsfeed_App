@@ -9,6 +9,7 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
+
   AuthBloc() : super(AuthInitial()) {
     on<LogInGmail>(_onLogInGmail);
   }
@@ -20,15 +21,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       // print('⚡️ refreshToken=${loginData.refreshToken}');
       SharedPreferenceUtil.setString('access_token', loginData.accessToken ?? '');
       SharedPreferenceUtil.setString('refresh_token', loginData.refreshToken ?? '');
-
-      final userProfile = await UserProfileRepo().getProfile();
-
-      final String jsonUserProfile = jsonEncode(userProfile);
-      // print('⚡️ Json User==${jsonUserProfile}');
-
-      SharedPreferenceUtil.setString('json_user_profile', jsonUserProfile);
-      // print('⚡️ Id User Profile=${userProfile.id}');
-      // SharedPreferenceUtil.setString('id_user_profile', userProfile.id ?? '');
+      await UserProfileRepo().getProfile();
       emit(AuthSuccess());
     } catch (e) {
       print('⚡️ Error Login: $e');

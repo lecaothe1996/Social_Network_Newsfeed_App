@@ -51,7 +51,7 @@ class _MyAppState extends State<MyApp> {
           builder: (context, snapshot) {
             // print('⚡️ snapshot===${snapshot.data}');
             if (snapshot.data == AppState.loading) {
-              print('⚡️ loading splash===');
+              // print('⚡️ loading splash===');
             }
             if (snapshot.data == AppState.unAuthorized) {
               return BlocProvider(

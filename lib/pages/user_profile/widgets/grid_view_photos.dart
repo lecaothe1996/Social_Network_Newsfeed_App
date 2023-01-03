@@ -1,21 +1,28 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:social_app/pages/home/models/post.dart';
+import 'package:social_app/pages/user_profile/models/user_profile.dart';
+import 'package:social_app/pages/user_profile/views/grid_view_all_photos_screen.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/utils/image_util.dart';
+import 'package:social_app/utils/shared_preference_util.dart';
 
-class GridViewUserPhotos extends StatelessWidget {
+class GridViewPhotos extends StatelessWidget {
   final List<Post> userPhotos;
 
-  const GridViewUserPhotos({
+  const GridViewPhotos({
     Key? key,
     required this.userPhotos,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final jsonUserProfile = SharedPreferenceUtil.getString('json_user_profile');
+    final userProfile = UserProfile.fromJson(jsonDecode(jsonUserProfile));
     return SliverToBoxAdapter(
       child: Container(
         padding: const EdgeInsets.all(15),
@@ -27,12 +34,15 @@ class GridViewUserPhotos extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Ảnh (${userPhotos.length})',
+                  'Ảnh (${userProfile.counters?.photos})',
                   style: AppTextStyles.body.copyWith(fontWeight: FontWeight.bold),
                 ),
-                Text(
-                  'Xem tất cả',
-                  style: AppTextStyles.body.copyWith(color: AppColors.tealBlue),
+                GestureDetector(
+                  onTap: () => _seeAllPhotos(context),
+                  child: Text(
+                    'Xem tất cả',
+                    style: AppTextStyles.body.copyWith(color: AppColors.tealBlue),
+                  ),
                 ),
               ],
             ),
@@ -67,5 +77,13 @@ class GridViewUserPhotos extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _seeAllPhotos(BuildContext context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => GridViewAllPhotosScreen(userPhotos: userPhotos),
+        ));
   }
 }
