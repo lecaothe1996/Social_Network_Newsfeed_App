@@ -24,10 +24,10 @@ class UserProfileRepo {
         throw MyException('Không có thông tin người dùng');
       }
       final userProfile = UserProfile.fromJson(data);
+      // Save user_profile
       final String jsonUserProfile = jsonEncode(userProfile);
-      // print('⚡️ Json User==${jsonUserProfile}');
       SharedPreferenceUtil.setString('json_user_profile', jsonUserProfile);
-      print('⚡️ User photos=${userProfile.counters?.photos}');
+      //
       return userProfile;
     } on DioError catch (e) {
       if (e.response?.statusCode == 400) {

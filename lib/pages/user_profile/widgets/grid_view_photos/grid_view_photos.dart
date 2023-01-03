@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:social_app/pages/home/models/post.dart';
+import 'package:social_app/pages/user_profile/blocs/user_photos/user_photos_cubit.dart';
 import 'package:social_app/pages/user_profile/models/user_profile.dart';
 import 'package:social_app/pages/user_profile/views/grid_view_all_photos_screen.dart';
 import 'package:social_app/themes/app_color.dart';
@@ -21,8 +23,6 @@ class GridViewPhotos extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final jsonUserProfile = SharedPreferenceUtil.getString('json_user_profile');
-    final userProfile = UserProfile.fromJson(jsonDecode(jsonUserProfile));
     return SliverToBoxAdapter(
       child: Container(
         padding: const EdgeInsets.all(15),
@@ -34,7 +34,7 @@ class GridViewPhotos extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Ảnh (${userProfile.counters?.photos})',
+                  'Ảnh',
                   style: AppTextStyles.body.copyWith(fontWeight: FontWeight.bold),
                 ),
                 GestureDetector(
@@ -59,14 +59,17 @@ class GridViewPhotos extends StatelessWidget {
                   final deviceWidth = MediaQuery.of(context).size.width;
                   final urlPhoto =
                       ImageUtils.genImgIx(userPhotos[index].image?.url, (deviceWidth - 45) ~/ 4, (deviceWidth - 45) ~/ 4);
-                  return GestureDetector(
-                    onTap: () {},
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(5)),
-                      child: CachedNetworkImage(
-                        imageUrl: urlPhoto,
-                        fit: BoxFit.cover,
-                        errorWidget: (_, __, ___) => const SizedBox(),
+                  return Container(
+                    color: AppColors.slate,
+                    child: GestureDetector(
+                      onTap: () {},
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.all(Radius.circular(5)),
+                        child: CachedNetworkImage(
+                          imageUrl: urlPhoto,
+                          fit: BoxFit.cover,
+                          errorWidget: (_, __, ___) => const SizedBox(),
+                        ),
                       ),
                     ),
                   );
@@ -82,8 +85,11 @@ class GridViewPhotos extends StatelessWidget {
   void _seeAllPhotos(BuildContext context) {
     Navigator.push(
         context,
-        MaterialPageRoute(
-          builder: (context) => GridViewAllPhotosScreen(userPhotos: userPhotos),
+        MaterialPageRoute<UserPhotosCubit>(
+          builder: (_) => BlocProvider.value(
+            value: BlocProvider.of<UserPhotosCubit>(context),
+            child: GridViewAllPhotosScreen(userPhotos: userPhotos),
+          ),
         ));
   }
 }
