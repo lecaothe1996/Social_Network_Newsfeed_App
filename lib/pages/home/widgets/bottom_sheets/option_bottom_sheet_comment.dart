@@ -24,6 +24,18 @@ class OptionBottomSheetComment {
       builder: (_) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          Container(
+            height: 50,
+            decoration: const BoxDecoration(
+              border: Border(bottom: BorderSide(color: AppColors.white, width: 0.5)),
+            ),
+            child: Center(
+              child: Text(
+                'Lựa chọn phương thức',
+                style: AppTextStyles.h4.copyWith(color: AppColors.white, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
           ListTile(
             leading: const Icon(
               Icons.copy,

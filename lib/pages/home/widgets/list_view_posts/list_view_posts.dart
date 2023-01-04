@@ -80,7 +80,7 @@ class ListViewPosts extends StatelessWidget {
                                         colorImage: AppColors.blueGrey,
                                         height: 25,
                                         onTap: () {
-                                          OptionBottomSheetPost.showBottomSheet(context, posts[index]);
+                                          OptionBottomSheetPost.show(context, posts[index]);
                                           print('Click Menu');
                                         },
                                       ),

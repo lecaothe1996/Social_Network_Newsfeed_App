@@ -13,7 +13,7 @@ import 'package:social_app/utils/shared_preference_util.dart';
 import 'package:social_app/widgets/dialogs/loading_dialog.dart';
 
 class OptionBottomSheetPost {
-  static Future showBottomSheet(BuildContext context, Post post) {
+  static Future show(BuildContext context, Post post) {
     final jsonUserProfile = SharedPreferenceUtil.getString('json_user_profile');
     final userProfile = UserProfile.fromJson(jsonDecode(jsonUserProfile));
     return showMaterialModalBottomSheet(
@@ -26,6 +26,18 @@ class OptionBottomSheetPost {
       builder: (_) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          Container(
+            height: 50,
+            decoration: const BoxDecoration(
+              border: Border(bottom: BorderSide(color: AppColors.white, width: 0.5)),
+            ),
+            child: Center(
+              child: Text(
+                'Lựa chọn phương thức',
+                style: AppTextStyles.h4.copyWith(color: AppColors.white, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
           post.user?.id == userProfile.id
               ? const SizedBox()
               : ListTile(

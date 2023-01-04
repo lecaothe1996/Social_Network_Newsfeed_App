@@ -24,15 +24,15 @@ class PostComment {
   final dynamic replyComments;
 
   factory PostComment.fromJson(Map<String, dynamic> json) => PostComment(
-    id: json["id"] == null ? null : json["id"],
-    status: json["status"] == null ? null : json["status"],
+    id: json["id"],
+    status: json["status"],
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-    content: json["content"] == null ? null : json["content"],
+    content: json["content"],
     replyForId: json["reply_for_id"],
     user: json["user"] == null ? null : User.fromJson(json["user"]),
     image: json["image"] == null ? null : ImageComment.fromJson(json["image"]),
-    liked: json["liked"] == null ? null : json["liked"],
+    liked: json["liked"],
     replyComments: json["reply_comments"],
   );
 }
@@ -57,13 +57,13 @@ class ImageComment {
   final int? fileSize;
 
   factory ImageComment.fromJson(Map<String, dynamic> json) => ImageComment(
-    url: json["url"] == null ? null : json["url"],
-    orgWidth: json["org_width"] == null ? null : json["org_width"],
-    orgHeight: json["org_height"] == null ? null : json["org_height"],
-    orgUrl: json["org_url"] == null ? null : json["org_url"],
-    cloudName: json["cloud_name"] == null ? null : json["cloud_name"],
-    dominantColor: json["dominant_color"] == null ? null : json["dominant_color"],
-    fileSize: json["file_size"] == null ? null : json["file_size"],
+    url: json["url"],
+    orgWidth: json["org_width"],
+    orgHeight: json["org_height"],
+    orgUrl: json["org_url"],
+    cloudName: json["cloud_name"],
+    dominantColor: json["dominant_color"],
+    fileSize: json["file_size"],
   );
 }
 
@@ -89,13 +89,13 @@ class User {
   final DateTime? createdAt;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-    id: json["id"] == null ? null : json["id"],
-    username: json["username"] == null ? null : json["username"],
-    firstName: json["first_name"] == null ? null : json["first_name"],
-    lastName: json["last_name"] == null ? null : json["last_name"],
+    id: json["id"],
+    username: json["username"],
+    firstName: json["first_name"],
+    lastName: json["last_name"],
     avatar: json["avatar"] == null ? null : Avatar.fromJson(json["avatar"]),
-    systemRole: json["system_role"] == null ? null : json["system_role"],
-    isVerified: json["is_verified"] == null ? null : json["is_verified"],
+    systemRole: json["system_role"],
+    isVerified: json["is_verified"],
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
   );
 }
@@ -118,11 +118,11 @@ class Avatar {
   final String? dominantColor;
 
   factory Avatar.fromJson(Map<String, dynamic> json) => Avatar(
-    url: json["url"] == null ? null : json["url"],
-    orgWidth: json["org_width"] == null ? null : json["org_width"],
-    orgHeight: json["org_height"] == null ? null : json["org_height"],
-    orgUrl: json["org_url"] == null ? null : json["org_url"],
-    cloudName: json["cloud_name"] == null ? null : json["cloud_name"],
-    dominantColor: json["dominant_color"] == null ? null : json["dominant_color"],
+    url: json["url"],
+    orgWidth: json["org_width"],
+    orgHeight: json["org_height"],
+    orgUrl: json["org_url"],
+    cloudName: json["cloud_name"],
+    dominantColor: json["dominant_color"],
   );
 }

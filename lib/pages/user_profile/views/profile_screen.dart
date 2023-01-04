@@ -11,6 +11,7 @@ import 'package:social_app/pages/home/widgets/list_view_posts/list_view_posts.da
 import 'package:social_app/pages/user_profile/blocs/user_photos/user_photos_cubit.dart';
 import 'package:social_app/pages/user_profile/blocs/user_posts/user_posts_cubit.dart';
 import 'package:social_app/pages/user_profile/models/user_profile.dart';
+import 'package:social_app/pages/user_profile/views/edit_profile_screen.dart';
 import 'package:social_app/pages/user_profile/widgets/grid_view_photos/grid_view_photos.dart';
 import 'package:social_app/pages/user_profile/widgets/grid_view_photos/grid_view_photos_shimmer.dart';
 import 'package:social_app/themes/app_assets.dart';
@@ -18,6 +19,7 @@ import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/utils/image_util.dart';
 import 'package:social_app/utils/shared_preference_util.dart';
 import 'package:social_app/widgets/button_widget.dart';
+import 'package:social_app/widgets/icon_button_widget.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -66,6 +68,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
         actions: [
+          MyIconButton(
+            nameImage: AppAssetIcons.edit,
+            onTap: () => _editProfile(),
+          ),
           Container(
             margin: const EdgeInsets.fromLTRB(0, 10, 15, 10),
             child: MyElevatedButton(
@@ -275,6 +281,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
+  }
+
+  void _editProfile() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfileScreen()));
   }
 
   void _scrollListener() {
