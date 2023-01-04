@@ -1,8 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:social_app/pages/user_profile/blocs/pick_avatar_bloc.dart';
 import 'package:social_app/pages/user_profile/models/user_profile.dart';
 import 'package:social_app/pages/user_profile/widgets/option_bottom_sheet_avatar.dart';
@@ -40,14 +44,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void dispose() {
     _pickAvatarBloc.dispose();
-    _firstNameCtl.clear();
-    _lastNameCtl.clear();
+    _firstNameCtl.dispose();
+    _lastNameCtl.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
+    final dpr = MediaQuery.of(context).devicePixelRatio;
     final urlAvatar = ImageUtils.genImgIx(_userProfile.avatar?.url, 150, 150);
     final urlCoverImage = ImageUtils.genImgIx(_userProfile.avatar?.url, deviceWidth.toInt(), 190);
     return Scaffold(
@@ -75,44 +80,90 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: CachedNetworkImageProvider(
-                    urlCoverImage,
-                  ),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: ClipRRect(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    child: GestureDetector(
-                      onTap: () => OptionBottomSheetPhoto.show(context),
-                      child: CircleAvatar(
-                        backgroundColor: AppColors.dark,
-                        maxRadius: 80,
-                        child: ClipOval(
-                          child: CachedNetworkImage(
-                            imageUrl: urlAvatar,
-                            height: 150,
-                            width: 150,
-                            fit: BoxFit.cover,
-                            errorWidget: (_, __, ___) => Image.asset(
-                              AppAssetIcons.avatar,
-                              color: AppColors.blueGrey,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
+            Provider<PickAvatarBloc>(
+              create: (context) => _pickAvatarBloc,
+              child: StreamBuilder<CroppedFile>(
+                stream: _pickAvatarBloc.image,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: FileImage(
+                            File(snapshot.data?.path ?? ''),
+                          ),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      child: ClipRRect(
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            child: GestureDetector(
+                              onTap: () => OptionBottomSheetPhoto.show(context),
+                              child: CircleAvatar(
+                                backgroundColor: AppColors.dark,
+                                maxRadius: 80,
+                                child: ClipOval(
+                                  child: SizedBox(
+                                    width: 150,
+                                    child: Image.file(
+                                      File(snapshot.data?.path ?? ''),
+                                      cacheWidth: 150 * dpr.toInt(),
+                                      // cacheHeight: 150,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                  return Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: CachedNetworkImageProvider(
+                          urlCoverImage,
+                        ),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    child: ClipRRect(
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          child: GestureDetector(
+                            onTap: () => OptionBottomSheetPhoto.show(context),
+                            child: CircleAvatar(
+                              backgroundColor: AppColors.dark,
+                              maxRadius: 80,
+                              child: ClipOval(
+                                child: CachedNetworkImage(
+                                  imageUrl: urlAvatar,
+                                  height: 150,
+                                  width: 150,
+                                  fit: BoxFit.cover,
+                                  errorWidget: (_, __, ___) => Image.asset(
+                                    AppAssetIcons.avatar,
+                                    color: AppColors.blueGrey,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ),
+                  );
+                }
               ),
             ),
             Padding(

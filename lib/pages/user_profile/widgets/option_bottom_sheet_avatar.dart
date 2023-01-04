@@ -6,6 +6,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
 import 'package:social_app/pages/home/models/post.dart';
 import 'package:social_app/pages/home/views/update_post_screen.dart';
+import 'package:social_app/pages/user_profile/blocs/pick_avatar_bloc.dart';
 import 'package:social_app/pages/user_profile/models/user_profile.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
@@ -45,6 +46,7 @@ class OptionBottomSheetPhoto {
             ),
             onTap: () {
               Navigator.pop(context);
+              context.read<PickAvatarBloc>().onAddAvatarFromCamera();
             },
           ),
           ListTile(
@@ -55,6 +57,7 @@ class OptionBottomSheetPhoto {
             ),
             onTap: () {
               Navigator.pop(context);
+              context.read<PickAvatarBloc>().onAddAvatar();
             },
           ),
         ],

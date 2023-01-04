@@ -3,8 +3,7 @@ import 'package:image_picker/image_picker.dart';
 
 class PickImageBloc {
   final _image = StreamController<List<XFile>>.broadcast();
-
-  final ImagePicker _picker = ImagePicker();
+  final _picker = ImagePicker();
 
   Stream<List<XFile>> get image => _image.stream;
 

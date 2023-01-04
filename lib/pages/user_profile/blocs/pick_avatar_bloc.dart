@@ -1,28 +1,77 @@
 import 'dart:async';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:social_app/themes/app_color.dart';
 
 class PickAvatarBloc {
-  final _image = StreamController<XFile>();
-  final ImagePicker _picker = ImagePicker();
+  final _image = StreamController<CroppedFile>();
+  final _picker = ImagePicker();
+  final _cropper = ImageCropper();
 
-  // Stream<XFile> get image => _image.stream;
+  Stream<CroppedFile> get image => _image.stream;
 
-  Future onAddImages() async {
+  Future onAddAvatar() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    // print('⚡️ images===${images}');
     if (image == null) {
       return;
     }
-    _image.sink.add(image);
+    final CroppedFile? cropImage = await _cropper.cropImage(
+      sourcePath: image.path,
+      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+      cropStyle: CropStyle.circle,
+      compressQuality: 100,
+      maxHeight: 512,
+      maxWidth: 512,
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarTitle: 'Cắt ảnh',
+          toolbarColor: AppColors.dark,
+          statusBarColor: AppColors.dark,
+          activeControlsWidgetColor: AppColors.tealBlue,
+          toolbarWidgetColor: AppColors.white,
+          // initAspectRatio: CropAspectRatioPreset.original,
+        ),
+        IOSUiSettings(
+          title: 'Cắt ảnh',
+        ),
+      ],
+    );
+    if (cropImage == null) {
+      return;
+    }
+    _image.sink.add(cropImage);
   }
 
-  Future onAddImageFromCamera() async {
+  Future onAddAvatarFromCamera() async {
     final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
-    // print('⚡️ photo===${photo}');
     if (photo == null) {
       return;
     }
-    _image.sink.add(photo);
+    final CroppedFile? cropImage = await _cropper.cropImage(
+      sourcePath: photo.path,
+      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+      cropStyle: CropStyle.circle,
+      compressQuality: 100,
+      maxHeight: 512,
+      maxWidth: 512,
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarTitle: 'Cắt ảnh',
+          toolbarColor: AppColors.dark,
+          statusBarColor: AppColors.dark,
+          activeControlsWidgetColor: AppColors.tealBlue,
+          toolbarWidgetColor: AppColors.white,
+          // initAspectRatio: CropAspectRatioPreset.original,
+        ),
+        IOSUiSettings(
+          title: 'Cắt ảnh',
+        ),
+      ],
+    );
+    if (cropImage == null) {
+      return;
+    }
+    _image.sink.add(cropImage);
   }
 
   void dispose() {
