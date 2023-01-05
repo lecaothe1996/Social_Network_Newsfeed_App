@@ -44,140 +44,134 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     // print('==== Build HomeScreen ====');
-    return WillPopScope(
-      onWillPop: () async {
-        ScrollTopBottom.onTop(_scrollController);
-        return false;
-      },
-      child: Scaffold(
-        backgroundColor: AppColors.black,
-        body: RefreshIndicator(
-          onRefresh: () => _refresh(),
-          child: CustomScrollView(
-            controller: _scrollController,
-            physics: _isScroll ? const ClampingScrollPhysics() : const NeverScrollableScrollPhysics(),
-            slivers: [
-              SliverAppBar(
-                floating: true,
-                snap: true,
-                forceElevated: true,
-                title: GestureDetector(
-                  onTap: () {
-                    // print('Click Search');
-                    _appStateBloc.changeAppState(AppState.unAuthorized);
-                    // LoadingDialog.show(context);
-                    // ErrorDialog.show(context, 'Loiox');
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 15),
-                    height: 36,
-                    decoration: BoxDecoration(
-                      color: AppColors.blueGrey.withOpacity(0.12),
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15),
-                          child: Image.asset(AppAssetIcons.search),
+    return Scaffold(
+      backgroundColor: AppColors.black,
+      body: RefreshIndicator(
+        onRefresh: () => _refresh(),
+        child: CustomScrollView(
+          controller: _scrollController,
+          physics: _isScroll ? const ClampingScrollPhysics() : const NeverScrollableScrollPhysics(),
+          slivers: [
+            SliverAppBar(
+              floating: true,
+              snap: true,
+              forceElevated: true,
+              title: GestureDetector(
+                onTap: () {
+                  // print('Click Search');
+                  _appStateBloc.changeAppState(AppState.unAuthorized);
+                  // LoadingDialog.show(context);
+                  // ErrorDialog.show(context, 'Loiox');
+                },
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 15),
+                  height: 36,
+                  decoration: BoxDecoration(
+                    color: AppColors.blueGrey.withOpacity(0.12),
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15),
+                        child: Image.asset(AppAssetIcons.search),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 7),
+                        child: Text(
+                          'Search',
+                          style: AppTextStyles.body.copyWith(color: AppColors.blueGrey),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 7),
-                          child: Text(
-                            'Search',
-                            style: AppTextStyles.body.copyWith(color: AppColors.blueGrey),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-                actions: [
-                  GestureDetector(
-                    onTap: () => _createPost(),
-                    child: Container(
-                      margin: const EdgeInsets.fromLTRB(0, 10, 15, 10),
-                      decoration: const BoxDecoration(
-                        gradient: Gradients.defaultGradientButton,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Image.asset(AppAssetIcons.picture),
+              ),
+              actions: [
+                GestureDetector(
+                  onTap: () => _createPost(),
+                  child: Container(
+                    margin: const EdgeInsets.fromLTRB(0, 10, 15, 10),
+                    decoration: const BoxDecoration(
+                      gradient: Gradients.defaultGradientButton,
+                      shape: BoxShape.circle,
                     ),
+                    child: Image.asset(AppAssetIcons.picture),
                   ),
-                ],
-              ),
-              BlocBuilder<PostBloc, PostState>(
-                builder: (context, state) {
-                  if (state is PostsLoaded) {
-                    return ListViewStories(posts: state.data);
+                ),
+              ],
+            ),
+            BlocBuilder<PostBloc, PostState>(
+              builder: (context, state) {
+                if (state is PostsLoaded) {
+                  return ListViewStories(posts: state.data);
+                }
+                return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
+              },
+            ),
+            const SliverToBoxAdapter(child: SizedBox(height: 15)),
+            BlocConsumer<PostBloc, PostState>(
+              listener: (_, state) {
+                if (state is PostError) {
+                  switch (state.stateName) {
+                    case StatePost.loadPosts:
+                      ErrorDialog.show(context, state.error);
+                      break;
+                    case StatePost.loadDetailPost:
+                      ErrorDialog.show(context, state.error);
+                      break;
+                    case StatePost.loadMorePosts:
+                      ErrorDialog.show(context, state.error);
+                      break;
+                    case StatePost.refreshPosts:
+                      ErrorDialog.show(context, state.error);
+                      break;
+                    case StatePost.deletePost:
+                      LoadingDialog.hide(context);
+                      ErrorDialog.show(context, state.error);
+                      break;
+                    default:
+                      break;
                   }
-                  return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
-                },
-              ),
-              const SliverToBoxAdapter(child: SizedBox(height: 15)),
-              BlocConsumer<PostBloc, PostState>(
-                listener: (context, state) {
-                  if (state is PostError) {
-                    switch (state.stateName) {
-                      case StatePost.loadPosts:
-                        ErrorDialog.show(context, state.error);
-                        break;
-                      case StatePost.loadDetailPost:
-                        ErrorDialog.show(context, state.error);
-                        break;
-                      case StatePost.loadMorePosts:
-                        ErrorDialog.show(context, state.error);
-                        break;
-                      case StatePost.refreshPosts:
-                        ErrorDialog.show(context, state.error);
-                        break;
-                      case StatePost.deletePost:
-                        LoadingDialog.hide(context);
-                        ErrorDialog.show(context, state.error);
-                        break;
-                      default:
-                        break;
-                    }
+                }
+                if (state is PostsLoaded) {
+                  switch (state.stateName) {
+                    case StatePost.loadPosts:
+                      setState(() => _isScroll = true);
+                      break;
+                    case StatePost.createPost:
+                      ScrollTopBottom.onTop(_scrollController);
+                      break;
+                    case StatePost.deletePost:
+                      LoadingDialog.hide(context);
+                      break;
+                    default:
+                      break;
                   }
-                  if (state is PostsLoaded) {
-                    switch (state.stateName) {
-                      case StatePost.loadPosts:
-                        setState(() => _isScroll = true);
-                        break;
-                      case StatePost.createPost:
-                        ScrollTopBottom.onTop(_scrollController);
-                        break;
-                      case StatePost.deletePost:
-                        LoadingDialog.hide(context);
-                        break;
-                      default:
-                        break;
-                    }
+                }
+              },
+              buildWhen: (previous, current) {
+                if (current is DetailPostLoaded) {
+                  return false;
+                } else if (current is PostError) {
+                  return false;
+                }
+                return true;
+              },
+              builder: (context, state) {
+                if (state is PostsLoading) {
+                  return const ListViewPostsShimmer();
+                }
+                if (state is PostsLoaded) {
+                  if (_isLoading == true) {
+                    _isLoading = false;
                   }
-                },
-                buildWhen: (previous, current) {
-                  if (current is DetailPostLoaded) {
-                    return false;
-                  } else if (current is PostError) {
-                    return false;
-                  }
-                  return true;
-                },
-                builder: (context, state) {
-                  if (state is PostsLoading) {
-                    return const ListViewPostsShimmer();
-                  }
-                  if (state is PostsLoaded) {
-                    if (_isLoading == true) {
-                      _isLoading = false;
-                    }
-                    return ListViewPosts(posts: state.data);
-                  }
-                  return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
-                },
-              ),
-            ],
-          ),
+                  return ListViewPosts(posts: state.data);
+                }
+                return SliverList(delegate: SliverChildBuilderDelegate((context, index) => null));
+              },
+            ),
+          ],
         ),
       ),
     );

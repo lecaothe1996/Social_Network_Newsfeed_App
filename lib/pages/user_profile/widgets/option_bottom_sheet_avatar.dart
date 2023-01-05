@@ -1,18 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:social_app/pages/home/blocs/post_bloc/post_bloc.dart';
-import 'package:social_app/pages/home/models/post.dart';
-import 'package:social_app/pages/home/views/update_post_screen.dart';
 import 'package:social_app/pages/user_profile/blocs/pick_avatar_bloc.dart';
-import 'package:social_app/pages/user_profile/models/user_profile.dart';
 import 'package:social_app/themes/app_assets.dart';
 import 'package:social_app/themes/app_color.dart';
 import 'package:social_app/themes/app_text_styles.dart';
-import 'package:social_app/utils/shared_preference_util.dart';
-import 'package:social_app/widgets/dialogs/loading_dialog.dart';
 
 class OptionBottomSheetPhoto {
   static Future show(BuildContext context) {
@@ -27,7 +19,7 @@ class OptionBottomSheetPhoto {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            height: 50,
+            height: 55,
             decoration: const BoxDecoration(
               border: Border(bottom: BorderSide(color: AppColors.white, width: 0.5)),
             ),

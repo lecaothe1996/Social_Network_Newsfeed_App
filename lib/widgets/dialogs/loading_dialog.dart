@@ -12,7 +12,7 @@ class LoadingDialog {
     return showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) {
+      builder: (_) {
         return WillPopScope(
           onWillPop: () async => false,
           child: const Dialog(

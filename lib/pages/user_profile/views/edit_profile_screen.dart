@@ -4,10 +4,12 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/pages/user_profile/blocs/pick_avatar_bloc.dart';
+import 'package:social_app/pages/user_profile/blocs/user_profile/user_profile_cubit.dart';
 import 'package:social_app/pages/user_profile/models/user_profile.dart';
 import 'package:social_app/pages/user_profile/widgets/option_bottom_sheet_avatar.dart';
 import 'package:social_app/themes/app_assets.dart';
@@ -16,6 +18,7 @@ import 'package:social_app/themes/app_text_styles.dart';
 import 'package:social_app/utils/image_util.dart';
 import 'package:social_app/utils/shared_preference_util.dart';
 import 'package:social_app/widgets/dialogs/error_dialog.dart';
+import 'package:social_app/widgets/dialogs/loading_dialog.dart';
 import 'package:social_app/widgets/icon_button_widget.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -27,6 +30,7 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final _pickAvatarBloc = PickAvatarBloc();
+  late String _filePath = '';
   late UserProfile _userProfile;
   late TextEditingController _firstNameCtl;
   late TextEditingController _lastNameCtl;
@@ -70,22 +74,35 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [
-          MyIconButton(
-            nameImage: AppAssetIcons.check,
-            colorImage: AppColors.tealBlue,
-            onTap: () => _updateProfile(),
+          BlocListener<UserProfileCubit, UserProfileState>(
+            listener: (_, state) {
+              if (state is UserProfileError) {
+                LoadingDialog.hide(context);
+                ErrorDialog.show(context, state.error);
+              }
+              if (state is UserProfileLoaded) {
+                LoadingDialog.hide(context);
+                Navigator.pop(context);
+              }
+            },
+            child: MyIconButton(
+              nameImage: AppAssetIcons.check,
+              colorImage: AppColors.tealBlue,
+              onTap: () => _updateProfile(),
+            ),
           ),
         ],
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Provider<PickAvatarBloc>(
-              create: (context) => _pickAvatarBloc,
+            Provider(
+              create: (_) => _pickAvatarBloc,
               child: StreamBuilder<CroppedFile>(
                 stream: _pickAvatarBloc.image,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
+                    _filePath = snapshot.data?.path ?? '';
                     return Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
@@ -163,7 +180,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                     ),
                   );
-                }
+                },
               ),
             ),
             Padding(
@@ -172,9 +189,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 controller: _firstNameCtl,
                 style: AppTextStyles.h5.copyWith(color: AppColors.white),
                 decoration: InputDecoration(
-                  hintText: 'Họ tên đệm',
+                  hintText: 'Họ',
                   hintStyle: AppTextStyles.h5.copyWith(color: AppColors.blueGrey),
-                  labelText: 'Họ tên đệm',
+                  labelText: 'Họ',
                   labelStyle: AppTextStyles.h5.copyWith(color: AppColors.blueGrey),
                   enabledBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: AppColors.white),
@@ -213,6 +230,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void _updateProfile() {
     if (_firstNameCtl.text.isEmpty) {
       ErrorDialog.show(context, 'Họ và tên không được để trống');
+      return;
     }
+    context.read<UserProfileCubit>().updateProfile(_filePath, _firstNameCtl.text, _lastNameCtl.text);
+    LoadingDialog.show(context);
   }
 }

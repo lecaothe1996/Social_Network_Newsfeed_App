@@ -10,6 +10,7 @@ import 'package:social_app/pages/home/views/create_post_screen.dart';
 import 'package:social_app/pages/home/widgets/list_view_posts/list_view_posts.dart';
 import 'package:social_app/pages/user_profile/blocs/user_photos/user_photos_cubit.dart';
 import 'package:social_app/pages/user_profile/blocs/user_posts/user_posts_cubit.dart';
+import 'package:social_app/pages/user_profile/blocs/user_profile/user_profile_cubit.dart';
 import 'package:social_app/pages/user_profile/models/user_profile.dart';
 import 'package:social_app/pages/user_profile/views/edit_profile_screen.dart';
 import 'package:social_app/pages/user_profile/widgets/grid_view_photos/grid_view_photos.dart';
@@ -62,9 +63,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
         shadowColor: AppColors.white,
         title: Padding(
           padding: const EdgeInsets.only(left: 15),
-          child: Text(
-            '${_userProfile.firstName ?? ''} ${_userProfile.lastName ?? 'Người dùng'}',
-            style: const TextStyle(fontWeight: FontWeight.bold),
+          child: BlocBuilder<UserProfileCubit, UserProfileState>(
+            builder: (_, state) {
+              if (state is UserProfileLoaded) {
+                return Text(
+                  '${state.data.firstName ?? ''} ${state.data.lastName ?? 'Người dùng'}',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                );
+              }
+              return Text(
+                '${_userProfile.firstName ?? ''} ${_userProfile.lastName ?? 'Người dùng'}',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              );
+            },
           ),
         ),
         actions: [
@@ -88,42 +99,85 @@ class _ProfileScreenState extends State<ProfileScreen> {
           controller: _scrollController,
           slivers: [
             SliverToBoxAdapter(
-              child: Container(
-                // padding: const EdgeInsets.symmetric(vertical: 15),
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: CachedNetworkImageProvider(
-                      urlCoverImage,
+              child: BlocBuilder<UserProfileCubit, UserProfileState>(
+                builder: (_, state) {
+                  if (state is UserProfileLoaded) {
+                    final urlAvatar = ImageUtils.genImgIx(state.data.avatar?.url, 150, 150);
+                    final urlCoverImage = ImageUtils.genImgIx(state.data.avatar?.url, deviceWidth.toInt(), 190);
+                    return Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: CachedNetworkImageProvider(
+                            urlCoverImage,
+                          ),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      child: ClipRRect(
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            child: CircleAvatar(
+                              backgroundColor: AppColors.dark,
+                              maxRadius: 80,
+                              child: ClipOval(
+                                child: CachedNetworkImage(
+                                  imageUrl: urlAvatar,
+                                  height: 150,
+                                  width: 150,
+                                  fit: BoxFit.cover,
+                                  errorWidget: (_, __, ___) => Image.asset(
+                                    AppAssetIcons.avatar,
+                                    color: AppColors.blueGrey,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                  return Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: CachedNetworkImageProvider(
+                          urlCoverImage,
+                        ),
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child: ClipRRect(
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      child: CircleAvatar(
-                        backgroundColor: AppColors.dark,
-                        maxRadius: 80,
-                        child: ClipOval(
-                          child: CachedNetworkImage(
-                            imageUrl: urlAvatar,
-                            height: 150,
-                            width: 150,
-                            fit: BoxFit.cover,
-                            errorWidget: (_, __, ___) => Image.asset(
-                              AppAssetIcons.avatar,
-                              color: AppColors.blueGrey,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
+                    child: ClipRRect(
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          child: CircleAvatar(
+                            backgroundColor: AppColors.dark,
+                            maxRadius: 80,
+                            child: ClipOval(
+                              child: CachedNetworkImage(
+                                imageUrl: urlAvatar,
+                                height: 150,
+                                width: 150,
+                                fit: BoxFit.cover,
+                                errorWidget: (_, __, ___) => Image.asset(
+                                  AppAssetIcons.avatar,
+                                  color: AppColors.blueGrey,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ),
+                  );
+                },
               ),
             ),
             // const SliverToBoxAdapter(
@@ -284,7 +338,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _editProfile() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfileScreen()));
+    Navigator.of(context).push(
+      MaterialPageRoute<EditProfileScreen>(
+        builder: (_) => BlocProvider.value(
+          value: BlocProvider.of<UserProfileCubit>(context),
+          child: const EditProfileScreen(),
+        ),
+      ),
+    );
   }
 
   void _scrollListener() {

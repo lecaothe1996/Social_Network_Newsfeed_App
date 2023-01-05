@@ -27,7 +27,7 @@ class OptionBottomSheetPost {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            height: 50,
+            height: 55,
             decoration: const BoxDecoration(
               border: Border(bottom: BorderSide(color: AppColors.white, width: 0.5)),
             ),

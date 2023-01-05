@@ -4,7 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:social_app/themes/app_color.dart';
 
 class PickAvatarBloc {
-  final _image = StreamController<CroppedFile>();
+  final _image = StreamController<CroppedFile>.broadcast();
   final _picker = ImagePicker();
   final _cropper = ImageCropper();
 
