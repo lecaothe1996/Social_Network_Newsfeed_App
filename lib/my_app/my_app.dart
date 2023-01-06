@@ -51,10 +51,11 @@ class _MyAppState extends State<MyApp> {
           stream: _appStateBloc.appState,
           initialData: _appStateBloc.initState,
           builder: (context, snapshot) {
-            // print('⚡️ snapshot===${snapshot.data}');
+            print('⚡️ snapshot===${snapshot.data}');
             if (snapshot.data == AppState.loading) {
-              // print('⚡️ loading splash===');
-            }
+              print('⚡️ loading splash===');
+              return Scaffold()
+        ;    }
             if (snapshot.data == AppState.unAuthorized) {
               return BlocProvider(
                 create: (context) => AuthBloc(),

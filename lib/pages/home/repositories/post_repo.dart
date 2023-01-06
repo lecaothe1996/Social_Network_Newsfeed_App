@@ -63,6 +63,9 @@ class PostRepo {
       if (e.response?.statusCode == 400) {
         throw MyException('Lỗi tạo bài viết');
       }
+      if (e.response?.statusCode == 413) {
+        throw MyException('Hình ảnh tải lên lớn hơn 1MB, vui lòng thử lại');
+      }
       throw MyException('Vui lòng kiểm tra kết nối internet và thử lại.');
     }
   }
