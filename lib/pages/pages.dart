@@ -34,7 +34,6 @@ class _PagesState extends State<Pages> {
           borderRadius: BorderRadius.all(Radius.circular(0)),
         ),
         selectedItemColor: AppColors.redMedium,
-        unselectedItemColor: AppColors.slate,
         currentIndex: _currentIndex,
         onTap: (index) {
           setState(() {

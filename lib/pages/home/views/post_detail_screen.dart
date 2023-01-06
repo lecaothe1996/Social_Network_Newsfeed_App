@@ -29,6 +29,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
   Widget build(BuildContext context) {
     final urlAvatar = ImageUtils.genImgIx(widget.post.user?.avatar?.url, 40, 40);
     return SafeArea(
+      bottom: false,
       child: Scaffold(
         backgroundColor: AppColors.dark,
         body: CustomScrollView(

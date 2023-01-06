@@ -17,10 +17,6 @@ void main() async {
   // initialize Firebase
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
   // initialize SharedPreferences
   await SharedPreferenceUtil.init();
 
